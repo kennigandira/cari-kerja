@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find:*)",
+      "Bash(ls:*)",
+      "WebFetch(domain:www.linkedin.com)",
+      "Bash(mkdir:*)",
+      "WebFetch(domain:www.accenture.com)",
+      "Bash(mv:*)",
+      "Bash(pdflatex:*)",
+      "Bash(tectonic:*)",
+      "Bash(touch:*)",
+      "Bash(grep:*)",
+      "WebFetch(domain:lifeattiktok.com)",
+      "Bash(rm:*)",
+      "WebFetch(domain:www.99.co)"
+    ],
+    "deny": []
+  }
+}

@@ -1,0 +1,221 @@
+%-------------------------
+% Resume in Latex
+% Author: Kenni Gandira Alamsyah
+%------------------------
+
+\documentclass[a4paper, 11pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+
+\usepackage{xcolor}
+\usepackage[sfdefault]{roboto}
+
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Adjust margins
+\addtolength{\oddsidemargin}{-0.7in}
+\addtolength{\evensidemargin}{-0.7in}
+\addtolength{\textwidth}{1.4in}
+\addtolength{\topmargin}{-.5in}
+\addtolength{\textheight}{1.0in}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Sections formatting
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+%-------------------------
+% Custom commands
+\newcommand{\resumeItem}[1]{
+  \item\small{
+    {#1 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabularx}{0.987\textwidth}[t]{ 
+  >{\raggedright\arraybackslash}X 
+  >{\centering\arraybackslash}X 
+  >{\raggedleft\arraybackslash}X }
+      \textbf{#1} & \textit{\small#2} & \textbf{#3} \\
+    \end{tabularx}
+    \textit{\small#4}\\
+    \vspace{-7pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{0.987\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1\\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.1in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}\vspace{5pt}}
+\newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=0.22in]}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-20pt}}
+
+\newcommand{\link}[2]{{\color[HTML]{096dd9}\href[pdfnewwindow=true]{#1}{\small{#2}}}}
+
+%-------------------------------------------
+%%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%----------HEADING----------
+\begin{center}
+    \textbf{\Huge \scshape Kenni Gandira Alamsyah} \\ \vspace{8pt}
+    \textbf{Senior Frontend Engineer | Growth \& Performance Specialist} \\ \vspace{4pt}
+    \small Bangkok, Thailand $|$ 
+    +66 0842704245 $|$
+    \link{mailto:devkenni.g@gmail.com}{devkenni.g@gmail.com} $|$ 
+    \link{https://www.linkedin.com/in/kenni-g-alamsyah}{LinkedIn} $|$
+    \link{https://github.com/kenni-g}{GitHub}
+\end{center}
+
+%-----------PROFESSIONAL SUMMARY-----------
+\section{Professional Summary}
+Experienced Frontend Engineer with 8+ years driving user growth and platform scalability through innovative R\&D solutions. Proven expertise in React ecosystem, micro-frontend architectures, and performance optimization at scale. Track record of increasing user acquisition by 27\% and improving platform efficiency by 40\% through data-driven frontend development. Passionate about building growth platforms that deliver exceptional user experiences while maintaining technical excellence.
+
+%-----------TECHNICAL EXPERTISE-----------
+\section{Technical Expertise}
+\begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+     \textbf{Frontend Technologies}{: React, Vue.js, TypeScript, JavaScript (ES6+), HTML5, CSS3, Redux, MobX, React Query} \\
+     \textbf{Architecture \& Scale}{: Micro-Frontends, BFF (Backend for Frontend), Module Federation, Code Splitting, SSR/SSG} \\
+     \textbf{Testing \& Debugging}{: Jest, React Testing Library, Cypress, Chrome DevTools, Performance Profiling, E2E Testing} \\
+     \textbf{Performance \& Growth}{: Web Vitals Optimization, A/B Testing Frameworks, Analytics Integration, SEO} \\
+     \textbf{Tools \& Infrastructure}{: Webpack, Vite, Docker, CI/CD, GitHub Actions, Datadog, Sentry, New Relic}
+    }}
+\end{itemize}
+
+%-----------PROFESSIONAL EXPERIENCE-----------
+\section{Professional Experience}
+    \resumeSubHeadingListStart
+        \resumeSubheading
+        {PropertyScout (YC W21)}{Bangkok, Thailand}{Senior Software Engineer - Frontend R\&D}{March 2023 -- Present}
+        \small{\textit{Leading frontend development for high-growth proptech platform serving millions of users across Southeast Asia}}
+        \vspace{4pt}
+        
+        \textbf{Growth \& User Acquisition Impact:}
+        \resumeItemListStart
+            \resumeItem{Increased user traffic by 27\% through frontend optimization and improved user experience design}
+            \resumeItem{Achieved 40\% improvement in conversion rates by implementing data-driven UI/UX enhancements}
+            \resumeItem{Built AI-powered property valuation tool frontend that accelerated user activation metrics}
+        \resumeItemListEnd
+        
+        \textbf{Technical Excellence \& R\&D:}
+        \resumeItemListStart
+            \resumeItem{Architected micro-frontend infrastructure improving development velocity by 35\% and deployment efficiency}
+            \resumeItem{Reduced React application bundle size by 52\%, achieving Lighthouse score improvement from 67 to 94}
+            \resumeItem{Implemented comprehensive testing strategy (unit, integration, E2E) achieving 87\% code coverage}
+            \resumeItem{Established frontend best practices and code review processes, reducing bug rate by 45\%}
+        \resumeItemListEnd
+
+        \resumeSubheading
+        {AccelByte}{Remote}{Software Engineer - Platform Development}{June 2022 -- March 2023}
+        \small{\textit{Developed frontend solutions for gaming platform serving 500+ studios with millions of concurrent users}}
+        \vspace{4pt}
+        
+        \textbf{Scale \& Performance Achievements:}
+        \resumeItemListStart
+            \resumeItem{Built developer portal frontend handling high-traffic loads from global game studio clients}
+            \resumeItem{Reduced build compilation time by 40\% through advanced Webpack optimization strategies}
+            \resumeItem{Developed real-time analytics dashboard using React and WebSocket for player behavior monitoring}
+            \resumeItem{Improved developer onboarding time by 60\% through intuitive UI/UX design}
+        \resumeItemListEnd
+        
+        \textbf{Frontend R\&D Contributions:}
+        \resumeItemListStart
+            \resumeItem{Implemented automated E2E testing pipeline catching 85\% of regression bugs pre-production}
+            \resumeItem{Collaborated with UX team to increase developer satisfaction score from 3.2 to 4.6/5}
+            \resumeItem{Built reusable component library accelerating feature development across teams}
+        \resumeItemListEnd
+
+        \resumeSubheading
+        {99.co}{Bandung, Indonesia}{Web Developer - Growth Engineering}{July 2020 -- July 2022}
+        \small{\textit{Frontend development for Southeast Asia's leading property marketplace with millions of monthly users}}
+        \vspace{4pt}
+        
+        \textbf{Performance \& User Experience:}
+        \resumeItemListStart
+            \resumeItem{Optimized Largest Contentful Paint (LCP) from 4.5s to 1.2s, significantly improving user retention}
+            \resumeItem{Increased mobile user engagement by 43\% through Progressive Web App (PWA) implementation}
+            \resumeItem{Built A/B testing framework enabling data-driven growth experiments, increasing leads by 25\%}
+        \resumeItemListEnd
+        
+        \textbf{Technical Improvements:}
+        \resumeItemListStart
+            \resumeItem{Migrated legacy jQuery codebase to modern React architecture, reducing bugs by 38\%}
+            \resumeItem{Implemented SEO optimizations resulting in 31\% organic search traffic growth}
+            \resumeItem{Developed responsive, cross-browser compatible interfaces ensuring consistent user experience}
+        \resumeItemListEnd
+
+        \resumeSubheading
+        {Tiket.com}{Jakarta, Indonesia}{Frontend Engineer}{August 2019 -- July 2020}
+        \resumeItemListStart
+            \resumeItem{Implemented features using React, TypeScript, Redux for travel platform serving millions}
+            \resumeItem{Maintained component documentation with Storybook, improving developer efficiency}
+            \resumeItem{Conducted regular refactoring for code scalability and maintainability}
+            \resumeItem{Coordinated with product team for UX enhancements driving user satisfaction}
+        \resumeItemListEnd
+
+        \resumeSubheading
+        {Earlier Roles}{Indonesia}{Frontend Developer}{March 2016 -- August 2019}
+        \resumeItemListStart
+            \resumeItem{\textbf{Mirum Agency} (2018-2019): WordPress-based university platform development}
+            \resumeItem{\textbf{Hazani Rangka Utama} (2017-2018): ThemeForest WordPress theme development}
+            \resumeItem{\textbf{PT NTCI} (2016-2017): Entry-level frontend development, e-learning projects}
+        \resumeItemListEnd
+
+    \resumeSubHeadingListEnd
+
+%-----------EDUCATION-----------
+\section{Education}
+    \resumeSubHeadingListStart
+        \resumeSubheading
+        {Free Code Camp}{}{Full Stack Web Development Certification}{2016}
+        \resumeSubheading
+        {SMK Negeri 7 Bandung}{}{Analytical Chemistry}{2009 -- 2011}
+    \resumeSubHeadingListEnd
+
+%-----------KEY PROJECTS & CONTRIBUTIONS-----------
+\section{Key Projects \& Contributions}
+\begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+     \textbf{Open Source}: React Performance Monitor (500+ weekly downloads), Vue State Manager (300+ GitHub stars) \\
+     \textbf{Technical Writing}: Published articles on frontend optimization and micro-frontend architecture (23K+ total views)
+    }}
+\end{itemize}
+
+%-----------CERTIFICATIONS-----------
+\section{Certifications}
+\begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+     $\bullet$ AWS Certified Developer - Associate (2023) \\
+     $\bullet$ Meta Front-End Developer Professional Certificate (2021)
+    }}
+\end{itemize}
+
+\end{document}

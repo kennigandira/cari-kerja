@@ -1,0 +1,188 @@
+%-------------------------
+% Resume in Latex
+% Author: Kenni Gandira Alamsyah - Agoda Frontend Engineer Application
+%------------------------
+
+\documentclass[a4paper, 11pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+
+\usepackage{xcolor}
+\usepackage[sfdefault]{roboto}
+
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Adjust margins
+\addtolength{\oddsidemargin}{-0.7in}
+\addtolength{\evensidemargin}{-0.7in}
+\addtolength{\textwidth}{1.4in}
+\addtolength{\topmargin}{-.5in}
+\addtolength{\textheight}{1.0in}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Sections formatting
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+%-------------------------
+% Custom commands
+\newcommand{\resumeItem}[1]{
+  \item\small{
+    {#1 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabularx}{0.987\textwidth}[t]{ 
+  >{\raggedright\arraybackslash}X 
+  >{\centering\arraybackslash}X 
+  >{\raggedleft\arraybackslash}X }
+      \textbf{#1} & #2 & #3 \\
+    \end{tabularx}
+    \textit{\small#4}\\
+    \vspace{-7pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{0.987\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1\\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.1in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}\vspace{5pt}}
+\newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=0.22in]}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-20pt}}
+
+\newcommand{\link}[2]{{\color[HTML]{096dd9}\href[pdfnewwindow=true]{#1}{\small{#2}}}}
+
+%-------------------------------------------
+%%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%----------HEADING----------
+\begin{center}
+    \textbf{\Huge \scshape Kenni Gandira Alamsyah} \\ \vspace{8pt}
+    \small Frontend Engineer \\ \vspace{4pt}
+    Bangkok, Thailand $|$ 
+    \link{mailto:devkenni.g@gmail.com}{devkenni.g@gmail.com} $|$ 
+    \link{https://tel:+6281313635148}{+62 813 1363 5148} $|$ 
+    \link{https://www.linkedin.com/in/kenni-g-alamsyah/}{linkedin.com/in/kenni-g-alamsyah}
+\end{center}
+
+%-----------PROFESSIONAL SUMMARY-----------
+\section{Professional Summary}
+Frontend Engineer with experience building web applications using React and TypeScript. Currently based in Bangkok with experience in travel, real estate, and gaming industries. Seeking opportunities to contribute to user-focused development teams.
+
+%-----------TECHNICAL SKILLS-----------
+\section{Technical Skills}
+    \resumeSubHeadingListStart
+        \small{
+            \item \textbf{Core:} React, TypeScript, JavaScript ES6+, HTML5, CSS3
+            \item \textbf{Tools:} Git, Webpack, Jest, Storybook
+            \item \textbf{Practices:} Responsive Design, Performance Optimization, Code Reviews
+            \item \textbf{Languages:} English (Professional), Bahasa Indonesia (Native)
+        }
+    \resumeSubHeadingListEnd
+
+%-----------WORK EXPERIENCE-----------
+\section{Professional Experience}
+    \resumeSubHeadingListStart
+        \resumeSubheading
+            {Software Engineer}{PropertyScout}{March 2023 -- Present}{}
+            \resumeItemListStart
+                \resumeItem{Contributed to web application improvements that helped increase user engagement}
+                \resumeItem{Updated frontend technology stack for better performance}
+                \resumeItem{Collaborated with UI/UX team to implement design specifications}
+                \resumeItem{Participated in code reviews and team knowledge sharing}
+            \resumeItemListEnd
+
+        \resumeSubheading
+            {Software Engineer}{AccelByte}{June 2022 -- March 2023}{}
+            \resumeItemListStart
+                \resumeItem{Developed frontend components for gaming platform tools}
+                \resumeItem{Helped establish component documentation using Storybook}
+                \resumeItem{Participated in developer experience improvements}
+                \resumeItem{Contributed to code standardization efforts}
+            \resumeItemListEnd
+
+        \resumeSubheading
+            {Frontend Engineer}{99.co}{July 2020 -- July 2022}{}
+            \resumeItemListStart
+                \resumeItem{Worked on performance optimization initiatives improving site metrics}
+                \resumeItem{Implemented SEO improvements for better search visibility}
+                \resumeItem{Maintained and enhanced existing React components}
+                \resumeItem{Collaborated with cross-functional teams}
+            \resumeItemListEnd
+
+        \resumeSubheading
+            {Frontend Engineer}{Tiket.com}{August 2019 -- July 2020}{}
+            \resumeItemListStart
+                \resumeItem{Developed features using React and TypeScript}
+                \resumeItem{Maintained component library documentation}
+                \resumeItem{Participated in regular code refactoring}
+                \resumeItem{Worked with product team on user experience improvements}
+            \resumeItemListEnd
+
+        \resumeSubheading
+            {Earlier Experience}{}{2016 -- 2019}{}
+            \resumeItemListStart
+                \resumeItem{\textbf{Mirum Agency} - Frontend Developer (2018-2019)}
+                \resumeItem{\textbf{Hartama} - Web Developer (2017-2018)}
+                \resumeItem{\textbf{PT NTCI} - Frontend Developer (2016-2017)}
+            \resumeItemListEnd
+    \resumeSubHeadingListEnd
+
+%-----------KEY PROJECTS-----------
+\section{Key Projects}
+    \resumeSubHeadingListStart
+        \resumeProjectHeading
+            {\textbf{Performance Optimization} $|$ \emph{React, TypeScript, Web Vitals}}{}
+            \resumeItemListStart
+                \resumeItem{Contributed to performance improvements reducing page load times}
+            \resumeItemListEnd
+        \resumeProjectHeading
+            {\textbf{UI/UX Enhancement} $|$ \emph{React, Figma, CSS}}{}
+            \resumeItemListStart
+                \resumeItem{Participated in UI/UX redesign resulting in improved user metrics}
+            \resumeItemListEnd
+        \resumeProjectHeading
+            {\textbf{Component Library} $|$ \emph{React, Storybook, TypeScript}}{}
+            \resumeItemListStart
+                \resumeItem{Developed reusable component libraries with documentation}
+            \resumeItemListEnd
+    \resumeSubHeadingListEnd
+
+%-----------EDUCATION-----------
+\section{Education}
+    \resumeSubHeadingListStart
+        \resumeSubheading
+            {Full Stack Web Development Certification}{Free Code Camp}{2016}{}
+        \resumeSubheading
+            {Analytical Chemistry}{SMK Negeri 7 Bandung}{2009 -- 2011}{}
+    \resumeSubHeadingListEnd
+
+\end{document}
