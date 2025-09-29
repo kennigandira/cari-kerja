@@ -8,9 +8,10 @@ You are about to execute a comprehensive CV tailoring workflow. The parameter pr
 ## Workflow Steps:
 
 1. **Extract Job Information**
+   - If general, just put general Frontend Engineer Job description 
    - If a URL is provided, fetch the job description content
    - If raw text is provided, use it directly
-   - Extract the company name and position title
+   - Extract the company name and position title, if general, company name will be GeneralCV and position title will be Frontend Engineer
    - **NEW**: Handle authentication-protected URLs gracefully
 
 2. **Create Application Folder**
@@ -27,9 +28,6 @@ You are about to execute a comprehensive CV tailoring workflow. The parameter pr
 4. **Calculate Profile Match**
    - Analyze job requirements against these resources:
      - `/Users/user/Documents/cari-kerja/01_Profile/master_profile.md`
-     - `/Users/user/Documents/cari-kerja/03_CV_Templates/claude_edit.tex`
-     - `/Users/user/Documents/cari-kerja/03_CV_Templates/gemini_final_edit.tex`
-     - `/Users/user/Documents/cari-kerja/03_CV_Templates/master_cv.tex`
    - Calculate match percentage based on skills, experience, and requirements
    - **NEW**: Provide detailed breakdown of match analysis
 
@@ -50,7 +48,8 @@ You are about to execute a comprehensive CV tailoring workflow. The parameter pr
    - Match the tone and requirements from the job description
    - Rephrase content as needed while maintaining factual accuracy
    - Save as `<company>-cover-letter-<position>-Kenni.md`
-   - **NEW**: Ensure cover letter fits on ONE page (300-350 words max)
+   - **NEW**: Ensure cover letter fits on ONE page (200-250 words max)
+   - **NEW**: Please put proper spacing.
 
 7. **Skeptical Review**
    - Launch cv-skeptical-reviewer agent to review BOTH the tailored CV and cover letter

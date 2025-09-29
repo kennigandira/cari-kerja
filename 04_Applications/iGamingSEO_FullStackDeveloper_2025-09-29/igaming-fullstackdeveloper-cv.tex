@@ -1,0 +1,192 @@
+%-------------------------
+% Resume in Latex
+% Author: Kenni Gandira Alamsyah (Enhanced based on Terrence Kuo's Résumé Tips)
+%------------------------
+
+\documentclass[a4paper, 11pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+
+\usepackage{xcolor}
+\usepackage[sfdefault]{roboto}
+
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Adjust margins
+\addtolength{\oddsidemargin}{-0.7in}
+\addtolength{\evensidemargin}{-0.7in}
+\addtolength{\textwidth}{1.4in}
+\addtolength{\topmargin}{-.5in}
+\addtolength{\textheight}{1.0in}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Sections formatting
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+%-------------------------
+% Custom commands
+\newcommand{\resumeItem}[1]{
+  \item\small{
+    {#1 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubSubheading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \textit{\small#1} & \textit{\small #2} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1 & #2 \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubItem}[1]{\resumeItem{#1}\vspace{-4pt}}
+
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+%-------------------------------------------
+%%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+
+%----------HEADING----------
+\begin{center}
+    \textbf{\Huge \scshape Kenni Gandira Alamsyah} \\ \vspace{1pt}
+    \small +62 81313635148 $|$ \href{mailto:devkenni.g@gmail.com}{\underline{devkenni.g@gmail.com}} $|$
+    Bangkok, Thailand $|$
+    \href{https://linkedin.com/in/kenni-g-alamsyah}{\underline{linkedin.com/in/kenni-g-alamsyah}}
+\end{center}
+
+%-----------PROFESSIONAL SUMMARY-----------
+\section{Professional Summary}
+Full Stack Developer with 8+ years of experience specializing in JavaScript, Node.js backend development, and SEO optimization. Proven track record of building scalable web applications, API integrations, and performance-focused solutions across gaming, real estate, and travel industries with demonstrated ability to improve user engagement metrics.
+
+%-----------TECHNICAL SKILLS-----------
+\section{Technical Skills}
+ \begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+     \textbf{Frontend}{: JavaScript (ES6+), HTML5, CSS3, TypeScript, React.js, Next.js, Vue.js, Redux.js} \\
+     \textbf{Backend}{: Node.js, Express.js, NestJS, RESTful APIs, GraphQL, File system manipulation} \\
+     \textbf{CMS \& Content}{: WordPress, Strapi.js, OctoberCMS, Headless CMS, Content workflows} \\
+     \textbf{Performance \& SEO}{: Core Web Vitals optimization, SEO implementation, Page speed improvements} \\
+     \textbf{Tools \& Others}{: Git, Webpack, npm, Jest, Cypress, Elasticsearch, Figma}
+    }}
+ \end{itemize}
+
+%-----------EXPERIENCE-----------
+\section{Experience}
+  \resumeSubHeadingListStart
+
+    \resumeSubheading
+      {PropertyScout}{Bangkok, Thailand}
+      {Software Engineer}{March 2023 -- Present}
+      \resumeItemListStart
+        \resumeItem{Participated in web application revamp resulting in 27\% increase in user traffic (Q3)}
+        \resumeItem{Updated technology stacks for optimal performance and security}
+        \resumeItem{Collaborated with UI/UX designers to transform designs into functional web elements}
+        \resumeItem{Implemented SEO improvements and performance optimizations}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {AccelByte}{Remote}
+      {Software Engineer}{June 2022 -- March 2023}
+      \resumeItemListStart
+        \resumeItem{Contributed to developing tools for AAA game developers using Node.js and Express.js}
+        \resumeItem{Helped achieve 40\% reduction in compilation time through developer experience improvements}
+        \resumeItem{Established component styling and documentation using Storybook}
+        \resumeItem{Participated in knowledge-sharing sessions and code convention standardization}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {99.co}{Bandung, Indonesia}
+      {Frontend Engineer}{July 2020 -- July 2022}
+      \resumeItemListStart
+        \resumeItem{Contributed to site performance improvements reducing LCP from 4.5s to 1.2s}
+        \resumeItem{Enhanced site traffic through SEO improvements and schema validation}
+        \resumeItem{Received "Own It" award for product ownership and initiative}
+        \resumeItem{Maintained Core Web Vitals optimization across platform}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {Tiket.com}{Jakarta, Indonesia}
+      {Frontend Engineer}{August 2019 -- July 2020}
+      \resumeItemListStart
+        \resumeItem{Implemented features using React.js, TypeScript, and Redux}
+        \resumeItem{Maintained component documentation with Storybook}
+        \resumeItem{Participated in regular refactoring efforts for improved code scalability}
+        \resumeItem{Collaborated with product team for UX enhancements}
+      \resumeItemListEnd
+
+  \resumeSubHeadingListEnd
+
+%-----------KEY ACHIEVEMENTS-----------
+\section{Key Achievements}
+  \begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+     • 27\% increase in user traffic through web application performance improvements at PropertyScout \\
+     • 40\% reduction in compilation time through developer experience enhancements at AccelByte \\
+     • LCP improvement from 4.5s to 1.2s through Core Web Vitals optimization at 99.co \\
+     • "Own It" Award recipient for outstanding product ownership and initiative \\
+     • 99 Group Hackathon - Best UI/UX Design winner
+    }}
+  \end{itemize}
+
+%-----------EDUCATION-----------
+\section{Education}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {SMK Negeri 7 Bandung}{Bandung, Indonesia}
+      {Analytical Chemistry}{2009 -- 2011}
+  \resumeSubHeadingListEnd
+
+%-----------CERTIFICATIONS-----------
+\section{Certifications}
+  \begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+     • Web Development HTML CSS \& SEO Certification \\
+     • Certificate of completion - GDPR \\
+     • Certificate of completion - Anti Bribery \& Corruption
+    }}
+  \end{itemize}
+
+\end{document}

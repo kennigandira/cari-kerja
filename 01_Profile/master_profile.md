@@ -18,20 +18,86 @@ Team-first Frontend Engineer with 8+ years of experience building scalable web a
 
 ## Technical Skills
 
-### Core Technologies
-- **Frontend**: React, TypeScript, JavaScript ES6+
-- **State Management**: Redux, Context API
-- **Styling**: CSS3, Styled Components, CSS-in-JS
-- **Build Tools**: Webpack, Vite
-- **Testing**: Jest, React Testing Library
-- **Documentation**: Storybook
-- **Version Control**: Git, GitHub
+### Frontend Frameworks & Libraries
+- React.js
+- React Native
+- Vue.js
+- Next.js
+- Redux.js
+- Electron.js
 
-### Specialized Skills
-- **Performance**: Core Web Vitals optimization, SEO implementation
-- **Search**: Elasticsearch
-- **CMS**: WordPress theme development
-- **Design Tools**: Figma
+### Programming Languages
+- TypeScript
+- JavaScript
+- HTML/HTML5
+- PHP
+
+### Styling & CSS
+- CSS/CSS3
+- Tailwind CSS
+- SASS/SCSS
+- Styled Components
+- CSS-in-JS
+- Bootstrap
+
+### Backend & APIs
+- Node.js/NodeJS
+- NestJS
+- GraphQL
+- Express.js
+- CodeIgniter
+
+### Build Tools & DevOps
+- Webpack
+- Gulp.js
+- npm
+- Vite
+
+### Testing & Documentation
+- Jest
+- Cypress
+- React Testing Library
+- Storybook
+
+### Version Control & Collaboration
+- Git
+- GitHub
+- Bitbucket
+- Jira
+- Confluence
+
+### Search & Database
+- Elasticsearch
+
+### CMS
+- WordPress
+- Strapi.js
+- OctoberCMS
+
+### Performance & Optimization
+- Core Web Vitals optimization
+- SEO implementation
+
+### Design Tools
+- Figma
+
+### Leadership & Management Skills
+- Team Building & Development
+- Mentorship & Coaching
+- Cross-functional Collaboration
+- Servant Leadership
+- Empowerment & Recognition
+- Project Management
+- Knowledge Sharing & Training
+
+### Professional Skills
+- Software Development
+- Front-End Development
+- User Experience
+- User Interface Design
+- Web Development
+- Communication
+- Problem Solving
 
 ### Languages
 - Bahasa Indonesia (Native)
@@ -88,8 +154,7 @@ Team-first Frontend Engineer with 8+ years of experience building scalable web a
 - Took on dual role as frontend developer and UI/UX designer
 
 ## Education
-- **SMK Negeri 7 Bandung** - Analytical Chemistry (2009-2011)
-- **Free Code Camp** - Full Stack Web Development Certification (2016)
+- **SMK Negeri 7 Bandung (High School)** - Analytical Chemistry (2009-2011)
 
 ## Certifications
 - Certificate of completion - GDPR

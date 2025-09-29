@@ -25,7 +25,7 @@ Individual folders for each company application containing:
 - Custom cover letter
 - Company research notes
 
-### 05_Tracking/
+### 05_Tracking/ (not yet properly implemented)
 - `applications_tracker.md` - Track all applications
 - `job_opportunities_2025-07.md` - Current opportunities
 - `job_search_queries.md` - Search queries for different platforms

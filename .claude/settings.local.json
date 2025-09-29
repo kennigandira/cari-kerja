@@ -13,7 +13,20 @@
       "Bash(grep:*)",
       "WebFetch(domain:lifeattiktok.com)",
       "Bash(rm:*)",
-      "WebFetch(domain:www.99.co)"
+      "WebFetch(domain:www.99.co)",
+      "WebFetch(domain:careersatagoda.com)",
+      "WebFetch(domain:sevenpeakssoftware.com)",
+      "WebFetch(domain:7peakssoftware-hr.freshteam.com)",
+      "WebFetch(domain:careers.linecorp.com)",
+      "WebFetch(domain:remoteok.com)",
+      "WebFetch(domain:www.true.th)",
+      "WebFetch(domain:careers.scb.co.th)",
+      "WebFetch(domain:jobs.zalando.com)",
+      "WebFetch(domain:www.careers-page.com)",
+      "WebFetch(domain:www.arbeitnow.com)",
+      "WebFetch(domain:www.baldurconnect.com)",
+      "WebFetch(domain:jobs.smartrecruitment.com)",
+      "WebFetch(domain:jobs.smartrecruiters.com)"
     ],
     "deny": []
   }

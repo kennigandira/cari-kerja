@@ -14,7 +14,13 @@ Execute a comprehensive job search based on my professional profile and output r
      - Specialties: Performance optimization, Core Web Vitals, SEO
      - Current Location: Bangkok, Thailand
 
-2. **Generate Search Keywords**
+2. **Check Existing Jobs (Deduplication)**
+   - Before searching, read all existing job-search-*.json files in /Users/user/Documents/cari-kerja/05_Tracking/
+   - Extract all previously collected job sources (URLs) and company names
+   - Create a list of already-collected jobs to avoid duplicates
+   - Skip any jobs that have the same source URL or same company+job title combination
+
+3. **Generate Search Keywords**
    Based on the profile, use these keywords for job searches:
    - "Frontend Engineer React TypeScript careers"
    - "Senior Frontend Developer React careers"
@@ -23,7 +29,7 @@ Execute a comprehensive job search based on my professional profile and output r
    - "Web Developer React Redux careers"
    - Add location modifiers: Bangkok, Thailand, Remote, Southeast Asia
 
-3. **Web Search Strategy**
+4. **Web Search Strategy**
    Execute searches with the following priorities:
    
    a. **Source Priority** (highest to lowest):
@@ -43,7 +49,7 @@ Execute a comprehensive job search based on my professional profile and output r
       - 5+ years experience requirements (matching 8+ years experience)
       - Positions that mention performance optimization or web vitals as a plus
 
-4. **Information Extraction**
+5. **Information Extraction**
    For each relevant job posting found:
    - Extract company name
    - Copy full job description
@@ -51,7 +57,7 @@ Execute a comprehensive job search based on my professional profile and output r
    - Find contact email if available (look for HR email, careers@, jobs@, or application email)
    - Note the source URL
 
-5. **Output Format**
+6. **Output Format**
    Create a JSON file with today's date as the key, containing an array of job opportunities:
    ```json
    {
@@ -74,7 +80,7 @@ Execute a comprehensive job search based on my professional profile and output r
    }
    ```
 
-6. **File Output**
+7. **File Output**
    Save the results to: /Users/user/Documents/cari-kerja/05_Tracking/job-search-YYYY-MM-DD-HH-MM-SS.json
    (Use actual date and time in the filename)
 
@@ -84,3 +90,5 @@ Execute a comprehensive job search based on my professional profile and output r
 - Include jobs even if no email is found (set email to null)
 - Ensure job descriptions are complete and not truncated
 - Focus on roles that match the seniority level (Senior/Lead Frontend roles)
+- Always check for duplicates before adding to the final JSON output
+- Log skipped duplicates for transparency (e.g., "Skipped: Agoda - Lead Software Engineer (already collected)")
