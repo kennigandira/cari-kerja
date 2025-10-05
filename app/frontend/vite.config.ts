@@ -2,16 +2,6 @@ import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import { VitePWA } from 'vite-plugin-pwa';
 
-import crypto from 'crypto';
-
-// Generate cryptographically secure nonce for CSP
-const generateNonce = () => {
-  return crypto.randomBytes(16).toString('base64');
-};
-
-// Persistent nonce for the current build
-const buildNonce = generateNonce();
-
 // https://vite.dev/config/
 export default defineConfig({
   base: '/', // Cloudflare Pages serves from root
