@@ -1,0 +1,18 @@
+# SPA fallback - redirect all routes to index.html for Vue Router to handle
+# This allows client-side routing to work properly
+
+# Exclude static assets and API calls from SPA routing
+/assets/*  /assets/:splat  200
+/vite.svg  /vite.svg  200
+/*.js  /:splat  200
+/*.css  /:splat  200
+/*.png  /:splat  200
+/*.jpg  /:splat  200
+/*.svg  /:splat  200
+/*.webp  /:splat  200
+/*.woff2  /:splat  200
+/*.woff  /:splat  200
+/*.ttf  /:splat  200
+
+# All other routes should serve index.html for SPA routing
+/*  /index.html  200

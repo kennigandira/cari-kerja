@@ -15,7 +15,22 @@
       "mcp__chrome-devtools__list_console_messages",
       "mcp__chrome-devtools__list_network_requests",
       "Read(//Users/user/.claude/**)",
-      "Bash(tectonic:*)"
+      "Bash(tectonic:*)",
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "Bash(bun add:*)",
+      "WebFetch(domain:th.jobsdb.com)",
+      "Bash(bun run:*)",
+      "Bash(curl:*)",
+      "WebFetch(domain:csgi.wd5.myworkdayjobs.com)",
+      "Bash(npm run build:*)",
+      "mcp__chrome-devtools__evaluate_script",
+      "mcp__chrome-devtools__select_page",
+      "mcp__chrome-devtools__fill",
+      "WebFetch(domain:jobs.jobvite.com)",
+      "WebFetch(domain:collegeboard.wd1.myworkdayjobs.com)",
+      "Bash(pkill:*)",
+      "mcp__chrome-devtools__new_page"
     ],
     "deny": [],
     "ask": []

@@ -73,24 +73,29 @@ const matchColor = computed(() => {
         <div class="space-y-1">
           <div v-for="doc in cvDocuments" :key="doc.id" class="flex items-center justify-between text-xs">
             <span class="text-gray-600 capitalize">{{ doc.version }}</span>
-            <div class="flex gap-1">
+            <div class="flex gap-1" role="group" :aria-label="`Actions for ${doc.version} CV`">
               <button
                 @click="emit('preview', job.id)"
                 class="px-2 py-1 text-blue-600 hover:bg-blue-50 rounded"
+                :aria-label="`Preview ${doc.version} CV for ${job.company_name}`"
               >
                 View
               </button>
               <button
                 @click="emit('download', job.id, doc.id)"
                 class="px-2 py-1 text-green-600 hover:bg-green-50 rounded"
+                :aria-label="`Download ${doc.version} CV for ${job.company_name}`"
               >
-                ⬇
+                <span aria-hidden="true">⬇</span>
+                <span class="sr-only">Download</span>
               </button>
               <button
                 @click="emit('regenerate', job.id, doc.id)"
                 class="px-2 py-1 text-orange-600 hover:bg-orange-50 rounded"
+                :aria-label="`Regenerate ${doc.version} CV for ${job.company_name}`"
               >
-                ↻
+                <span aria-hidden="true">↻</span>
+                <span class="sr-only">Regenerate</span>
               </button>
             </div>
           </div>
@@ -103,24 +108,29 @@ const matchColor = computed(() => {
         <div class="space-y-1">
           <div v-for="doc in coverLetterDocuments" :key="doc.id" class="flex items-center justify-between text-xs">
             <span class="text-gray-600 capitalize">{{ doc.version }}</span>
-            <div class="flex gap-1">
+            <div class="flex gap-1" role="group" :aria-label="`Actions for ${doc.version} cover letter`">
               <button
                 @click="emit('preview', job.id)"
                 class="px-2 py-1 text-blue-600 hover:bg-blue-50 rounded"
+                :aria-label="`Preview ${doc.version} cover letter for ${job.company_name}`"
               >
                 View
               </button>
               <button
                 @click="emit('download', job.id, doc.id)"
                 class="px-2 py-1 text-green-600 hover:bg-green-50 rounded"
+                :aria-label="`Download ${doc.version} cover letter for ${job.company_name}`"
               >
-                ⬇
+                <span aria-hidden="true">⬇</span>
+                <span class="sr-only">Download</span>
               </button>
               <button
                 @click="emit('regenerate', job.id, doc.id)"
                 class="px-2 py-1 text-orange-600 hover:bg-orange-50 rounded"
+                :aria-label="`Regenerate ${doc.version} cover letter for ${job.company_name}`"
               >
-                ↻
+                <span aria-hidden="true">↻</span>
+                <span class="sr-only">Regenerate</span>
               </button>
             </div>
           </div>

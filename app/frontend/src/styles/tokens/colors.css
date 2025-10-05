@@ -1,0 +1,62 @@
+@theme {
+  /* Status colors with semantic meaning */
+  --color-status-processing: #6b7280;
+  --color-status-to-submit: #3b82f6;
+  --color-status-waiting: #f59e0b;
+  --color-status-ongoing: #8b5cf6;
+  --color-status-success: #10b981;
+  --color-status-not-now: #ef4444;
+
+  /* Status backgrounds */
+  --color-status-processing-bg: #f3f4f6;
+  --color-status-to-submit-bg: #eff6ff;
+  --color-status-waiting-bg: #fffbeb;
+  --color-status-ongoing-bg: #f5f3ff;
+  --color-status-success-bg: #ecfdf5;
+  --color-status-not-now-bg: #fef2f2;
+
+  /* Status borders */
+  --color-status-processing-border: #d1d5db;
+  --color-status-to-submit-border: #93c5fd;
+  --color-status-waiting-border: #fcd34d;
+  --color-status-ongoing-border: #c4b5fd;
+  --color-status-success-border: #6ee7b7;
+  --color-status-not-now-border: #fca5a5;
+
+  /* UI feedback */
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+  --color-info: #3b82f6;
+
+  /* Feedback backgrounds */
+  --color-success-bg: #ecfdf5;
+  --color-warning-bg: #fffbeb;
+  --color-error-bg: #fef2f2;
+  --color-info-bg: #eff6ff;
+
+  /* Feedback borders */
+  --color-success-border: #6ee7b7;
+  --color-warning-border: #fcd34d;
+  --color-error-border: #fca5a5;
+  --color-info-border: #93c5fd;
+
+  /* Neutrals with better contrast */
+  --color-surface-primary: #ffffff;
+  --color-surface-secondary: #f9fafb;
+  --color-surface-tertiary: #f3f4f6;
+  --color-border-light: #e5e7eb;
+  --color-border-medium: #d1d5db;
+  --color-border-dark: #9ca3af;
+  --color-text-primary: #111827;
+  --color-text-secondary: #6b7280;
+  --color-text-tertiary: #9ca3af;
+
+  /* Interactive */
+  --color-primary: #3b82f6;
+  --color-primary-hover: #2563eb;
+  --color-primary-active: #1d4ed8;
+
+  /* Focus ring */
+  --color-focus: #3b82f6;
+}

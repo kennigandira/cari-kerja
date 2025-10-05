@@ -1,0 +1,16 @@
+name = "cari-kerja"
+compatibility_date = "2025-01-01"
+pages_build_output_dir = "dist"
+
+# Build configuration
+[build]
+command = "bun run build"
+cwd = "."
+
+# Environment variables
+# Note: Actual values should be set in Cloudflare Pages dashboard
+# These are just placeholders to show what needs to be configured
+[vars]
+# Set these in Cloudflare Pages dashboard:
+# VITE_SUPABASE_URL = "your_supabase_url"
+# VITE_SUPABASE_ANON_KEY = "your_supabase_anon_key"

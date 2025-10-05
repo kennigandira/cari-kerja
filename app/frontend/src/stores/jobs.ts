@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
-import type { Job, JobWithDocuments, JobStatus, JobDocument } from '../../../shared/types';
+import type { Job, JobWithDocuments, JobStatus } from '../../../shared/types';
 import { supabase } from '../lib/supabase';
 
 export const useJobsStore = defineStore('jobs', () => {

@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue';
 import { useJobsStore } from '../stores/jobs';
+import { useToast } from '../composables/useToast';
 import KanbanColumn from '../components/KanbanColumn.vue';
 import JobInputModal from '../components/JobInputModal.vue';
 import RegenerationModal from '../components/RegenerationModal.vue';
 import type { JobStatus } from '../../../shared/types';
 
 const jobsStore = useJobsStore();
+const { error } = useToast();
 
 const isInputModalOpen = ref(false);
 const isRegenerationModalOpen = ref(false);
@@ -35,9 +37,9 @@ const handleSubmitJob = async (content: string) => {
   try {
     await jobsStore.createJob(content);
     isInputModalOpen.value = false;
-  } catch (error) {
-    console.error('Failed to create job:', error);
-    alert('Failed to create job. Please try again.');
+  } catch (err) {
+    console.error('Failed to create job:', err);
+    error('Failed to create job. Please try again.');
   }
 };
 
@@ -46,7 +48,7 @@ const handlePreview = (jobId: string) => {
   console.log('Preview job:', jobId);
 };
 
-const handleDownload = (jobId: string, documentId: string) => {
+const handleDownload = (_jobId: string, documentId: string) => {
   // TODO: Implement download functionality
   console.log('Download document:', documentId);
 };
@@ -72,9 +74,9 @@ const handleSubmitRegeneration = async (feedback: string) => {
       feedback
     );
     isRegenerationModalOpen.value = false;
-  } catch (error) {
-    console.error('Failed to request regeneration:', error);
-    alert('Failed to request regeneration. Please try again.');
+  } catch (err) {
+    console.error('Failed to request regeneration:', err);
+    error('Failed to request regeneration. Please try again.');
   }
 };
 

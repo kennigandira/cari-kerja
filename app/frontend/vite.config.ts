@@ -2,18 +2,19 @@ import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import { VitePWA } from 'vite-plugin-pwa';
 
-// Generate nonce for inline scripts
+import crypto from 'crypto';
+
+// Generate cryptographically secure nonce for CSP
 const generateNonce = () => {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let nonce = '';
-  for (let i = 0; i < 16; i++) {
-    nonce += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  return nonce;
+  return crypto.randomBytes(16).toString('base64');
 };
+
+// Persistent nonce for the current build
+const buildNonce = generateNonce();
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: '/', // Cloudflare Pages serves from root
   plugins: [
     vue(),
     VitePWA({
@@ -21,29 +22,64 @@ export default defineConfig({
         name: 'Cari Kerja',
         short_name: 'CariKerja',
         theme_color: '#ffffff',
+        start_url: '/',
+        display: 'standalone',
+        description: 'Job Application Tracker',
+        categories: ['productivity', 'utilities'],
+        icons: [
+          {
+            src: '/vite.svg',
+            sizes: '512x512',
+            type: 'image/svg+xml',
+            purpose: 'any maskable'
+          }
+        ]
       },
       workbox: {
         navigateFallback: 'index.html',
         navigateFallbackDenylist: [/^\/_/, /\/[^/]+\.[^/]+$/],
+        runtimeCaching: [
+          {
+            urlPattern: /^https:\/\/api\.supabase\.co\/.*/i,
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'supabase-api-cache',
+              expiration: {
+                maxEntries: 50,
+                maxAgeSeconds: 60 * 60 // 1 hour
+              },
+              cacheableResponse: {
+                statuses: [0, 200]
+              }
+            }
+          }
+        ],
+        cleanupOutdatedCaches: true,
+        skipWaiting: false, // Safer default
+        clientsClaim: false // Safer default
       },
+      registerType: 'autoUpdate',
+      injectRegister: 'auto'
     }),
   ],
   server: {
     headers: {
-      // Content Security Policy
+      // Content Security Policy - Development Only
       'Content-Security-Policy': [
         "default-src 'self'",
-        "script-src 'self' 'unsafe-inline' 'unsafe-eval'", // Required for Vue
-        "style-src 'self' 'unsafe-inline'",
+        `script-src 'self' 'strict-dynamic' 'nonce-${buildNonce}'`,
+        "style-src 'self'",
         "img-src 'self' data: https:",
-        "font-src 'self' data:",
+        "font-src 'self'",
         "connect-src 'self' https://cari-kerja.pages.dev https://*.supabase.co wss://*.supabase.co",
         "frame-src 'none'",
         "object-src 'none'",
         "base-uri 'self'",
         "form-action 'self'",
         "frame-ancestors 'none'",
-        "upgrade-insecure-requests"
+        "upgrade-insecure-requests",
+        "require-trusted-types-for 'script'",
+        "trusted-types 'none'"
       ].join('; '),
 
       // Security headers
@@ -61,14 +97,29 @@ export default defineConfig({
     },
   },
   build: {
-    sourcemap: process.env.NODE_ENV === 'development',
+    sourcemap: process.env.NODE_ENV === 'development' && !process.env.VITE_PRODUCTION_BUILD,
     rollupOptions: {
       output: {
+        // Enable SRI for chunks
+        chunkFileNames: 'assets/[name]-[hash].js',
+        entryFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash].[ext]',
+        // Manually configure chunks for better caching
         manualChunks: {
           'vendor': ['vue', '@vue/runtime-core', '@vue/runtime-dom'],
           'supabase': ['@supabase/supabase-js'],
+          'router': ['vue-router'],
+          'pinia': ['pinia'],
+          'draggable': ['vuedraggable'],
         },
       },
+    },
+    // Enable additional security optimizations
+    target: 'esnext',
+    cssTarget: 'chrome80',
+    assetsInlineLimit: 4096, // 4kb
+    modulePreload: {
+      polyfill: true,
     },
   },
 });

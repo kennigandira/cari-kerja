@@ -1,0 +1,174 @@
+%-------------------------
+% Resume in Latex
+% Author: Kenni Gandira Alamsyah (Enhanced based on Terrence Kuo's Résumé Tips)
+%------------------------
+
+\documentclass[a4paper, 11pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+
+\usepackage{xcolor}
+\usepackage[sfdefault]{roboto}
+
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Adjust margins
+\addtolength{\oddsidemargin}{-0.7in}
+\addtolength{\evensidemargin}{-0.7in}
+\addtolength{\textwidth}{1.4in}
+\addtolength{\topmargin}{-.5in}
+\addtolength{\textheight}{1.0in}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Sections formatting
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+%-------------------------
+% Custom commands
+\newcommand{\resumeItem}[1]{
+  \item\small{
+    {#1 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabularx}{0.987\textwidth}[t]{
+  >{\raggedright\arraybackslash}X
+  >{\centering\arraybackslash}X
+  >{\raggedleft\arraybackslash}X }
+      \textbf{#1} & #2 & #3 \\
+    \end{tabularx}
+    \textit{\small#4}\\
+    \vspace{-7pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{0.987\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1\\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.1in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}\vspace{5pt}}
+\newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=0.22in]}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-20pt}}
+
+\newcommand{\link}[2]{{\color[HTML]{096dd9}\href[pdfnewwindow=true]{#1}{\small{#2}}}}
+
+%-------------------------------------------
+%%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%----------HEADING----------
+\begin{center}
+    \textbf{\Huge \scshape Kenni Gandira Alamsyah} \\ \vspace{8pt}
+    \link{https://api.whatsapp.com/send/?phone=+660842704245}{+66 0842704245} $|$
+    \link{mailto:devkenni.g@gmail.com}{devkenni.g@gmail.com} $|$
+    \link{https://www.linkedin.com/in/kenni-g-alamsyah/}{linkedin.com/in/kenni-g-alamsyah/}
+\end{center}
+
+%-----------WORK EXPERIENCE-----------
+\section{Work Experience}
+    \resumeSubHeadingListStart
+        \resumeSubheading
+            {Software Engineer}{PropertyScout (Real Estate Platform), Thailand}{2023 -- Present}{}
+            \resumeItemListStart
+                \resumeItem{Drove web application revamp delivering 27\% increase in user traffic (Q3) through performance optimizations and modern architecture.}
+                \resumeItem{Led technology stack modernization initiatives ensuring optimal performance, security, and long-term maintainability.}
+                \resumeItem{Contributed to Core Web Vitals optimization reducing page load times and improving user experience metrics.}
+                \resumeItem{Helped define development standards and best practices that elevated frontend team code quality and consistency.}
+            \resumeItemListEnd
+
+        \resumeSubheading
+            {Software Engineer}{Accelbyte (Gaming Developer Tools), Indonesia}{2022 -- 2023}{}
+            \resumeItemListStart
+                \resumeItem{Optimized developer experience achieving 40\% reduction in compilation time (from 15 to 9 minutes), improving team productivity.}
+                \resumeItem{Established component styling guidelines with comprehensive Storybook documentation, ensuring consistency across the platform.}
+                \resumeItem{Initiated knowledge-sharing sessions that fostered collaborative learning culture and accelerated team skill development.}
+                \resumeItem{Helped standardize code conventions improving team productivity, code consistency, and onboarding efficiency.}
+            \resumeItemListEnd
+
+        \resumeSubheading
+            {Frontend Engineer}{99 Group (Real Estate Platform), Bandung, Indonesia}{2020 -- 2022}{}
+            \resumeItemListStart
+                \resumeItem{Optimized site performance reducing Largest Contentful Paint (LCP) from 4.5s to 1.2s (73\% improvement) through strategic optimizations.}
+                \resumeItem{Enhanced site traffic through SEO improvements and schema validation, significantly increasing organic reach and user acquisition.}
+                \resumeItem{Awarded "Own It" recognition for exceptional product ownership, initiative, and business impact.}
+                \resumeItem{Won 99 Group Hackathon - Best UI/UX Design award, demonstrating design thinking and technical excellence.}
+            \resumeItemListEnd
+
+        \resumeSubheading
+            {Frontend Engineer}{Tiket.com (Travel \& Hospitality), Jakarta, Indonesia}{2019 -- 2020}{}
+            \resumeItemListStart
+                \resumeItem{Delivered robust features using React, TypeScript, and Redux for booking platform serving thousands of concurrent users.}
+                \resumeItem{Maintained comprehensive component documentation with Storybook ensuring design consistency and developer efficiency.}
+                \resumeItem{Built reusable component library adopted across multiple product teams, multiplying development efficiency.}
+            \resumeItemListEnd
+
+        \resumeSubheading
+            {Frontend Developer}{Mirum Agency (now VML) (Marketing Agency), Bandung, Indonesia}{2018 -- 2019}{}
+            \resumeItemListStart
+                \resumeItem{Delivered comprehensive WordPress-based university platform for Universitas Pelita Harapan (UPH).}
+                \resumeItem{Engineered customizable solutions addressing complex client requirements and business challenges.}
+            \resumeItemListEnd
+
+        \resumeSubheading
+            {Web Developer}{Hazani Rangka Utama (IT Services), Bandung, Indonesia}{2017 -- 2018}{}
+            \resumeItemListStart
+                \resumeItem{Developed three WordPress themes for ThemeForest marketplace, serving global customer base.}
+                \resumeItem{Ensured W3C validation and accessibility compliance, maintaining rigorous quality standards.}
+            \resumeItemListEnd
+
+        \resumeSubheading
+            {Frontend Developer}{PT NTCI (Education and Ecommerce), Yogyakarta, Indonesia}{2016 -- 2017}{}
+            \resumeItemListStart
+                \resumeItem{Contributed to team expansion by interviewing and recruiting frontend developers, supporting organizational growth.}
+                \resumeItem{Demonstrated versatility by taking on dual role as frontend developer and UI/UX designer.}
+            \resumeItemListEnd
+    \resumeSubHeadingListEnd
+
+%-----------TECHNICAL SKILLS-----------
+\section{Technical Skills}
+    \resumeSubHeadingListStart
+        \small{
+            \item \textbf{Proficient:} ReactJS, NextJS, React Native, VueJS, NuxtJS, Tailwind CSS, Redux, React Query, Javascript, Typescript, CSS, HTML
+            \item \textbf{Familiar:} NodeJS, Electron, PHP, NestJS, ExpressJS, REST API, GraphQL, Strapi API, WordPress, Storybook, Cypress, React Testing Library, Jest, RabbitMQ, Redis
+        }
+    \resumeSubHeadingListEnd
+
+%-----------LEADERSHIP & AWARDS-----------
+\section{Leadership \& Awards}
+    \resumeSubHeadingListStart
+        \resumeProjectHeading
+            {\textbf{99 Group Hackathon} $|$ \emph{Best UI/UX Design Award}}{2021}
+        \resumeProjectHeading
+            {\textbf{Quarterly Award Q2/21} $|$ \emph{Outstanding Performance}}{2021}
+        \resumeProjectHeading
+            {\textbf{"Own It" Award} $|$ \emph{Product Ownership Excellence}}{99.co}
+    \resumeSubHeadingListEnd
+
+\end{document}

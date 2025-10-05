@@ -2,7 +2,9 @@
 
 ## Contact Information
 - **Email**: devkenni.g@gmail.com
-- **Phone**: +62 81313635148
+- **Phone**: 
+  - Whatsapp: +62 81313635148
+  - Phone: +66 0842704245
 - **LinkedIn**: [linkedin.com/in/kenni-g-alamsyah](https://www.linkedin.com/in/kenni-g-alamsyah)
 - **Location**: Bangkok, Thailand
 
