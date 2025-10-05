@@ -1,9 +1,0 @@
-name = "cari-kerja"
-compatibility_date = "2025-01-01"
-pages_build_output_dir = "dist"
-
-# Build configuration and environment variables must be set in Cloudflare Pages dashboard
-# Build command: bun run build
-# Build output directory: dist
-# Root directory: app/frontend
-# Environment variables: VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY, NODE_VERSION=20
