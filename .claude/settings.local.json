@@ -33,7 +33,19 @@
       "mcp__chrome-devtools__new_page",
       "Bash(tree:*)",
       "Bash(python3:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(supabase db reset:*)",
+      "Bash(supabase start:*)",
+      "Bash(node:*)",
+      "Bash(npm exec:*)",
+      "Bash(npx vue-tsc:*)",
+      "mcp__chrome-devtools__fill_form",
+      "Bash(supabase db:*)",
+      "mcp__chrome-devtools__wait_for",
+      "Bash(supabase status:*)",
+      "Bash(supabase projects:*)",
+      "mcp__chrome-devtools__get_network_request",
+      "Bash(\"https://ewqqpflajxvqkoawgmek.supabase.co/rest/v1/rpc/move_card_between_columns\")"
     ],
     "deny": [],
     "ask": []

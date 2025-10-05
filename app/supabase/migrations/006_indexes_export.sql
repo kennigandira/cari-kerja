@@ -117,13 +117,13 @@ BEGIN
   LOOP
     v_markdown := v_markdown || '### ' || v_exp.position_title || ' at ' || v_exp.company_name || E'\n';
 
-    -- Format dates
-    v_markdown := v_markdown || TO_CHAR(v_exp.start_date, 'Mon YYYY') || ' - ';
+    -- Format dates (stored as YYYY-MM format)
+    v_markdown := v_markdown || v_exp.start_date || ' - ';
 
     IF v_exp.is_current THEN
       v_markdown := v_markdown || 'Present';
     ELSIF v_exp.end_date IS NOT NULL THEN
-      v_markdown := v_markdown || TO_CHAR(v_exp.end_date, 'Mon YYYY');
+      v_markdown := v_markdown || v_exp.end_date;
     ELSE
       v_markdown := v_markdown || 'Unknown';
     END IF;

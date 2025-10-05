@@ -36,7 +36,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/',
     name: 'kanban',
-    component: () => import('../views/KanbanView.vue'),
+    component: () => import('../components/kanban/KanbanBoard.vue'),
     meta: {
       title: 'Job Applications',
       requiresAuth: false,
@@ -53,8 +53,38 @@ const routes: RouteRecordRaw[] = [
       validateParams: true,
     },
   },
+  // Master Profile Routes
   {
-    // 404 catch-all route
+    path: '/profiles',
+    name: 'profiles-list',
+    component: () => import('../views/ProfilesListView.vue'),
+    meta: {
+      title: 'Master Profiles',
+      requiresAuth: false,
+    },
+  },
+  {
+    path: '/profiles/new',
+    name: 'profile-create',
+    component: () => import('../views/ProfileCreateView.vue'),
+    meta: {
+      title: 'Create Profile',
+      requiresAuth: false,
+    },
+  },
+  {
+    path: '/profiles/:id',
+    name: 'profile-edit',
+    component: () => import('../views/ProfileEditView.vue'),
+    props: true,
+    meta: {
+      title: 'Edit Profile',
+      requiresAuth: false,
+      validateParams: true,
+    },
+  },
+  {
+    // 404 catch-all route - MUST BE LAST
     path: '/:pathMatch(.*)*',
     name: 'not-found',
     component: () => import('../views/KanbanView.vue'),

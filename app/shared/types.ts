@@ -193,3 +193,67 @@ export const TASK_TYPE_LABELS: Record<TaskType, string> = {
   compile_pdf: 'Compiling PDF',
   sync_to_filesystem: 'Syncing to Filesystem'
 };
+
+// Master Profile Types
+export interface MasterProfile {
+  id: string;
+  user_id?: string;
+  session_id?: string;
+  created_at: string;
+  updated_at: string;
+
+  profile_name: string;
+  is_default: boolean;
+
+  full_name: string;
+  email: string;
+  phone_primary?: string;
+  phone_secondary?: string;
+  linkedin_url?: string;
+  github_url?: string;
+  portfolio_url?: string;
+  location: string;
+
+  professional_summary: string;
+  years_of_experience?: number;
+  current_position?: string;
+
+  version: number;
+  deleted_at?: string;
+}
+
+export interface WorkExperience {
+  id: string;
+  profile_id: string;
+  created_at: string;
+  updated_at: string;
+
+  company_name: string;
+  position_title: string;
+  location?: string;
+  start_date: string;
+  end_date?: string;
+  is_current: boolean;
+  description?: string;
+
+  display_order: number;
+  version: number;
+}
+
+export interface Skill {
+  id: string;
+  profile_id: string;
+  created_at: string;
+
+  skill_name: string;
+  category?: string;
+  proficiency_level?: 'Expert' | 'Advanced' | 'Intermediate' | 'Beginner';
+  years_of_experience?: number;
+
+  display_order: number;
+}
+
+export interface MasterProfileWithDetails extends MasterProfile {
+  work_experiences?: WorkExperience[];
+  skills?: Skill[];
+}

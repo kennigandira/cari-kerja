@@ -4,12 +4,24 @@ DROP POLICY IF EXISTS "Enable all for authenticated users" ON job_documents;
 DROP POLICY IF EXISTS "Enable all for authenticated users" ON regeneration_requests;
 DROP POLICY IF EXISTS "Enable all for authenticated users" ON processing_queue;
 
+-- Add created_by column to jobs table first
+-- Step 1: Add column as nullable first with default for new rows
+ALTER TABLE jobs ADD COLUMN created_by UUID REFERENCES auth.users(id) DEFAULT auth.uid();
+
+-- Step 2: For existing rows that might have null created_by, we need to handle them
+-- Since we can't get auth.uid() during migration, we'll delete any existing jobs without owners
+-- In a production scenario, you might want to assign them to a specific user instead
+DELETE FROM jobs WHERE created_by IS NULL;
+
+-- Step 3: Make the column NOT NULL now that all rows have a value
+ALTER TABLE jobs ALTER COLUMN created_by SET NOT NULL;
+
+-- Step 4: Create index
+CREATE INDEX idx_jobs_created_by ON jobs(created_by);
+
 -- Jobs table policies
 CREATE POLICY "Users can only access their own jobs" ON jobs
   FOR ALL USING (auth.uid() = created_by);
-
-ALTER TABLE jobs ADD COLUMN created_by UUID REFERENCES auth.users(id) NOT NULL DEFAULT auth.uid();
-CREATE INDEX idx_jobs_created_by ON jobs(created_by);
 
 -- Job documents policies
 CREATE POLICY "Users can only access documents for their own jobs" ON job_documents

@@ -61,8 +61,8 @@ CREATE TABLE IF NOT EXISTS work_experiences (
   company_name VARCHAR(255) NOT NULL,
   position_title VARCHAR(255) NOT NULL,
   location VARCHAR(255),
-  start_date DATE NOT NULL,
-  end_date DATE,
+  start_date VARCHAR(10) NOT NULL,
+  end_date VARCHAR(10),
   is_current BOOLEAN DEFAULT false NOT NULL,
   description TEXT,
 
@@ -70,8 +70,7 @@ CREATE TABLE IF NOT EXISTS work_experiences (
   version INTEGER DEFAULT 1 NOT NULL,
 
   CONSTRAINT valid_date_range CHECK (end_date IS NULL OR end_date >= start_date),
-  CONSTRAINT current_no_end_date CHECK (NOT (is_current = true AND end_date IS NOT NULL)),
-  CONSTRAINT valid_start_date CHECK (start_date >= '1960-01-01' AND start_date <= CURRENT_DATE + INTERVAL '1 year')
+  CONSTRAINT current_no_end_date CHECK (NOT (is_current = true AND end_date IS NOT NULL))
 );
 
 -- Skills Table
@@ -96,10 +95,10 @@ CREATE TABLE IF NOT EXISTS skills (
 -- 3. CREATE INDEXES
 -- ==================================
 
-CREATE INDEX idx_profiles_user_id ON master_profiles(user_id) WHERE user_id IS NOT NULL;
-CREATE INDEX idx_profiles_user_default ON master_profiles(user_id, is_default) WHERE is_default = true;
-CREATE INDEX idx_experiences_profile ON work_experiences(profile_id, display_order);
-CREATE INDEX idx_skills_profile ON skills(profile_id, category, display_order);
+CREATE INDEX IF NOT EXISTS idx_profiles_user_id ON master_profiles(user_id) WHERE user_id IS NOT NULL;
+CREATE INDEX IF NOT EXISTS idx_profiles_user_default ON master_profiles(user_id, is_default) WHERE is_default = true;
+CREATE INDEX IF NOT EXISTS idx_experiences_profile ON work_experiences(profile_id, display_order);
+CREATE INDEX IF NOT EXISTS idx_skills_profile ON skills(profile_id, category, display_order);
 
 -- ==================================
 -- 4. CREATE TRIGGERS
@@ -213,8 +212,8 @@ BEGIN
         v_exp->>'company_name',
         v_exp->>'position_title',
         v_exp->>'location',
-        (v_exp->>'start_date')::DATE,
-        (v_exp->>'end_date')::DATE,
+        v_exp->>'start_date',
+        v_exp->>'end_date',
         COALESCE((v_exp->>'is_current')::BOOLEAN, false),
         v_exp->>'description',
         COALESCE((v_exp->>'display_order')::INTEGER, 0)

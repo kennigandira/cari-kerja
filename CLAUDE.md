@@ -85,3 +85,7 @@ CompanyName_Position_Date/
 - Cover letters must be 300-350 words maximum (one page)
 - Use collaborative language ("contributed to" vs "led") in reviewed versions
 - All LaTeX files must compile without errors using tectonic or pdflatex
+- everytime made any changes, please check the UI with chrome-devtools mcp
+- If there's  there are multiple instances running with chrome devtools mcp, do pkill -f "chrome-devtools-mcp"
+- before and after change, always check the page using chrome-devtools mcp
+- after kill chrome-devtools mcp, please run this: npm exec chrome-devtools-mcp@latest

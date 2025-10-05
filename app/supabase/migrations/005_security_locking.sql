@@ -157,8 +157,8 @@ BEGIN
         v_exp->>'company_name',
         v_exp->>'position_title',
         v_exp->>'location',
-        (v_exp->>'start_date')::DATE,
-        (v_exp->>'end_date')::DATE,
+        v_exp->>'start_date',
+        v_exp->>'end_date',
         COALESCE((v_exp->>'is_current')::BOOLEAN, false),
         v_exp->>'description',
         COALESCE((v_exp->>'display_order')::INTEGER, 0)

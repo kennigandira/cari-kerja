@@ -1,0 +1,9 @@
+{
+  "name": "cari-kerja-scripts",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Utility scripts for Cari Kerja job tracker",
+  "scripts": {
+    "init-kanban": "node init-kanban-columns.js"
+  }
+}
