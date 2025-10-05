@@ -64,22 +64,20 @@ export default defineConfig({
   ],
   server: {
     headers: {
-      // Content Security Policy - Development Only
+      // Content Security Policy - Development Only (Permissive for Vite HMR)
       'Content-Security-Policy': [
         "default-src 'self'",
-        `script-src 'self' 'strict-dynamic' 'nonce-${buildNonce}'`,
-        "style-src 'self'",
+        "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+        "style-src 'self' 'unsafe-inline'",
         "img-src 'self' data: https:",
         "font-src 'self'",
-        "connect-src 'self' https://cari-kerja.pages.dev https://*.supabase.co wss://*.supabase.co",
+        "connect-src 'self' ws://localhost:* wss://localhost:* https://*.supabase.co wss://*.supabase.co",
         "frame-src 'none'",
         "object-src 'none'",
         "base-uri 'self'",
         "form-action 'self'",
         "frame-ancestors 'none'",
-        "upgrade-insecure-requests",
-        "require-trusted-types-for 'script'",
-        "trusted-types 'none'"
+        "upgrade-insecure-requests"
       ].join('; '),
 
       // Security headers
