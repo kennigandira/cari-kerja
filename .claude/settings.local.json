@@ -30,7 +30,10 @@
       "WebFetch(domain:jobs.jobvite.com)",
       "WebFetch(domain:collegeboard.wd1.myworkdayjobs.com)",
       "Bash(pkill:*)",
-      "mcp__chrome-devtools__new_page"
+      "mcp__chrome-devtools__new_page",
+      "Bash(tree:*)",
+      "Bash(python3:*)",
+      "Bash(cat:*)"
     ],
     "deny": [],
     "ask": []

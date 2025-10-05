@@ -1,0 +1,183 @@
+%-------------------------
+% Resume in Latex
+% Author: Kenni Gandira Alamsyah
+%------------------------
+
+\documentclass[a4paper, 11pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+
+\usepackage{xcolor}
+\usepackage[sfdefault]{roboto}
+
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Adjust margins
+\addtolength{\oddsidemargin}{-0.7in}
+\addtolength{\evensidemargin}{-0.7in}
+\addtolength{\textwidth}{1.4in}
+\addtolength{\topmargin}{-.5in}
+\addtolength{\textheight}{1.0in}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Sections formatting
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+%-------------------------
+% Custom commands
+\newcommand{\resumeItem}[1]{
+  \item\small{
+    {#1 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabularx}{0.987\textwidth}[t]{
+  >{\raggedright\arraybackslash}X
+  >{\centering\arraybackslash}X
+  >{\raggedleft\arraybackslash}X }
+      \textbf{#1} & #2 & #3 \\
+    \end{tabularx}
+    \textit{\small#4}\\
+    \vspace{-7pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{0.987\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1\\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.1in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}\vspace{5pt}}
+\newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=0.22in]}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-20pt}}
+
+\newcommand{\link}[2]{{\color[HTML]{096dd9}\href[pdfnewwindow=true]{#1}{\small{#2}}}}
+
+%-------------------------------------------
+%%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%----------HEADING----------
+\begin{center}
+    \textbf{\Huge \scshape Kenni Gandira Alamsyah} \\ \vspace{8pt}
+    \link{https://api.whatsapp.com/send/?phone=+660842704245}{+66 0842704245} $|$
+    \link{mailto:devkenni.g@gmail.com}{devkenni.g@gmail.com} $|$
+    \link{https://www.linkedin.com/in/kenni-g-alamsyah/}{linkedin.com/in/kenni-g-alamsyah/}
+\end{center}
+
+%-----------WORK EXPERIENCE-----------
+\section{Work Experience}
+    \resumeSubHeadingListStart
+        \resumeSubheading
+            {Software Engineer}{PropertyScout (Real Estate Platform), Thailand}{2023 -- Present}{}
+            \resumeItemListStart
+                \resumeItem{Architected and delivered web application revamp driving 27\% increase in user traffic through modern React implementation and comprehensive UX optimization.}
+                \resumeItem{Optimized Core Web Vitals achieving exceptional 1.2-second page load time, significantly enhancing mobile and desktop performance metrics.}
+                \resumeItem{Transformed Figma designs into production-ready, pixel-perfect responsive components through close collaboration with UI/UX design team.}
+                \resumeItem{Engineered RESTful API integrations powering property listing platform, successfully processing 17,000+ monthly updates.}
+                \resumeItem{Enhanced internal development tools, measurably improving operational productivity and team efficiency.}
+            \resumeItemListEnd
+
+        \resumeSubheading
+            {Software Engineer}{AccelByte (Gaming Developer Tools), Indonesia}{2022 -- 2023}{}
+            \resumeItemListStart
+                \resumeItem{Built enterprise-grade game developer dashboard using React and TypeScript, serving AAA game studios worldwide.}
+                \resumeItem{Delivered 40\% compilation time improvement (15 to 9 minutes) by architecting optimized Webpack configuration and streamlining build processes.}
+                \resumeItem{Established component styling standards and comprehensive Storybook documentation, ensuring design system consistency across products.}
+                \resumeItem{Maximized frontend performance through strategic implementation of efficient data fetching patterns and intelligent image asset optimization.}
+                \resumeItem{Led knowledge-sharing initiatives to standardize code conventions, elevating team-wide development practices.}
+            \resumeItemListEnd
+
+        \resumeSubheading
+            {Frontend Engineer}{99.co (Real Estate Platform), Bandung, Indonesia}{2020 -- 2022}{}
+            \resumeItemListStart
+                \resumeItem{Achieved dramatic Largest Contentful Paint (LCP) improvement from 4.5s to 1.2s through advanced Core Web Vitals optimization techniques.}
+                \resumeItem{Drove 25\% increase in site engagement through strategic performance enhancements and responsive design improvements.}
+                \resumeItem{Accelerated organic growth from 4,000 to 7,500 monthly visits (87\% increase) by implementing comprehensive SEO optimizations and schema validation.}
+                \resumeItem{Increased frontend team velocity by 30\% through creation of reusable component library and comprehensive style guide.}
+                \resumeItem{Recognized with ``Own It'' quarterly award for exceptional product ownership, code quality, and technical leadership.}
+            \resumeItemListEnd
+
+        \resumeSubheading
+            {Frontend Engineer}{Tiket.com (Travel \& Hospitality), Jakarta, Indonesia}{2019 -- 2020}{}
+            \resumeItemListStart
+                \resumeItem{Spearheaded TypeScript migration from JavaScript, establishing enterprise-level type safety across the travel platform.}
+                \resumeItem{Developed critical features using React, TypeScript, and Redux for high-traffic booking and payment workflows.}
+                \resumeItem{Maintained comprehensive component documentation with Storybook, ensuring design consistency and developer efficiency.}
+                \resumeItem{Executed strategic code refactoring initiatives to improve long-term scalability and maintainability.}
+                \resumeItem{Partnered with product team to enhance user experience based on data-driven customer feedback analysis.}
+            \resumeItemListEnd
+
+        \resumeSubheading
+            {Frontend Developer}{Mirum Agency (now VML) (Marketing Agency), Bandung, Indonesia}{2018 -- 2019}{}
+            \resumeItemListStart
+                \resumeItem{Architected and deployed WordPress-based platform for Pelita Harapan University (UPH), serving 30,000+ students.}
+                \resumeItem{Delivered responsive, cross-browser compatible solutions across multiple high-priority concurrent client projects.}
+                \resumeItem{Built full-stack features seamlessly integrating frontend components with backend PHP services.}
+                \resumeItem{Consistently achieved timely delivery and exceeded quality standards across diverse industry verticals.}
+            \resumeItemListEnd
+
+        \resumeSubheading
+            {Web Developer}{Hazani Rangka Utama (IT Services), Bandung, Indonesia}{2017 -- 2018}{}
+            \resumeItemListStart
+                \resumeItem{Developed three commercial WordPress themes for ThemeForest marketplace, achieving 10,000+ total sales.}
+                \resumeItem{Ensured W3C validation and accessibility compliance across all projects, maintaining highest quality standards.}
+                \resumeItem{Implemented responsive design patterns and cross-browser compatibility for optimal user experience.}
+                \resumeItem{Managed comprehensive customer support, delivering theme customizations and rapid bug resolution.}
+            \resumeItemListEnd
+
+        \resumeSubheading
+            {Frontend Developer}{PT NTCI (Education and Ecommerce), Yogyakarta, Indonesia}{2016 -- 2017}{}
+            \resumeItemListStart
+                \resumeItem{Built production e-learning and ticket booking applications using modern HTML5, CSS3, and JavaScript.}
+                \resumeItem{Contributed to strategic team expansion from 3 to 15 members, supporting rapid company growth.}
+                \resumeItem{Participated in establishing development standards and best practices, elevating overall code quality.}
+                \resumeItem{Successfully balanced dual role as frontend developer and UI/UX designer across multiple concurrent projects.}
+            \resumeItemListEnd
+    \resumeSubHeadingListEnd
+
+%-----------TECHNICAL SKILLS-----------
+\section{Technical Skills}
+    \resumeSubHeadingListStart
+        \small{
+            \item \textbf{Proficient:} ReactJS, VueJS, NextJS, NuxtJS, Tailwind CSS, Redux, React Query, Javascript, Typescript, CSS3, HTML5
+            \item \textbf{Familiar:} NodeJS, PHP, REST API, GraphQL, Storybook, Cypress, React Testing Library, Jest, Webpack, Vite, Bootstrap
+        }
+    \resumeSubHeadingListEnd
+
+%-----------LEADERSHIP & AWARDS-----------
+\section{Leadership \& Awards}
+    \resumeSubHeadingListStart
+        \resumeProjectHeading
+            {\textbf{99 Group Hackathon} $|$ \emph{Best UI/UX Design Award}}{2021}
+        \resumeProjectHeading
+            {\textbf{Quarterly Award Q2/21} $|$ \emph{Outstanding Performance}}{2021}
+    \resumeSubHeadingListEnd
+
+\end{document}

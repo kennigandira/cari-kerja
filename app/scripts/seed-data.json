@@ -1,0 +1,568 @@
+{
+  "generated_at": "2025-10-05T18:19:37.543073",
+  "total_jobs": 24,
+  "jobs": [
+    {
+      "id": "812b8058-6a6b-4450-ac12-0fb4ac1304a8",
+      "created_at": "2025-07-27T12:00:00Z",
+      "input_type": "url",
+      "input_content": "Job application for FrontEndDeveloper at Accenture",
+      "original_url": null,
+      "company_name": "** Accenture",
+      "position_title": "Match Percentage: 85%",
+      "location": "** Bangkok, Thailand",
+      "salary_range": null,
+      "job_type": "** Full-time, On-site/Hybrid",
+      "job_description_text": "**Location:** Bangkok, Thailand  \n**Employment Type:** Full-time, On-site/Hybrid  \n**Experience Levels:** Junior (1+ years) and Senior (3+ years)  \n**URL:** https://www.accenture.com/th-en/careers/jobdetails?id=R00273173_en&title=Front+End+Developer\n## Key Responsibilities\n- Develop responsive, user-friendly web interfaces\n- Collaborate with designers and product managers\n- Optimize applications for performance and cross-browser compatibility\n- Write clean, maintainable code\n- Participate in cod",
+      "match_percentage": 85,
+      "match_analysis": {
+        "strengths": [],
+        "partial_matches": [],
+        "gaps": []
+      },
+      "status": "to_submit",
+      "folder_path": "04_Applications/Accenture_FrontEndDeveloper_2025-07-27"
+    },
+    {
+      "id": "a3e70c29-fc7c-4013-919b-05c766cee7a8",
+      "created_at": "2025-07-27T12:00:00Z",
+      "input_type": "url",
+      "input_content": "Job application for FrontendEngineer at Agoda",
+      "original_url": null,
+      "company_name": "** Agoda",
+      "position_title": "Job Match: 95%",
+      "location": "** Bangkok, Bangkok City, Thailand",
+      "salary_range": null,
+      "job_type": "** 6-month Contract",
+      "job_description_text": "**Location:** Bangkok, Bangkok City, Thailand  \n**Contract Type:** 6-month Contract  \n**URL:** https://www.linkedin.com/jobs/view/4267647633/?alternateChannel=search\n## About Agoda\nAgoda is an online travel booking platform connecting travelers with 4.7M hotels and properties worldwide. Part of Booking Holdings, they have 7,100+ employees representing 95+ nationalities across 27 markets.\n## Responsibilities\n- Develop and enhance user interfaces using React and TypeScript\n- Collaborate on feature",
+      "match_percentage": 95,
+      "match_analysis": {
+        "strengths": [],
+        "partial_matches": [],
+        "gaps": []
+      },
+      "status": "to_submit",
+      "folder_path": "04_Applications/Agoda_FrontendEngineer_2025-07-27"
+    },
+    {
+      "id": "1f8c8fc7-a960-45bb-bdae-0523e0d33c90",
+      "created_at": "2025-07-27T12:00:00Z",
+      "input_type": "url",
+      "input_content": "Job application for FrontendSoftwareEngineerGrowth at TikTok",
+      "original_url": null,
+      "company_name": "TikTok",
+      "position_title": "Frontend Software Engineer - Growth",
+      "location": "Singapore",
+      "salary_range": null,
+      "job_type": "Regular, R&D",
+      "job_description_text": "- **Company**: TikTok\n- **Position**: Frontend Software Engineer - Growth\n- **Location**: Singapore\n- **Type**: Regular, R&D\n- **Job ID**: A124154A\n## Team Overview\nThe Growth team plays a core role in acquisition, activation, and retention of billions of users, through our globally popular products such as TikTok, CapCut, etc. We are building platform foundation, leveraging data and ML models, and providing end-to-end solutions to power global growth. Typical Growth projects including creative ",
+      "match_percentage": 85,
+      "match_analysis": {
+        "strengths": [],
+        "partial_matches": [],
+        "gaps": []
+      },
+      "status": "to_submit",
+      "folder_path": "04_Applications/TikTok_FrontendSoftwareEngineerGrowth_2025-07-27"
+    },
+    {
+      "id": "8e40006e-18e7-4eff-9e6d-4f5789cc1e5c",
+      "created_at": "2025-09-29T12:00:00Z",
+      "input_type": "url",
+      "input_content": "Job application for FrontendDeveloper at BaldurConnect",
+      "original_url": null,
+      "company_name": "Baldur Connect (Employment Agency)",
+      "position_title": "Frontend Developer (JS/TypeScript)",
+      "location": "Stuttgart, Germany (Remote work option available)",
+      "salary_range": null,
+      "job_type": null,
+      "job_description_text": "- **8+ years experience** - Exceeds 4+ requirement significantly\n- **JavaScript & TypeScript expertise** - Extensive experience with both languages\n- **React ecosystem proficiency** - React, Next.js, Redux experience\n- **Vue.js experience** - Additional framework expertise\n- **Agile/Scrum methodology** - Experience at PropertyScout and AccelByte\n- **Code review & pair programming** - Established in current roles\n- **Performance optimization** - Track record of measurable improvements\n- **Fluent ",
+      "match_percentage": 85,
+      "match_analysis": {
+        "strengths": [],
+        "partial_matches": [],
+        "gaps": []
+      },
+      "status": "to_submit",
+      "folder_path": "04_Applications/BaldurConnect_FrontendDeveloper_2025-09-29"
+    },
+    {
+      "id": "51de6c88-86e4-47a1-8d36-ead969ff34c9",
+      "created_at": "2025-09-29T12:00:00Z",
+      "input_type": "url",
+      "input_content": "Job application for FrontendEngineer at GeneralCV",
+      "original_url": null,
+      "company_name": "GeneralCV",
+      "position_title": "Frontend Engineer",
+      "location": "Bangkok, Thailand / Remote",
+      "salary_range": null,
+      "job_type": null,
+      "job_description_text": "",
+      "match_percentage": 95,
+      "match_analysis": {
+        "strengths": [],
+        "partial_matches": [],
+        "gaps": []
+      },
+      "status": "to_submit",
+      "folder_path": "04_Applications/GeneralCV_FrontendEngineer_2025-09-29"
+    },
+    {
+      "id": "8bab27f6-52a6-482b-8d58-99a824daa56b",
+      "created_at": "2025-09-29T12:00:00Z",
+      "input_type": "url",
+      "input_content": "Job application for SeniorFrontend at IntelligenceBank",
+      "original_url": null,
+      "company_name": "** IntelligenceBank",
+      "position_title": "** Senior Front End Developer",
+      "location": "** 40 City Rd, Southbank VIC 3006, Australia",
+      "salary_range": null,
+      "job_type": "** Full-time",
+      "job_description_text": "**Company:** IntelligenceBank\n**Position:** Senior Front End Developer\n**Location:** 40 City Rd, Southbank VIC 3006, Australia\n**Employment Type:** Full-time\n**Application URL:** https://jobs.smartrecruiters.com/IntelligenceBank/744000077174045-senior-front-end-developer",
+      "match_percentage": 85,
+      "match_analysis": {
+        "strengths": [],
+        "partial_matches": [],
+        "gaps": []
+      },
+      "status": "to_submit",
+      "folder_path": "04_Applications/IntelligenceBank_SeniorFrontend_2025-09-29"
+    },
+    {
+      "id": "91d5181e-2c6f-4763-9c63-dc62b0daf354",
+      "created_at": "2025-09-29T12:00:00Z",
+      "input_type": "url",
+      "input_content": "Job application for SquadLead at ProIntegrate",
+      "original_url": null,
+      "company_name": "Pro Integrate",
+      "position_title": "Squad Lead",
+      "location": null,
+      "salary_range": null,
+      "job_type": null,
+      "job_description_text": "✨Hi Connections, Pro Integrate is hiring!✨\nPosition : Squad Lead\nDivision : Information Technology & Product Development\nIndustry : Technology Company (focusing in eCommerce and digital ecosystem)\nWorking Arrangement : WFH Bandung Area\n\nAs a Squad Lead, you will lead a cross-functional development team, ensuring the successful execution of sprint deliverables with high code quality and strong collaboration. You will serve as the key coordinator between your squad and the technical leadership, aligning technical execution with business priorities. This role demands a balance of technical expertise, leadership capability, and clear communication skills to drive team performance and continuous improvement.",
+      "match_percentage": 75,
+      "match_analysis": {
+        "strengths": [],
+        "partial_matches": [],
+        "gaps": []
+      },
+      "status": "to_submit",
+      "folder_path": "04_Applications/ProIntegrate_SquadLead_2025-09-29"
+    },
+    {
+      "id": "51093e6f-6226-45c0-97f2-0b18e5f89c80",
+      "created_at": "2025-09-29T12:00:00Z",
+      "input_type": "url",
+      "input_content": "Job application for SeniorFrontendEngineer at Zalando",
+      "original_url": "https://jobs.zalando.com/en/jobs/2721861?gh_src=2104be071",
+      "company_name": "Zalando SE",
+      "position_title": "Senior Front-end Engineer (all genders)",
+      "location": "Berlin, Germany",
+      "salary_range": null,
+      "job_type": null,
+      "job_description_text": "Build systems for Sports & Beauty Propositions at Zalando, delivering direct impact to more than 50 million Zalando customers by enhancing their customer experience in fashion and lifestyle e-commerce.",
+      "match_percentage": 82,
+      "match_analysis": {
+        "strengths": [
+          "TypeScript",
+          "React/React Native",
+          "NodeJS",
+          "GraphQL",
+          "CSS/Styling"
+        ],
+        "partial_matches": [
+          "**Kubernetes**: Not explicitly mentioned but DevOps experience with modern tools",
+          "**REST API design**: Backend experience with Express.js and NestJS",
+          "**Sentry**: Not explicitly mentioned but likely used in enterprise environments"
+        ],
+        "gaps": [
+          "Location",
+          "Sports & Beauty domain"
+        ]
+      },
+      "status": "to_submit",
+      "folder_path": "04_Applications/Zalando_SeniorFrontendEngineer_2025-09-29"
+    },
+    {
+      "id": "78f6f39e-00c6-4b38-9cd5-fc6dcdef4a16",
+      "created_at": "2025-09-29T12:00:00Z",
+      "input_type": "url",
+      "input_content": "Job application for FullStackDeveloper at iGamingSEO",
+      "original_url": null,
+      "company_name": "iGaming Platform Company",
+      "position_title": "Full Stack Developer (SEO Platform)",
+      "location": "Hybrid, Manila, Philippines",
+      "salary_range": null,
+      "job_type": null,
+      "job_description_text": "**Company**: iGaming Platform Company\n**Position**: Full Stack Developer (SEO Platform)\n**Location**: Hybrid, Manila, Philippines\n**URL**: https://jobs.smartrecruitment.com/jobs/6284713-full-stack-developer-seo-platform-job-igaming-hybrid-manila-philippines",
+      "match_percentage": 85,
+      "match_analysis": {
+        "strengths": [],
+        "partial_matches": [],
+        "gaps": []
+      },
+      "status": "to_submit",
+      "folder_path": "04_Applications/iGamingSEO_FullStackDeveloper_2025-09-29"
+    },
+    {
+      "id": "a013fc0d-03ce-4772-86a4-3fe7b4e47f44",
+      "created_at": "2025-09-30T12:00:00Z",
+      "input_type": "url",
+      "input_content": "Job application for MiddleFrontendDeveloper at EveryMatrix",
+      "original_url": null,
+      "company_name": "** EveryMatrix",
+      "position_title": "** Middle Frontend Developer",
+      "location": "** Chiang Mai, Thailand",
+      "salary_range": "Not specified in posting",
+      "job_type": "** Full-time, Associate level",
+      "job_description_text": "",
+      "match_percentage": 95,
+      "match_analysis": {
+        "strengths": [
+          "8+ years experience",
+          "React expertise",
+          "Redux proficiency",
+          "JavaScript, HTML, CSS mastery",
+          "Code quality focus"
+        ],
+        "partial_matches": [
+          "**Location** - Currently in Bangkok, position is in Chiang Mai (relocation required)",
+          "**Kanban experience** - Used Jira/project management but not explicitly Kanban mentioned"
+        ],
+        "gaps": [
+          "None significant"
+        ]
+      },
+      "status": "to_submit",
+      "folder_path": "04_Applications/EveryMatrix_MiddleFrontendDeveloper_2025-09-30"
+    },
+    {
+      "id": "c19d766f-e771-4de8-878b-713d8f9f3913",
+      "created_at": "2025-09-30T12:00:00Z",
+      "input_type": "url",
+      "input_content": "Job application for SeniorSoftwareEngineerReactJS at HubbleBuild",
+      "original_url": null,
+      "company_name": "Hubble.Build",
+      "position_title": "Senior Software Engineer (ReactJS)",
+      "location": "Ho Chi Minh City, Vietnam",
+      "salary_range": null,
+      "job_type": null,
+      "job_description_text": "- **Company**: Hubble.Build\n- **Position**: Senior Software Engineer (ReactJS)\n- **Location**: Ho Chi Minh City, Vietnam\n- **Job Type**: Full-time, Mid-Senior level\n- **Industry**: Construction Technology\n## Company Overview\nHubble is a technology company focused on construction and engineering, aiming to build the world's first autonomous construction sites by digitizing work processes and connecting project stakeholders.\n## Key Responsibilities\n- Develop and maintain high-quality software solu",
+      "match_percentage": 85,
+      "match_analysis": {
+        "strengths": [],
+        "partial_matches": [],
+        "gaps": []
+      },
+      "status": "to_submit",
+      "folder_path": "04_Applications/HubbleBuild_SeniorSoftwareEngineerReactJS_2025-09-30"
+    },
+    {
+      "id": "45ec66ef-f123-4612-ba02-79f1acd4efb9",
+      "created_at": "2025-09-30T12:00:00Z",
+      "input_type": "url",
+      "input_content": "Job application for FrontEndSoftwareEngineer at KAYAK",
+      "original_url": null,
+      "company_name": "KAYAK (part of Booking Holdings)",
+      "position_title": "Front-End Software Engineer",
+      "location": "Berlin, Germany (3 days/week in office)",
+      "salary_range": null,
+      "job_type": null,
+      "job_description_text": "",
+      "match_percentage": 75,
+      "match_analysis": {
+        "strengths": [],
+        "partial_matches": [],
+        "gaps": []
+      },
+      "status": "to_submit",
+      "folder_path": "04_Applications/KAYAK_FrontEndSoftwareEngineer_2025-09-30"
+    },
+    {
+      "id": "701059b2-a24c-48b6-9811-f3196ed1015d",
+      "created_at": "2025-09-30T12:00:00Z",
+      "input_type": "url",
+      "input_content": "Job application for FrontendDeveloper at MaltemAsiaPacific",
+      "original_url": null,
+      "company_name": "Maltem Asia-Pacific",
+      "position_title": "Frontend Developer",
+      "location": "Already based in Bangkok, Thailand",
+      "salary_range": null,
+      "job_type": null,
+      "job_description_text": "Transform design and product vision into working products. Build high-quality, user-friendly web applications while collaborating with developers and QA engineers.",
+      "match_percentage": null,
+      "match_analysis": {
+        "strengths": [],
+        "partial_matches": [
+          "End-user automation testing could be emphasized more explicitly",
+          "Full-stack aspirations mentioned in job posting (has Node.js/NestJS experience)"
+        ],
+        "gaps": []
+      },
+      "status": "to_submit",
+      "folder_path": "04_Applications/MaltemAsiaPacific_FrontendDeveloper_2025-09-30"
+    },
+    {
+      "id": "86b4b563-308f-49da-bcd1-33fb7e6b5081",
+      "created_at": "2025-10-01T12:00:00Z",
+      "input_type": "url",
+      "input_content": "Job application for SeniorProductEngineerFrontend at Buffer",
+      "original_url": null,
+      "company_name": "** Buffer",
+      "position_title": "** Senior Product Engineer (Frontend) - Value-Led Growth",
+      "location": "** Remote",
+      "salary_range": "** $156.5K – $202.3K + equity",
+      "job_type": "** Full-time",
+      "job_description_text": "**Position:** Senior Product Engineer (Frontend) - Value-Led Growth\n**Company:** Buffer\n**Location:** Remote\n**Employment Type:** Full-time\n**Compensation:** $156.5K – $202.3K + equity",
+      "match_percentage": 88,
+      "match_analysis": {
+        "strengths": [
+          "8 years experience",
+          "Expert React, TypeScript, GraphQL",
+          "Testing expertise",
+          "Product-minded with UI/UX focus",
+          "Performance optimization"
+        ],
+        "partial_matches": [
+          "A/B testing & experimentation",
+          "AWS/Kubernetes",
+          "Referral/conversion flows"
+        ],
+        "gaps": [
+          "Explicit growth engineering experience",
+          "A/B testing frameworks"
+        ]
+      },
+      "status": "to_submit",
+      "folder_path": "04_Applications/Buffer_SeniorProductEngineerFrontend_2025-10-01"
+    },
+    {
+      "id": "e89fb181-61ca-4b0c-8ee8-da4b50c85fc7",
+      "created_at": "2025-10-04T12:00:00Z",
+      "input_type": "url",
+      "input_content": "Job application for SeniorSoftwareEngineer1Frontend at Mekari",
+      "original_url": null,
+      "company_name": "Mekari",
+      "position_title": "** Senior Software Engineer 1 - Frontend",
+      "location": "Role is in Jakarta, Indonesia (Currently located in Bangkok, Thailand - requires relocation discussion)",
+      "salary_range": null,
+      "job_type": "** Full-time",
+      "job_description_text": "Design and develop products impacting thousands of businesses and millions of users. As a Senior Software Engineer 1 - Frontend at Mekari, you will:\n\n- Collaborate with Product Managers and stakeholders to create customer-delighting solutions\n- Architect and develop high-quality software solutions\n- Work with Technical Program Manager on development lifecycle\n- Mentor junior developers\n- Manage team knowledge through technical documentation\n\n---",
+      "match_percentage": 88,
+      "match_analysis": {
+        "strengths": [],
+        "partial_matches": [],
+        "gaps": []
+      },
+      "status": "to_submit",
+      "folder_path": "04_Applications/Mekari_SeniorSoftwareEngineer1Frontend_2025-10-04"
+    },
+    {
+      "id": "1ff4fc71-82a5-442b-b239-ef30148046de",
+      "created_at": "2025-10-05T12:00:00Z",
+      "input_type": "url",
+      "input_content": "Job application for LeadFrontendEngineer at CSG",
+      "original_url": null,
+      "company_name": "CSG",
+      "position_title": "Job Specification: Lead Frontend Engineer at CSG",
+      "location": null,
+      "salary_range": null,
+      "job_type": null,
+      "job_description_text": "CSG (CSG Systems International)\n## Position\nLead Frontend Engineer | PRODUCT R&D, INNOVATION & OWNERSHIP\n## Location\nIndonesia - Remote\n## Job ID\n29068\n## Posted Date\n2025-09-26\n## Valid Through\n2025-10-26\n## Employment Type\nFull-Time\n---\n## Match Analysis\n### Strong Matches (100%)\n- ✅ **Frontend Experience**: 8+ years matches the 7+ years requirement\n- ✅ **HTML/JavaScript/CSS**: Core frontend fundamentals covered\n- ✅ **Modern Frameworks**: React experience directly applicable (Angular mentioned",
+      "match_percentage": 85,
+      "match_analysis": {
+        "strengths": [
+          "Frontend Experience",
+          "HTML/JavaScript/CSS",
+          "Modern Frameworks",
+          "UI/UX Knowledge",
+          "Leadership"
+        ],
+        "partial_matches": [
+          "**Angular**: No direct Angular experience (has React, Vue.js, Next.js)",
+          "**Micro-frontend Architecture**: No explicit experience mentioned",
+          "**Node.js**: Has Node.js/NestJS experience but not extensively highlighted"
+        ],
+        "gaps": [
+          "Web Components",
+          "Telecommunications/Banking Domain",
+          "Quote & Order/CPQ Systems"
+        ]
+      },
+      "status": "to_submit",
+      "folder_path": "04_Applications/CSG_LeadFrontendEngineer_2025-10-05"
+    },
+    {
+      "id": "c5c29eb2-8517-45eb-9791-d045689e84d4",
+      "created_at": "2025-10-05T12:00:00Z",
+      "input_type": "url",
+      "input_content": "Job application for SeniorFullStackEngineerUIFocus at CollegeBoard",
+      "original_url": null,
+      "company_name": "College Board",
+      "position_title": "Senior Full Stack Engineer (UI Focus)",
+      "location": "Remote - USA (Optional hybrid: NYC or Reston, VA)",
+      "salary_range": "$150,000 - $163,000",
+      "job_type": "Full-time",
+      "job_description_text": "(Full Text)\n\nSenior Full Stack Engineer (UI Focus)\nApply\nlocations: Remote - USA\ntime type: Full time\nposted on: Posted 18 Days Ago\njob requisition id: REQ002238\n\nSenior Full Stack Engineer (UI Focus)\n\nCollege Board – Technology – BigFuture Student\n\nLocation: This is a fully remote role. Candidates who live near CB offices have the option of being fully remote or hybrid (Tuesday and Wednesday in office).\n\nType: This is a full-time position\n\nAbout the Team\n\nBigFuture is committed to empowering all students to take the right first step after high school, reaching over 7 million students each year as the leading free resource for college, scholarship, and career exploration. The BigFuture Student team builds and maintains the full breadth of BigFuture.org including but not limited to College Search, Scholarship Search, Career Search, Career Quiz, \"Explore Careers\", \"Plan for College\", \"Pay for College\", dashboards, checklists, and community features so that students can confidently discov",
+      "match_percentage": 85,
+      "match_analysis": {
+        "strengths": [],
+        "partial_matches": [],
+        "gaps": []
+      },
+      "status": "to_submit",
+      "folder_path": "04_Applications/CollegeBoard_SeniorFullStackEngineerUIFocus_2025-10-05"
+    },
+    {
+      "id": "2420da08-df93-42cb-8beb-d01c60d8dbb3",
+      "created_at": "2025-10-05T12:00:00Z",
+      "input_type": "url",
+      "input_content": "Job application for FrontEndDeveloper at DexonTechnology",
+      "original_url": null,
+      "company_name": "DexonTechnology",
+      "position_title": "Front End Developer - Dexon Technology Public Company Limited",
+      "location": "** Mueang Rayong, Rayong",
+      "salary_range": null,
+      "job_type": "** Full time",
+      "job_description_text": "",
+      "match_percentage": 88,
+      "match_analysis": {
+        "strengths": [],
+        "partial_matches": [
+          "- Not explicitly mentioned in profile",
+          "- Not mentioned in profile",
+          "- Experience with backend integration but databases not explicitly detailed"
+        ],
+        "gaps": []
+      },
+      "status": "to_submit",
+      "folder_path": "04_Applications/DexonTechnology_FrontEndDeveloper_2025-10-05"
+    },
+    {
+      "id": "39c64618-8fe5-49fd-be0e-1f8a1a5b266e",
+      "created_at": "2025-10-05T12:00:00Z",
+      "input_type": "url",
+      "input_content": "Job application for SeniorFullstackFrontendFocused at LeanTech",
+      "original_url": "https://jobs.jobvite.com/leantechio/job/oDiSxfw4?nl=1&nl=1",
+      "company_name": "Lean Tech",
+      "position_title": "Senior Fullstack Developer (Front-End Focused)",
+      "location": "Remote - Latin America",
+      "salary_range": null,
+      "job_type": null,
+      "job_description_text": "",
+      "match_percentage": 85,
+      "match_analysis": {
+        "strengths": [],
+        "partial_matches": [],
+        "gaps": []
+      },
+      "status": "to_submit",
+      "folder_path": "04_Applications/LeanTech_SeniorFullstackFrontendFocused_2025-10-05"
+    },
+    {
+      "id": "3b698bae-623b-4ca3-83e1-318943b74168",
+      "created_at": "2025-10-05T12:00:00Z",
+      "input_type": "url",
+      "input_content": "Job application for FrontendDeveloper at P-DICTOR",
+      "original_url": null,
+      "company_name": "P-DICTOR CO., LTD.",
+      "position_title": "Job Description: Frontend Developer at P-DICTOR CO., LTD.",
+      "location": "Chatuchak, Bangkok (Hybrid)",
+      "salary_range": null,
+      "job_type": "Full time",
+      "job_description_text": "### Strong Matches (Exceeds Requirements):\n- **Experience Level**: 8+ years vs required 1-2 years (far exceeds)\n- **React Expertise**: Extensive React experience including V18+ lifecycle, SPA, SSR\n- **TypeScript/JavaScript**: Strong proficiency demonstrated across multiple companies\n- **Redux**: Redux Toolkit experience from Tiket.com and AccelByte\n- **Material UI**: Component library experience with Storybook and design systems\n- **RESTful APIs**: 8+ years building and consuming APIs\n- **Git/Gi",
+      "match_percentage": 92,
+      "match_analysis": {
+        "strengths": [],
+        "partial_matches": [],
+        "gaps": []
+      },
+      "status": "to_submit",
+      "folder_path": "04_Applications/P-DICTOR_FrontendDeveloper_2025-10-05"
+    },
+    {
+      "id": "fc92c246-b377-4be9-970d-c33afc3ac4c8",
+      "created_at": "2025-10-05T12:00:00Z",
+      "input_type": "url",
+      "input_content": "Job application for SeniorReactJSDeveloper at SSCTechnologies",
+      "original_url": null,
+      "company_name": "SS&C Technologies",
+      "position_title": "Senior ReactJS Developer",
+      "location": "Already based in Bangkok, Thailand ✅",
+      "salary_range": null,
+      "job_type": "Full-time",
+      "job_description_text": "**Position**: Senior ReactJS Developer\n**Company**: SS&C Technologies\n**Location**: Bangkok, Thailand\n**Type**: Full-time\n**Posted**: 17 Days Ago\n**Job ID**: R37443",
+      "match_percentage": 85,
+      "match_analysis": {
+        "strengths": [],
+        "partial_matches": [],
+        "gaps": []
+      },
+      "status": "to_submit",
+      "folder_path": "04_Applications/SSCTechnologies_SeniorReactJSDeveloper_2025-10-05"
+    },
+    {
+      "id": "54eeca80-43d0-4c90-bb87-b76a2cb726c4",
+      "created_at": "2025-10-05T12:00:00Z",
+      "input_type": "url",
+      "input_content": "Job application for FrontendDeveloper at SiiPoland",
+      "original_url": null,
+      "company_name": "SII Poland",
+      "position_title": "Frontend Developer",
+      "location": "Thailand",
+      "salary_range": null,
+      "job_type": null,
+      "job_description_text": "### Strong Matches ✓\n- **8+ years experience** exceeds the 3-5 years requirement\n- **TypeScript & JavaScript expertise** - Core requirement fully met\n- **React.js experience** - 8+ years with React across multiple companies\n- **Scrum methodology** - Used at PropertyScout, AccelByte, 99.co, Tiket.com\n- **Excellent English** - Professional working proficiency\n- **High-performance application experience** - Demonstrated through performance optimization (LCP 4.5s → 1.2s)\n- **Team collaboration** - P",
+      "match_percentage": 95,
+      "match_analysis": {
+        "strengths": [],
+        "partial_matches": [],
+        "gaps": []
+      },
+      "status": "to_submit",
+      "folder_path": "04_Applications/SiiPoland_FrontendDeveloper_2025-10-05"
+    },
+    {
+      "id": "f633807f-5bc4-480a-9cfb-d388dd9253b6",
+      "created_at": "2025-10-05T12:00:00Z",
+      "input_type": "url",
+      "input_content": "Job application for FrontendDeveloperGames at Starcube",
+      "original_url": null,
+      "company_name": "Starcube",
+      "position_title": "Job Specification - Frontend Developer (Games)",
+      "location": "Bangkok",
+      "salary_range": "30,000 - 80,000 baht/month (stated range: 30,000-120,000)",
+      "job_type": "Full Time",
+      "job_description_text": "",
+      "match_percentage": 45,
+      "match_analysis": {
+        "strengths": [],
+        "partial_matches": [],
+        "gaps": []
+      },
+      "status": "to_submit",
+      "folder_path": "04_Applications/Starcube_FrontendDeveloperGames_2025-10-05"
+    },
+    {
+      "id": "fa80be2d-a793-4fbf-a1c8-779b10a5e6f2",
+      "created_at": "2025-10-05T12:00:00Z",
+      "input_type": "url",
+      "input_content": "Job application for SoftwareEngineerFrontend at WiPay",
+      "original_url": null,
+      "company_name": "WiPay Co., Ltd.",
+      "position_title": "Software Engineer (Frontend)",
+      "location": "Bangkok and its Vicinity",
+      "salary_range": null,
+      "job_type": "Full Time",
+      "job_description_text": "",
+      "match_percentage": null,
+      "match_analysis": {
+        "strengths": [],
+        "partial_matches": [],
+        "gaps": []
+      },
+      "status": "to_submit",
+      "folder_path": "04_Applications/WiPay_SoftwareEngineerFrontend_2025-10-05"
+    }
+  ]
+}
