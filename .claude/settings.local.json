@@ -1,35 +1,26 @@
 {
   "permissions": {
     "allow": [
+      "Bash(echo \"✓ $file compiled\")",
+      "Bash(done)",
+      "WebFetch(domain:wd1.myworkdaysite.com)",
       "Bash(find:*)",
-      "Bash(ls:*)",
-      "WebFetch(domain:www.linkedin.com)",
       "Bash(mkdir:*)",
-      "WebFetch(domain:www.accenture.com)",
-      "Bash(mv:*)",
-      "Bash(pdflatex:*)",
-      "Bash(tectonic:*)",
-      "Bash(touch:*)",
-      "Bash(grep:*)",
-      "WebFetch(domain:lifeattiktok.com)",
-      "Bash(rm:*)",
-      "WebFetch(domain:www.99.co)",
-      "WebFetch(domain:careersatagoda.com)",
-      "WebFetch(domain:sevenpeakssoftware.com)",
-      "WebFetch(domain:7peakssoftware-hr.freshteam.com)",
-      "WebFetch(domain:careers.linecorp.com)",
-      "WebFetch(domain:remoteok.com)",
-      "WebFetch(domain:www.true.th)",
-      "WebFetch(domain:careers.scb.co.th)",
-      "WebFetch(domain:jobs.zalando.com)",
-      "WebFetch(domain:www.careers-page.com)",
-      "WebFetch(domain:www.arbeitnow.com)",
-      "WebFetch(domain:www.baldurconnect.com)",
-      "WebFetch(domain:jobs.smartrecruitment.com)",
-      "WebFetch(domain:jobs.smartrecruiters.com)",
-      "WebFetch(domain:buffer.com)",
-      "WebFetch(domain:mekari.hire.trakstar.com)"
+      "mcp__chrome-devtools__list_pages",
+      "mcp__chrome-devtools__navigate_page",
+      "mcp__chrome-devtools__take_snapshot",
+      "mcp__chrome-devtools__take_screenshot",
+      "mcp__chrome-devtools__click",
+      "mcp__chrome-devtools__resize_page",
+      "mcp__chrome-devtools__list_console_messages",
+      "mcp__chrome-devtools__list_network_requests",
+      "Read(//Users/user/.claude/**)",
+      "Bash(tectonic:*)"
     ],
-    "deny": []
-  }
+    "deny": [],
+    "ask": []
+  },
+  "enabledMcpjsonServers": [
+    "chrome-devtools"
+  ]
 }

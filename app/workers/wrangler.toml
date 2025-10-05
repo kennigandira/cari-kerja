@@ -1,0 +1,50 @@
+name = "job-kanban-worker"
+main = "src/index.ts"
+compatibility_date = "2025-01-01"
+
+# Enable security headers by default
+security_headers = true
+
+# Production environment
+[env.production]
+vars = { ENVIRONMENT = "production" }
+route = "api.cari-kerja.pages.dev/*"
+
+# Development environment
+[env.development]
+vars = { ENVIRONMENT = "development" }
+
+# Required secrets configuration
+# Set these using wrangler:
+#   wrangler secret put SUPABASE_URL
+#   wrangler secret put SUPABASE_SERVICE_KEY
+#   wrangler secret put ANTHROPIC_API_KEY
+
+# Sensitive environment variables - NEVER commit actual values
+[vars]
+SUPABASE_URL = ""          # Set via wrangler secret
+SUPABASE_SERVICE_KEY = ""  # Set via wrangler secret
+ANTHROPIC_API_KEY = ""     # Set via wrangler secret
+
+# Security settings
+[security]
+allow_credentials = true
+allowed_origins = ["https://cari-kerja.pages.dev"]
+headers = [
+  { key = "X-Content-Type-Options", value = "nosniff" },
+  { key = "X-Frame-Options", value = "DENY" },
+  { key = "X-XSS-Protection", value = "1; mode=block" },
+  { key = "Referrer-Policy", value = "strict-origin-when-cross-origin" },
+  { key = "Permissions-Policy", value = "camera=(), microphone=(), geolocation=()" }
+]
+
+# Cron triggers for background job processing
+[triggers]
+crons = ["*/5 * * * *"]  # Run every 5 minutes
+
+# Additional security best practices:
+# 1. Use wrangler secret put for all sensitive values
+# 2. Enable security headers in production
+# 3. Restrict allowed origins
+# 4. Regular secret rotation using wrangler
+# 5. Monitor usage and set up alerts

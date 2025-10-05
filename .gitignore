@@ -1,2 +1,5 @@
 .history/
 __pycache__
+.env
+.ai_security_context
+.claude/settings.local.json

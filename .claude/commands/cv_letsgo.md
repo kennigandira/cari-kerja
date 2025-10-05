@@ -51,30 +51,58 @@ You are about to execute a comprehensive CV tailoring workflow. The parameter pr
    - **NEW**: Ensure cover letter fits on ONE page (200-250 words max)
    - **NEW**: Please put proper spacing.
 
-7. **Skeptical Review**
-   - Launch cv-skeptical-reviewer agent to review BOTH the tailored CV and cover letter
+7. **Optimistic Review**
+   - Launch cv-optimistic-reviewer agent to review BOTH the tailored CV and cover letter
+   - Have the reviewer:
+     - Identify understated achievements
+     - Suggest stronger framing where justified
+     - Surface hidden metrics and impact
+     - Maximize presentation while maintaining verifiability
+   - Incorporate feedback to create:
+     - `optimistic-<company>-<position>-cv.md`
+     - `optimistic-<company>-cover-letter-<position>-Kenni.md`
+
+8. **Skeptical Review**
+   - Launch cv-skeptical-reviewer agent to review the optimistic versions
    - Have the reviewer check for:
      - Any exaggerated claims
      - Inflated achievements
      - Unrealistic skills or experiences
+     - Hype that needs tempering
    - Incorporate feedback to create:
-     - `reviewed-<company>-<position>-cv.md`
-     - `reviewed-<company>-cover-letter-<position>-Kenni.md`
-   - **NEW**: Ensure collaborative language ("contributed to" vs "led")
+     - `skeptical-<company>-<position>-cv.md`
+     - `skeptical-<company>-cover-letter-<position>-Kenni.md`
+   - Ensure collaborative language ("contributed to" vs "led")
 
-8. **Convert to LaTeX**
-   - Convert all documents to `.tex` format:
-     - `<company>-<position>-cv.tex`
-     - `reviewed-<company>-<position>-cv.tex`
-     - `<company>-cover-letter-<position>-Kenni.tex`
-     - `reviewed-<company>-cover-letter-<position>-Kenni.tex`
+9. **Manager Synthesis**
+   - Launch cv-reviewer-manager agent with outputs from BOTH optimistic and skeptical reviewers
+   - The manager will:
+     - Resolve conflicts between the two reviews
+     - Make final editorial decisions
+     - Create the ultimate balanced version
+     - Target: Credibility 4-5/10 + Impact 7-8/10
+   - Produce final versions:
+     - `final-<company>-<position>-cv.md`
+     - `final-<company>-cover-letter-<position>-Kenni.md`
+   - These are the authoritative versions for LaTeX conversion
+
+10. **Convert to LaTeX**
+   - Convert all document versions to `.tex` format:
+     - `<company>-<position>-cv.tex` (initial draft)
+     - `optimistic-<company>-<position>-cv.tex`
+     - `skeptical-<company>-<position>-cv.tex`
+     - `final-<company>-<position>-cv.tex` (manager's ultimate version)
+     - `<company>-cover-letter-<position>-Kenni.tex` (initial draft)
+     - `optimistic-<company>-cover-letter-<position>-Kenni.tex`
+     - `skeptical-<company>-cover-letter-<position>-Kenni.tex`
+     - `final-<company>-cover-letter-<position>-Kenni.tex` (manager's ultimate version)
    - Use appropriate LaTeX formatting from the template files
    - **NEW**: Remove problematic LaTeX commands:
      - Remove `\input{glyphtounicode}`
      - Remove `\pdfgentounicode=1`
      - Use Computer Modern font for cover letters unless specified
 
-9. **Generate PDFs**
+11. **Generate PDFs**
    - Compile all `.tex` files using tectonic
    - Save PDFs with the same naming convention
    - **NEW**: Verify all PDFs compile without errors
@@ -88,18 +116,42 @@ You are about to execute a comprehensive CV tailoring workflow. The parameter pr
 04_Applications/
    <CompanyName>_<Position>_<Date>/
        job-spec.md
+
+       # CV Versions (Draft → Optimistic → Skeptical → Final)
        <company>-<position>-cv.md
-       reviewed-<company>-<position>-cv.md
        <company>-<position>-cv.tex
-       reviewed-<company>-<position>-cv.tex
        <company>-<position>-cv.pdf
-       reviewed-<company>-<position>-cv.pdf
+
+       optimistic-<company>-<position>-cv.md
+       optimistic-<company>-<position>-cv.tex
+       optimistic-<company>-<position>-cv.pdf
+
+       skeptical-<company>-<position>-cv.md
+       skeptical-<company>-<position>-cv.tex
+       skeptical-<company>-<position>-cv.pdf
+
+       final-<company>-<position>-cv.md          # ← Manager's ultimate version
+       final-<company>-<position>-cv.tex
+       final-<company>-<position>-cv.pdf
+
+       # Cover Letter Versions (Draft → Optimistic → Skeptical → Final)
        <company>-cover-letter-<position>-Kenni.md
-       reviewed-<company>-cover-letter-<position>-Kenni.md
        <company>-cover-letter-<position>-Kenni.tex
-       reviewed-<company>-cover-letter-<position>-Kenni.tex
        <company>-cover-letter-<position>-Kenni.pdf
-       reviewed-<company>-cover-letter-<position>-Kenni.pdf
+
+       optimistic-<company>-cover-letter-<position>-Kenni.md
+       optimistic-<company>-cover-letter-<position>-Kenni.tex
+       optimistic-<company>-cover-letter-<position>-Kenni.pdf
+
+       skeptical-<company>-cover-letter-<position>-Kenni.md
+       skeptical-<company>-cover-letter-<position>-Kenni.tex
+       skeptical-<company>-cover-letter-<position>-Kenni.pdf
+
+       final-<company>-cover-letter-<position>-Kenni.md    # ← Manager's ultimate version
+       final-<company>-cover-letter-<position>-Kenni.tex
+       final-<company>-cover-letter-<position>-Kenni.pdf
+
+       # Optional files
        self-introduction.md (optional)
        own-it-award-description.md (optional)
 ```
@@ -110,7 +162,8 @@ You are about to execute a comprehensive CV tailoring workflow. The parameter pr
 3. **Achievement Accuracy**: Every metric must match master profile
 4. **Document Length**: Cover letters must fit on one page
 5. **LaTeX Compilation**: All documents must compile without errors
-6. **Professional Tone**: Reviewed versions should be believable
+6. **Review Balance**: Final versions should achieve credibility 4-5/10 + impact 7-8/10
+7. **Version Progression**: Draft → Optimistic (high impact) → Skeptical (high credibility) → Final (balanced)
 
 ## Important Notes:
 - Always maintain factual accuracy from the master profile
@@ -120,5 +173,7 @@ You are about to execute a comprehensive CV tailoring workflow. The parameter pr
 - Never invent new achievements or inflate existing ones
 - Use collaborative language for team achievements
 - Keep cover letters concise and impactful
+- **Three-Stage Review Process**: Optimistic maximizes impact → Skeptical ensures credibility → Manager synthesizes for optimal balance
+- **Final Versions Are Authoritative**: Use `final-*` versions for applications; other versions are for review process transparency
 
 Begin the workflow now with the provided job description: {{ARGS}}

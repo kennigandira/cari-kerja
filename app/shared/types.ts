@@ -1,0 +1,195 @@
+// Shared TypeScript types for Job Kanban App
+// Used by both frontend and backend workers
+
+export type InputType = 'url' | 'text';
+
+export type JobStatus =
+  | 'processing'
+  | 'to_submit'
+  | 'waiting_for_call'
+  | 'ongoing'
+  | 'success'
+  | 'not_now';
+
+export type DocumentType = 'cv' | 'cover_letter';
+
+export type DocumentVersion = 'initial' | 'reviewed' | 'regenerated';
+
+export type ProcessingStatus = 'pending' | 'processing' | 'completed' | 'failed';
+
+export type TaskType =
+  | 'extract_job_info'
+  | 'calculate_match'
+  | 'generate_cv'
+  | 'generate_cover_letter'
+  | 'review_cv'
+  | 'review_cover_letter'
+  | 'compile_pdf'
+  | 'sync_to_filesystem';
+
+export interface MatchAnalysis {
+  strengths: string[];
+  partial_matches: string[];
+  gaps: string[];
+}
+
+export interface Job {
+  id: string;
+  created_at: string;
+  updated_at: string;
+
+  // Input data
+  input_type: InputType;
+  input_content: string;
+  original_url?: string;
+
+  // Extracted metadata
+  company_name?: string;
+  position_title?: string;
+  location?: string;
+  posted_date?: string;
+  salary_range?: string;
+  job_type?: string;
+
+  // Job description
+  job_description_html?: string;
+  job_description_text?: string;
+
+  // Match analysis
+  match_percentage?: number;
+  match_analysis?: MatchAnalysis;
+
+  // Kanban status
+  status: JobStatus;
+  kanban_order: number;
+
+  // Application folder path
+  folder_path?: string;
+}
+
+export interface JobDocument {
+  id: string;
+  job_id: string;
+  created_at: string;
+  updated_at: string;
+
+  document_type: DocumentType;
+  version: DocumentVersion;
+  regeneration_number: number;
+
+  // File paths in Supabase Storage
+  markdown_path?: string;
+  latex_path?: string;
+  pdf_path?: string;
+
+  // Processing status
+  processing_status: ProcessingStatus;
+  error_message?: string;
+}
+
+export interface RegenerationRequest {
+  id: string;
+  job_id: string;
+  document_id: string;
+  created_at: string;
+
+  user_feedback: string;
+  status: ProcessingStatus;
+
+  new_document_id?: string;
+}
+
+export interface ProcessingQueueTask {
+  id: string;
+  job_id: string;
+  created_at: string;
+  started_at?: string;
+  completed_at?: string;
+
+  task_type: TaskType;
+  status: ProcessingStatus;
+  priority: number;
+  retry_count: number;
+  max_retries: number;
+  error_message?: string;
+
+  task_data?: Record<string, unknown>;
+  task_result?: Record<string, unknown>;
+}
+
+// Frontend-specific extended types
+export interface JobWithDocuments extends Job {
+  documents?: JobDocument[];
+}
+
+// API Request/Response types
+export interface CreateJobRequest {
+  input_content: string;
+  input_type?: InputType; // Auto-detected if not provided
+}
+
+export interface CreateJobResponse {
+  job: Job;
+  processing_tasks: ProcessingQueueTask[];
+}
+
+export interface RegenerateDocumentRequest {
+  job_id: string;
+  document_id: string;
+  user_feedback: string;
+}
+
+export interface RegenerateDocumentResponse {
+  request: RegenerationRequest;
+  processing_task: ProcessingQueueTask;
+}
+
+export interface UpdateJobStatusRequest {
+  job_id: string;
+  status: JobStatus;
+  kanban_order?: number;
+}
+
+// Worker-specific types
+export interface JobExtractionResult {
+  company_name: string;
+  position_title: string;
+  location?: string;
+  posted_date?: string;
+  salary_range?: string;
+  job_type?: string;
+  job_description_html: string;
+  job_description_text: string;
+}
+
+export interface MatchCalculationResult {
+  match_percentage: number;
+  match_analysis: MatchAnalysis;
+}
+
+export interface DocumentGenerationResult {
+  markdown_content: string;
+  latex_content: string;
+  pdf_url?: string;
+}
+
+// Utility types
+export const JOB_STATUS_LABELS: Record<JobStatus, string> = {
+  processing: 'Processing',
+  to_submit: 'To Submit',
+  waiting_for_call: 'Waiting for Call',
+  ongoing: 'Ongoing',
+  success: 'Success',
+  not_now: 'Not Now'
+};
+
+export const TASK_TYPE_LABELS: Record<TaskType, string> = {
+  extract_job_info: 'Extracting Job Info',
+  calculate_match: 'Calculating Match',
+  generate_cv: 'Generating CV',
+  generate_cover_letter: 'Generating Cover Letter',
+  review_cv: 'Reviewing CV',
+  review_cover_letter: 'Reviewing Cover Letter',
+  compile_pdf: 'Compiling PDF',
+  sync_to_filesystem: 'Syncing to Filesystem'
+};

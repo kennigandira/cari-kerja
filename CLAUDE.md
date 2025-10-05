@@ -24,6 +24,14 @@ This is a job search management system for a Frontend Engineer with 8+ years of 
   - `cv_letsgo.md` - Complete CV tailoring workflow
   - `cari-kerja-letsgo.md` - Job search specialist workflow
 
+### MCP Servers
+- **.claude/.mcp.json** - MCP (Model Context Protocol) server configuration
+  - **chrome-devtools** - Chrome DevTools MCP server for browser automation
+    - Enables browser automation and inspection via Claude Code
+    - Provides 26 tools for performance analysis, network inspection, screenshots, and debugging
+    - Requires Node.js v20.19+ and Chrome browser
+    - Useful for automating application forms, testing portfolio sites, and documenting job postings
+
 ## Common Commands
 
 ### CV Generation and LaTeX Compilation
