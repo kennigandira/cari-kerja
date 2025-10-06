@@ -118,9 +118,10 @@ export function useRealtimeSync() {
   function unsubscribe() {
     if (channel.value) {
       console.log('Unsubscribing from real-time updates...')
-      supabase.removeChannel(channel.value)
-      channel.value = null
-      isConnected.value = false
+      supabase.removeChannel(channel.value as any).then(() => {
+        channel.value = null
+        isConnected.value = false
+      })
     }
   }
 

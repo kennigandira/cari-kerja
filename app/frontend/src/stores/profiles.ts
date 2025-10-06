@@ -161,27 +161,109 @@ export const useProfilesStore = defineStore('profiles', () => {
 
       if (updateError) throw updateError;
 
+      // Handle the new response format from migration 019
+      const response = data as { success: boolean; error_message: string | null; profile: MasterProfile | null };
+
+      if (!response.success) {
+        throw new Error(response.error_message || 'Failed to update profile');
+      }
+
+      const updatedProfile = response.profile;
+      if (!updatedProfile) {
+        throw new Error('No profile data returned from update');
+      }
+
       if (index !== -1) {
-        profiles.value[index] = data as MasterProfile;
+        profiles.value[index] = updatedProfile;
       }
 
       if (currentProfile.value?.id === id) {
-        currentProfile.value = { ...currentProfile.value, ...data as MasterProfile };
+        currentProfile.value = { ...currentProfile.value, ...updatedProfile };
       }
 
-      return data;
+      return updatedProfile;
     } catch (err: any) {
       if (index !== -1) {
         profiles.value[index] = originalProfile;
       }
 
-      if (err.message?.includes('CONFLICT') || err.code === '40001') {
+      if (err.message?.includes('CONFLICT') || err.code === '40001' || err.message?.includes('Version conflict')) {
         error.value = 'Profile was modified by another session. Please refresh.';
       } else {
         error.value = translateSupabaseError(err);
       }
 
       console.error('Failed to update profile:', err);
+      throw err;
+    }
+  }
+
+  async function updateProfileWithDetails(
+    id: string,
+    updates: Partial<MasterProfile>,
+    experiences: Partial<WorkExperience>[],
+    skills: Partial<Skill>[]
+  ) {
+    const originalProfile = profiles.value.find(p => p.id === id);
+    if (!originalProfile) return;
+
+    const optimisticProfile = {
+      ...originalProfile,
+      ...updates,
+      updated_at: new Date().toISOString(),
+      version: originalProfile.version + 1
+    };
+
+    const index = profiles.value.findIndex(p => p.id === id);
+    if (index !== -1) {
+      profiles.value[index] = optimisticProfile;
+    }
+
+    try {
+      const { data, error: updateError } = await supabase.rpc('update_master_profile_with_details', {
+        p_profile_id: id,
+        p_expected_version: originalProfile.version,
+        p_profile_updates: updates,
+        p_experiences: experiences,
+        p_skills: skills
+      });
+
+      if (updateError) throw updateError;
+
+      // Handle the response format from migration 022
+      const response = data as { success: boolean; error_message: string | null; profile: MasterProfile | null };
+
+      if (!response.success) {
+        throw new Error(response.error_message || 'Failed to update profile');
+      }
+
+      const updatedProfile = response.profile;
+      if (!updatedProfile) {
+        throw new Error('No profile data returned from update');
+      }
+
+      if (index !== -1) {
+        profiles.value[index] = updatedProfile;
+      }
+
+      if (currentProfile.value?.id === id) {
+        // Refresh the full profile with details
+        await fetchProfileById(id);
+      }
+
+      return updatedProfile;
+    } catch (err: any) {
+      if (index !== -1) {
+        profiles.value[index] = originalProfile;
+      }
+
+      if (err.message?.includes('CONFLICT') || err.code === '40001' || err.message?.includes('Version conflict')) {
+        error.value = 'Profile was modified by another session. Please refresh.';
+      } else {
+        error.value = translateSupabaseError(err);
+      }
+
+      console.error('Failed to update profile with details:', err);
       throw err;
     }
   }
@@ -390,6 +472,7 @@ export const useProfilesStore = defineStore('profiles', () => {
     fetchProfileById,
     createProfile,
     updateProfile,
+    updateProfileWithDetails,
     deleteProfile,
     exportProfileMarkdown,
     addWorkExperience,
