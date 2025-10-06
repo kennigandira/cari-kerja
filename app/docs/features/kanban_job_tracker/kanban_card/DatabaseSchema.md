@@ -1,9 +1,11 @@
 # Database Schema Documentation - Enhanced Kanban Card Detail View
 
-**Version:** 1.0
-**Migration:** 014_add_enhanced_kanban_fields.sql
+**Version:** 1.1 (Updated Oct 6, 2025)
+**Migrations:**
+- 014_add_enhanced_kanban_fields.sql
+- 023_sync_job_status_on_card_move.sql (Bug Fix)
+- 024_fix_existing_job_statuses.sql (Data Fix)
 **Dependencies:** 013_add_application_submission_fields.sql
-**Migration File:** `/Users/user/Documents/cari-kerja/app/supabase/migrations/014_add_enhanced_kanban_fields.sql`
 **Parent Feature:** Kanban Job Application Tracker
 
 ---
@@ -694,9 +696,91 @@ WHERE id = 'some-job-id';
 
 ---
 
+## Migration 023: Sync Job Status on Card Move (Bug Fix)
+
+**Date:** October 6, 2025
+**Purpose:** Fix job.status not syncing when kanban cards move between columns
+**File:** `023_sync_job_status_on_card_move.sql`
+
+### Problem Statement
+When users drag cards between kanban columns, only `kanban_cards.column_id` was updated. The linked `jobs.status` field remained unchanged, causing the modal to show incorrect status.
+
+### Solution
+Enhanced `move_card_between_columns()` RPC function to:
+1. Get the card's linked `job_id`
+2. Look up destination column name
+3. Map column name to appropriate `JobStatus` value
+4. Update `jobs.status` atomically
+
+### Column Name → Job Status Mapping
+
+| Column Name | Job Status Value |
+|-------------|------------------|
+| "To Submit" | `to_submit` |
+| "Waiting for Call" | `waiting_for_call` |
+| "Interviewing" | `ongoing` |
+| "Offer" | `success` |
+| "Not Now" / "Rejected" | `not_now` |
+| "Processing" | `processing` |
+
+**Implementation uses ILIKE for case-insensitive partial matching:**
+```sql
+v_new_job_status := CASE
+  WHEN v_column_name ILIKE '%to submit%' THEN 'to_submit'
+  WHEN v_column_name ILIKE '%waiting%' THEN 'waiting_for_call'
+  WHEN v_column_name ILIKE '%interview%' THEN 'ongoing'
+  WHEN v_column_name ILIKE '%offer%' THEN 'success'
+  WHEN v_column_name ILIKE '%not now%' THEN 'not_now'
+  WHEN v_column_name ILIKE '%rejected%' THEN 'not_now'
+  WHEN v_column_name ILIKE '%processing%' THEN 'processing'
+  ELSE NULL
+END;
+```
+
+---
+
+## Migration 024: Fix Existing Job Status Data (Bug Fix)
+
+**Date:** October 6, 2025
+**Purpose:** One-time data fix to sync existing mismatched job statuses
+**File:** `024_fix_existing_job_statuses.sql`
+
+### Problem Statement
+Migration 023 only fixes FUTURE card movements. Existing jobs in the database already had mismatched statuses (e.g., cards in "Waiting for Call" column but job.status = "to_submit").
+
+### Solution
+One-time UPDATE query to sync all existing jobs with their current card positions:
+
+```sql
+UPDATE jobs j
+SET status = CASE
+  WHEN kc.name ILIKE '%to submit%' THEN 'to_submit'
+  WHEN kc.name ILIKE '%waiting%' THEN 'waiting_for_call'
+  WHEN kc.name ILIKE '%interview%' THEN 'ongoing'
+  WHEN kc.name ILIKE '%offer%' THEN 'success'
+  WHEN kc.name ILIKE '%not now%' THEN 'not_now'
+  WHEN kc.name ILIKE '%rejected%' THEN 'not_now'
+  WHEN kc.name ILIKE '%processing%' THEN 'processing'
+  ELSE j.status
+END,
+updated_at = NOW()
+FROM kanban_cards cards
+INNER JOIN kanban_columns kc ON kc.id = cards.column_id
+WHERE j.id = cards.job_id
+  AND cards.job_id IS NOT NULL
+  AND j.status != [expected status based on column];
+```
+
+**Records Updated:** All jobs with kanban cards that had mismatched statuses
+
+---
+
 ## Related Documentation
 
-- **Migration File:** `/app/supabase/migrations/014_add_enhanced_kanban_fields.sql`
+- **Migration Files:**
+  - `/app/supabase/migrations/014_add_enhanced_kanban_fields.sql`
+  - `/app/supabase/migrations/023_sync_job_status_on_card_move.sql`
+  - `/app/supabase/migrations/024_fix_existing_job_statuses.sql`
 - **Parent Schema:** `../DatabaseSchema.md`
 - **API Spec:** `./APISpecification.md`
 - **PRD:** `./PRD.md`

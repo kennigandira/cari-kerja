@@ -71,10 +71,10 @@ onUnmounted(() => {
       >
         <div
           ref="modalRef"
-          :class="['bg-white rounded-2xl shadow-2xl w-full overflow-hidden', sizes[size]]"
+          :class="['bg-white rounded-2xl shadow-2xl w-full flex flex-col max-h-[90vh]', sizes[size]]"
         >
           <!-- Header -->
-          <div class="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-white">
+          <div class="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-white flex-shrink-0">
             <div class="flex justify-between items-center">
               <h2 :id="`modal-title-${$.uid}`" class="text-2xl font-bold text-gray-900">
                 {{ title }}
@@ -94,12 +94,12 @@ onUnmounted(() => {
           </div>
 
           <!-- Body -->
-          <div class="px-6 py-5">
+          <div class="px-6 py-5 overflow-y-auto flex-1 min-h-0">
             <slot />
           </div>
 
           <!-- Footer -->
-          <div v-if="$slots.footer" class="px-6 py-4 bg-gray-50 border-t border-gray-200">
+          <div v-if="$slots.footer" class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex-shrink-0">
             <slot name="footer" />
           </div>
         </div>

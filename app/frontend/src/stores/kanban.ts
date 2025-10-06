@@ -26,6 +26,10 @@ export const useKanbanStore = defineStore('kanban', () => {
   const loading = ref(false)
   const error = ref<string | null>(null)
 
+  // Job cache for detail modal (5 min TTL)
+  const jobCache = ref<Map<string, { job: Job; timestamp: number }>>(new Map())
+  const JOB_CACHE_TTL = 5 * 60 * 1000 // 5 minutes
+
   // Computed
   const cardsByColumn = computed(() => {
     const columnMap = new Map<string, KanbanCard[]>()
@@ -368,6 +372,45 @@ export const useKanbanStore = defineStore('kanban', () => {
     cards.value = cards.value.filter((c) => c.id !== deletedCard.id)
   }
 
+  // Job caching for detail modal
+  async function getJobWithCache(jobId: string, forceRefresh = false): Promise<Job> {
+    const cached = jobCache.value.get(jobId)
+    const now = Date.now()
+
+    // Return cached if valid and not forcing refresh
+    if (!forceRefresh && cached && (now - cached.timestamp) < JOB_CACHE_TTL) {
+      console.log('✓ Using cached job:', jobId)
+      return cached.job
+    }
+
+    // Fetch from API
+    console.log('→ Fetching job from API:', jobId)
+    const { data, error: fetchError } = await supabase
+      .from('jobs')
+      .select('*')
+      .eq('id', jobId)
+      .single()
+
+    if (fetchError) throw fetchError
+    if (!data) throw new Error('Job not found')
+
+    // Update cache
+    jobCache.value.set(jobId, { job: data, timestamp: now })
+    console.log('✓ Job cached:', jobId)
+
+    return data
+  }
+
+  function invalidateJobCache(jobId: string) {
+    jobCache.value.delete(jobId)
+    console.log('✓ Cache invalidated for job:', jobId)
+  }
+
+  function clearJobCache() {
+    jobCache.value.clear()
+    console.log('✓ All job cache cleared')
+  }
+
   return {
     // State
     columns,
@@ -395,6 +438,11 @@ export const useKanbanStore = defineStore('kanban', () => {
     // Real-time handlers
     handleCardInsert,
     handleCardUpdate,
-    handleCardDelete
+    handleCardDelete,
+
+    // Job caching
+    getJobWithCache,
+    invalidateJobCache,
+    clearJobCache
   }
 })

@@ -33,7 +33,9 @@ export type TaskType =
   | 'review_cv'
   | 'review_cover_letter'
   | 'compile_pdf'
-  | 'sync_to_filesystem';
+  | 'sync_to_filesystem'
+  | 'generate_interview_prep'
+  | 'analyze_salary_offer';
 
 export interface MatchAnalysis {
   strengths: string[];
@@ -82,6 +84,39 @@ export interface Job {
   application_notes?: string;
   application_deadline?: string;
   application_submitted_at?: string;
+
+  // Interview tracking (NEW - Migration 014)
+  interview_phase_total?: number;
+  interview_phase_current?: number;
+  interview_prep_suggestions?: {
+    topics: string[];
+    generated_at: string;
+    model: string;
+  };
+
+  // Offer & salary analysis (NEW - Migration 014)
+  salary_offer_amount?: number;
+  salary_offer_currency?: 'THB' | 'USD' | 'EUR' | 'GBP' | 'SGD' | 'AUD';
+  offer_benefits?: string;
+  offer_ai_analysis?: {
+    is_competitive: 'above_average' | 'average' | 'below_average';
+    analysis: string;
+    sources: Array<{ title: string; url: string }>;
+    recommendation: string;
+    generated_at: string;
+  };
+
+  // Retrospective (NEW - Migration 014)
+  retrospective_reason?: string;
+  retrospective_learnings?: string;
+
+  // Analytics (NEW - Migration 014)
+  status_history?: Array<{
+    from_status: string | null;
+    to_status: string;
+    timestamp: string;
+    duration_days: number;
+  }>;
 }
 
 export interface JobDocument {
@@ -208,7 +243,9 @@ export const TASK_TYPE_LABELS: Record<TaskType, string> = {
   review_cv: 'Reviewing CV',
   review_cover_letter: 'Reviewing Cover Letter',
   compile_pdf: 'Compiling PDF',
-  sync_to_filesystem: 'Syncing to Filesystem'
+  sync_to_filesystem: 'Syncing to Filesystem',
+  generate_interview_prep: 'Generating Interview Prep',
+  analyze_salary_offer: 'Analyzing Salary Offer'
 };
 
 export const APPLICATION_METHOD_LABELS: Record<ApplicationMethod, string> = {
