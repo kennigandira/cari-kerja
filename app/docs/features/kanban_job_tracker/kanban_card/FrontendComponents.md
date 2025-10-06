@@ -9,23 +9,24 @@
 
 ## Component Architecture
 
-### Component Hierarchy
+### Component Hierarchy (Actual Implementation)
 
 ```
-JobDetailModal.vue (Main Modal Container)
-├── JobDetailHeader.vue (Title, Close Button, Edit/Delete Actions)
-├── JobInfoSection.vue (Company, Position, Location, URL, Posted Date)
-├── MatchAnalysisSection.vue (Match %, Strengths/Gaps/Partials Lists)
-├── JobDescriptionSection.vue (Full Job Description)
-├── StatusSwitcher.vue (Dropdown to Change Status)
-│
-├── ToSubmitFields.vue (Apply Button, CV/CL Readiness)
-├── WaitingForCallFields.vue (Submitted Timestamp, Interview Prep AI)
-├── InterviewingFields.vue (Phase Tracker, Progress Bar)
-├── OfferFields.vue (Salary Input, AI Analysis, Accept/Decline CTAs)
-├── NotNowFields.vue (Retrospective Form)
-└── AcceptedFields.vue (Congratulations UI)
+BaseModal.vue (Reusable Modal Component)
+  └── JobDetailModal.vue (Main Modal Container)
+      ├── BaseButton.vue (Action Buttons)
+      ├── BaseBadge.vue (Match Percentage Badge)
+      │
+      └── Status-Specific Components (Dynamic):
+          ├── ToSubmitFields.vue (Apply Button, CV/CL Readiness)
+          ├── WaitingForCallFields.vue (Submitted Timestamp, Interview Prep AI)
+          ├── InterviewingFields.vue (Phase Tracker, Progress Bar)
+          ├── OfferFields.vue (Salary Input, AI Analysis, Accept/Decline CTAs)
+          ├── NotNowFields.vue (Retrospective Form)
+          └── AcceptedFields.vue (Congratulations UI)
 ```
+
+**Note:** Actual implementation simplified from planned architecture. Instead of separate sub-components (JobDetailHeader, JobInfoSection, etc.), all sections are inline within JobDetailModal for better maintainability.
 
 ---
 
@@ -38,211 +39,234 @@ JobDetailModal.vue (Main Modal Container)
 **Props:**
 ```typescript
 interface Props {
-  jobId: string;
   isOpen: boolean;
+  jobId: string | null;
 }
 ```
 
 **Emits:**
 ```typescript
 interface Emits {
-  close: () => void;
-  jobUpdated: (job: JobWithDocuments) => void;
-  jobDeleted: (jobId: string) => void;
+  close: [];
+  delete: [jobId: string];
+  statusChange: [jobId: string, newStatus: JobStatus];
 }
 ```
 
 **State Management:**
 ```typescript
-import { ref, computed, watch, onMounted } from 'vue';
-import { useJobsStore } from '@/stores/jobs';
-import { KanbanCardAPI } from '@/services/kanban-api';
+import { ref, computed, watch } from 'vue';
+import { useKanbanStore } from '@/stores/kanban';
+import { KanbanCardAPI } from '../services/kanban-api';
 
-const jobsStore = useJobsStore();
-const job = ref<JobWithDocuments | null>(null);
+const kanbanStore = useKanbanStore();
+const job = ref<Job | null>(null);
 const isLoading = ref(false);
-const isEditing = ref(false);
+const error = ref<string | null>(null);
 
-// Fetch job on open
-watch(() => props.isOpen, async (isOpen) => {
-  if (isOpen) {
-    isLoading.value = true;
-    job.value = await KanbanCardAPI.getJobDetail(props.jobId);
+// Fetch job details using cache
+const loadJobDetails = async () => {
+  if (!props.jobId) return;
+
+  isLoading.value = true;
+  error.value = null;
+
+  try {
+    job.value = await kanbanStore.getJobWithCache(props.jobId);
+  } catch (err) {
+    error.value = err instanceof Error ? err.message : 'Failed to load job details';
+  } finally {
     isLoading.value = false;
+  }
+};
+
+// Watch for modal open and load data
+watch(() => [props.isOpen, props.jobId], ([isOpen, jobId]) => {
+  if (isOpen && jobId) {
+    loadJobDetails();
   }
 });
 
-// Keyboard shortcut: ESC to close
-onMounted(() => {
-  const handleEscape = (e: KeyboardEvent) => {
-    if (e.key === 'Escape' && props.isOpen) {
-      emit('close');
-    }
-  };
-  window.addEventListener('keydown', handleEscape);
-  onUnmounted(() => window.removeEventListener('keydown', handleEscape));
+// Status reactivity with computed getter/setter
+const currentStatus = computed({
+  get: () => job.value?.status || 'processing',
+  set: (newStatus: JobStatus) => {
+    handleStatusChange(newStatus);
+  }
 });
 ```
 
-**Template Structure:**
+**Template Structure (Actual Implementation):**
 ```vue
 <template>
-  <!-- Backdrop -->
-  <Transition name="fade">
-    <div
-      v-if="isOpen"
-      class="fixed inset-0 bg-black/50 z-40"
-      @click="emit('close')"
-    />
-  </Transition>
+  <BaseModal
+    :is-open="isOpen"
+    title="Job Application Details"
+    size="xl"
+    @close="handleClose"
+  >
+    <!-- Loading State -->
+    <div v-if="isLoading" class="flex items-center justify-center py-12">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+    </div>
 
-  <!-- Modal -->
-  <Transition name="slide-up">
-    <div
-      v-if="isOpen"
-      class="fixed inset-0 z-50 overflow-y-auto"
-      @click.self="emit('close')"
-    >
-      <div class="min-h-screen px-4 flex items-center justify-center">
-        <div
-          class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto"
-          @click.stop
-        >
-          <!-- Loading State -->
-          <div v-if="isLoading" class="p-12 text-center">
-            <LoadingSpinner />
-            <p class="mt-4 text-gray-600">Loading job details...</p>
+    <!-- Error State -->
+    <div v-else-if="error" class="text-center py-12">
+      <p class="text-red-600 mb-4">{{ error }}</p>
+      <BaseButton @click="loadJobDetails">Retry</BaseButton>
+    </div>
+
+    <!-- Job Details -->
+    <div v-else-if="job" class="space-y-6">
+      <!-- Header Section (Full Width) -->
+      <div class="space-y-4">
+        <div class="flex items-start justify-between gap-4">
+          <div class="flex-1">
+            <h3 class="text-2xl font-bold text-gray-900">
+              {{ job.position_title || 'Untitled Position' }}
+            </h3>
+            <p class="text-xl text-gray-600 mt-1">
+              {{ job.company_name || 'Unknown Company' }}
+            </p>
+            <p v-if="job.location" class="text-sm text-gray-500 mt-1">
+              📍 {{ job.location }}
+            </p>
           </div>
 
-          <!-- Content -->
-          <div v-else-if="job" class="p-6 space-y-6">
-            <JobDetailHeader
+          <!-- Match Percentage Badge -->
+          <BaseBadge
+            v-if="job.match_percentage"
+            :variant="matchPercentageColor"
+            size="lg"
+          >
+            {{ job.match_percentage }}% Match
+          </BaseBadge>
+        </div>
+
+        <!-- Status Switcher with v-model -->
+        <div class="flex items-center gap-3">
+          <label for="status-select" class="text-sm font-medium text-gray-700">
+            Status:
+          </label>
+          <select
+            id="status-select"
+            v-model="currentStatus"
+            class="rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
+          >
+            <option v-for="option in statusOptions" :key="option.value" :value="option.value">
+              {{ option.label }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex items-center gap-2">
+          <BaseButton v-if="job.original_url" variant="secondary" size="sm" @click="openJobUrl">
+            View Job Post ↗
+          </BaseButton>
+          <BaseButton variant="ghost" size="sm" class="text-red-600" @click="handleDelete">
+            Delete
+          </BaseButton>
+        </div>
+      </div>
+
+      <!-- Two Column Layout (Desktop) / Stacked (Mobile) -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Left Column: Match Analysis + Application Details -->
+        <div class="space-y-6">
+          <div v-if="job.match_analysis" class="border-t pt-6">
+            <h4 class="text-lg font-semibold text-gray-900 mb-4">Match Analysis</h4>
+            <!-- Strengths, Partial Matches, Gaps lists -->
+          </div>
+
+          <div class="border-t pt-6">
+            <h4 class="text-lg font-semibold text-gray-900 mb-4">Application Details</h4>
+            <!-- Dynamic status-specific component -->
+            <component
+              :is="statusComponent"
+              v-if="statusComponent"
               :job="job"
-              :is-editing="isEditing"
-              @toggle-edit="isEditing = !isEditing"
-              @delete="handleDelete"
-              @close="emit('close')"
+              @update="handleJobUpdate"
+              @accept="handleAccept"
+              @decline="handleDecline"
+              @archive="handleArchive"
             />
+          </div>
+        </div>
 
-            <JobInfoSection
-              :job="job"
-              :is-editing="isEditing"
-              @update="handleUpdate"
-            />
-
-            <MatchAnalysisSection :match-analysis="job.match_analysis" />
-
-            <JobDescriptionSection
-              :description="job.job_description_text"
-              :is-editing="isEditing"
-              @update="handleUpdate"
-            />
-
-            <StatusSwitcher
-              :current-status="job.status"
-              @change="handleStatusChange"
-            />
-
-            <!-- Status-Specific Fields (Conditional Rendering) -->
-            <ToSubmitFields
-              v-if="job.status === 'to_submit'"
-              :job="job"
-              @apply-clicked="handleApplyClick"
-            />
-
-            <WaitingForCallFields
-              v-if="job.status === 'waiting_for_call'"
-              :job="job"
-              @generate-prep="handleGeneratePrep"
-            />
-
-            <InterviewingFields
-              v-if="job.status === 'ongoing'"
-              :job="job"
-              @update-phase="handleUpdatePhase"
-            />
-
-            <OfferFields
-              v-if="job.status === 'success'"
-              :job="job"
-              @analyze-offer="handleAnalyzeOffer"
-              @accept="handleAcceptOffer"
-              @decline="handleDeclineOffer"
-            />
-
-            <NotNowFields
-              v-if="job.status === 'not_now'"
-              :job="job"
-              @save-retrospective="handleSaveRetrospective"
-            />
-
-            <AcceptedFields
-              v-if="job.status === 'accepted'"
-              :job="job"
-            />
-
-            <!-- Coming Soon: Comments -->
-            <div class="border-t pt-6">
-              <div class="flex items-center gap-2 text-gray-500">
-                <span class="text-lg">💬</span>
-                <span class="font-medium">Comments</span>
-                <span class="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs rounded-full">
-                  Coming Soon
-                </span>
-              </div>
-              <p class="mt-2 text-sm text-gray-500">
-                Rich text comments with formatting will be available in Phase 3
-              </p>
+        <!-- Right Column: Job Description -->
+        <div class="space-y-6">
+          <div v-if="job.job_description_text" class="border-t pt-6">
+            <h4 class="text-lg font-semibold text-gray-900 mb-3">Job Description</h4>
+            <div class="prose prose-sm max-w-none text-gray-700 whitespace-pre-wrap">
+              {{ job.job_description_text }}
             </div>
           </div>
         </div>
       </div>
     </div>
-  </Transition>
+  </BaseModal>
 </template>
 ```
 
-**Styles:**
-```vue
-<style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.3s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-
-.slide-up-enter-active,
-.slide-up-leave-active {
-  transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-.slide-up-enter-from {
-  transform: translateY(20px);
-  opacity: 0;
-}
-
-.slide-up-leave-to {
-  transform: translateY(20px);
-  opacity: 0;
-}
-
-/* Mobile: Full screen */
-@media (max-width: 640px) {
-  .rounded-2xl {
-    border-radius: 0;
-    max-height: 100vh !important;
-  }
-}
-</style>
-```
+**Key Features:**
+- ✅ Two-column responsive layout (desktop) / stacked (mobile)
+- ✅ Status dropdown with v-model reactivity
+- ✅ Uses BaseModal for consistent UX
+- ✅ Dynamic component rendering based on status
+- ✅ Job caching for performance
+- ✅ Error handling with retry button
+- ✅ Loading states
 
 ---
 
-### 2. Status-Specific Components
+### 2. BaseModal.vue (Enhanced for Scrolling)
+
+**Purpose:** Reusable modal wrapper with proper scrolling
+
+**Props:**
+```typescript
+interface Props {
+  isOpen: boolean;
+  title: string;
+  size?: 'sm' | 'md' | 'lg' | 'xl';
+}
+```
+
+**Key Enhancement (Oct 6, 2025):**
+```vue
+<!-- Modal Container with Scrolling Fix -->
+<div
+  ref="modalRef"
+  :class="['bg-white rounded-2xl shadow-2xl w-full flex flex-col max-h-[90vh]', sizes[size]]"
+>
+  <!-- Header (Fixed) -->
+  <div class="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-white flex-shrink-0">
+    <div class="flex justify-between items-center">
+      <h2 class="text-2xl font-bold text-gray-900">{{ title }}</h2>
+      <BaseButton variant="ghost" icon size="sm" @click="handleClose">
+        <!-- Close icon -->
+      </BaseButton>
+    </div>
+  </div>
+
+  <!-- Body (Scrollable) -->
+  <div class="px-6 py-5 overflow-y-auto flex-1 min-h-0">
+    <slot />
+  </div>
+
+  <!-- Footer (Fixed) -->
+  <div v-if="$slots.footer" class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex-shrink-0">
+    <slot name="footer" />
+  </div>
+</div>
+```
+
+**Critical Fix:** Added `flex flex-col` + `max-h-[90vh]` + `overflow-y-auto` to enable proper scrolling for long content. Header and footer use `flex-shrink-0` to stay fixed while body scrolls.
+
+---
+
+### 3. Status-Specific Components
 
 #### ToSubmitFields.vue
 

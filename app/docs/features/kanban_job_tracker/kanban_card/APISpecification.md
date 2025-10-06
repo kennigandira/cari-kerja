@@ -1,9 +1,10 @@
 # API Specification - Enhanced Kanban Card Detail View
 
-**Version:** 1.0
+**Version:** 1.1 (Updated Oct 6, 2025)
 **Date:** October 6, 2025
 **Base URL:** `https://ewqqpflajxvqkoawgmek.supabase.co`
 **Parent Feature:** Kanban Job Application Tracker
+**Recent Changes:** Enhanced `move_card_between_columns()` to sync job.status (Migration 023)
 
 ---
 
@@ -263,7 +264,78 @@ const { error } = await supabase.rpc('save_retrospective', {
 
 ---
 
-### 4. Update Status with History
+### 4. Move Card Between Columns (Enhanced Oct 6, 2025)
+
+**Function:** `move_card_between_columns()`
+**Purpose:** Move kanban card AND sync job.status atomically
+**Migration:** 023_sync_job_status_on_card_move.sql
+
+**Function Signature:**
+```sql
+CREATE OR REPLACE FUNCTION move_card_between_columns(
+  p_card_id UUID,
+  p_from_column_id UUID,
+  p_to_column_id UUID,
+  p_new_position INTEGER
+)
+RETURNS void
+LANGUAGE plpgsql
+SECURITY DEFINER
+```
+
+**Key Enhancement (Oct 6, 2025):**
+This function now syncs the linked job's status when cards move between columns.
+
+**Logic Flow:**
+1. Get card's `job_id` and lock row
+2. Move card to temporary position (-1)
+3. Shift positions in source column
+4. Make space in destination column
+5. Move card to final position
+6. **NEW:** If `job_id` exists:
+   - Get destination column name
+   - Map column name to job status
+   - Update `jobs.status` field
+7. Log activity to `kanban_card_activities`
+
+**Column Name → Job Status Mapping:**
+```sql
+v_new_job_status := CASE
+  WHEN v_column_name ILIKE '%to submit%' THEN 'to_submit'
+  WHEN v_column_name ILIKE '%waiting%' THEN 'waiting_for_call'
+  WHEN v_column_name ILIKE '%interview%' THEN 'ongoing'
+  WHEN v_column_name ILIKE '%offer%' THEN 'success'
+  WHEN v_column_name ILIKE '%not now%' THEN 'not_now'
+  WHEN v_column_name ILIKE '%rejected%' THEN 'not_now'
+  WHEN v_column_name ILIKE '%processing%' THEN 'processing'
+  ELSE NULL -- Keep existing status if no match
+END;
+```
+
+**Client Usage:**
+```typescript
+const { error } = await supabase.rpc('move_card_between_columns', {
+  p_card_id: cardId,
+  p_from_column_id: fromColumnId,
+  p_to_column_id: toColumnId,
+  p_new_position: 2
+});
+
+// After this call:
+// - Card is in new column at position 2
+// - Job status is automatically synced
+// - Status history is updated via trigger
+```
+
+**Side Effects:**
+- Updates `kanban_cards.column_id` and `position`
+- Updates `jobs.status` (if job_id exists)
+- Triggers `track_job_status_changes` on jobs table
+- Inserts activity log in `kanban_card_activities`
+
+---
+
+### 5. Update Status with History
 
 **Function:** `update_job_status()`
 **Purpose:** Change status and auto-log to history

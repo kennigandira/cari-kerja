@@ -1,43 +1,83 @@
 # Enhanced Kanban Card Detail View - Implementation Status
 
 **Feature:** Enhanced Kanban Card Detail View
-**Start Date:** October 7, 2025
+**Start Date:** October 6, 2025
 **Target Completion:** October 27, 2025
-**Current Phase:** 📋 Planning Complete
+**Current Phase:** ✅ Phase 1 MVP Complete
 
 ---
 
 ## 📊 Overall Progress
 
 ```
-Phase 1 (MVP):        [                    ] 0% (Not Started)
+Phase 1 (MVP):        [████████████████████] 100% (Complete)
 Phase 2 (AI):         [                    ] 0% (Not Started)
 Phase 3 (Comments):   [                    ] 0% (Not Started)
 
-Overall:              [                    ] 0% Complete
+Overall:              [███████             ] 33% Complete
 ```
 
 **Last Updated:** October 6, 2025
 
 ---
 
+## 🔧 Critical Bug Fixes (October 6, 2025)
+
+During Phase 1 implementation, four critical UX issues were discovered and fixed:
+
+### Issue #1: Modal Cannot Scroll
+**Problem:** Long job descriptions caused content overflow with no way to scroll
+**Root Cause:** BaseModal had `overflow-hidden` with no max-height constraint
+**Fix:**
+- Added `max-h-[90vh]` to modal container
+- Added `overflow-y-auto` to modal body
+- Implemented flex layout (`flex flex-col`) with `flex-shrink-0` on header/footer
+**File:** `BaseModal.vue:74,97`
+
+### Issue #2: Status Dropdown Not Reactive
+**Problem:** Changing status in dropdown didn't update UI
+**Root Cause:** Used `:value` binding instead of `v-model`
+**Fix:**
+- Created computed property with getter/setter
+- Replaced `:value` with `v-model="currentStatus"`
+**File:** `JobDetailModal.vue:81-86,285`
+
+### Issue #3: Job Status Doesn't Match Card Column
+**Problem:** Cards in "Waiting for Call" showed "To Submit" in modal
+**Root Cause:** `kanban_cards.column_id` and `jobs.status` not synced
+**Fix:**
+- **Migration 023:** Updated `move_card_between_columns()` RPC to sync job.status
+- **Migration 024:** One-time data fix for existing mismatched records
+**Files:** `migrations/023_sync_job_status_on_card_move.sql`, `migrations/024_fix_existing_job_statuses.sql`
+
+### Issue #4: Modal Layout Cramped
+**Problem:** Single-column layout made long content hard to read
+**Fix:**
+- Implemented `grid grid-cols-1 lg:grid-cols-2` responsive layout
+- Left column: Match Analysis + Application Details
+- Right column: Job Description
+- Mobile: Stacks vertically
+**File:** `JobDetailModal.vue:320`
+
+---
+
 ## 🗓️ Phase Status
 
 ### Phase 1: MVP - Detail Modal + Status Fields
-**Timeline:** Week 1 (Oct 7-13, 2025)
-**Status:** 📋 Planning Complete
-**Progress:** 0/8 tasks complete
+**Timeline:** October 6, 2025 (Completed same day)
+**Status:** ✅ Complete
+**Progress:** 8/8 tasks complete
 
 | Task | Status | Assignee | Notes |
 |------|--------|----------|-------|
-| 1. Database Migration 014 | ⬜ Not Started | Backend | - |
-| 2. Update TypeScript Types | ⬜ Not Started | Frontend | - |
-| 3. JobDetailModal.vue Component | ⬜ Not Started | Frontend | - |
-| 4. Status-Specific Field Components | ⬜ Not Started | Frontend | - |
-| 5. Make Cards Clickable | ⬜ Not Started | Frontend | - |
-| 6. API Client (kanban-api.ts) | ⬜ Not Started | Frontend | - |
-| 7. Mobile Responsive Modal | ⬜ Not Started | Frontend | - |
-| 8. Manual Testing | ⬜ Not Started | QA | - |
+| 1. Database Migration 014 | ✅ Complete | Backend | Applied to production |
+| 2. Update TypeScript Types | ✅ Complete | Frontend | shared/types.ts updated |
+| 3. JobDetailModal.vue Component | ✅ Complete | Frontend | Uses BaseModal, two-column layout |
+| 4. Status-Specific Field Components | ✅ Complete | Frontend | 6 components: ToSubmit, WaitingForCall, Interviewing, Offer, NotNow, Accepted |
+| 5. Make Cards Clickable | ✅ Complete | Frontend | ApplicationCard emits click, opens modal |
+| 6. API Client (kanban-api.ts) | ✅ Complete | Frontend | Full CRUD + RPC wrappers |
+| 7. Mobile Responsive Modal | ✅ Complete | Frontend | Scrollable, responsive grid layout |
+| 8. Manual Testing | ✅ Complete | QA | Tested with chrome-devtools MCP |
 
 **Blockers:** None
 
@@ -105,13 +145,16 @@ Overall:              [                    ] 0% Complete
 
 ## 🎯 Milestone Tracker
 
-### Week 1 Milestones (Oct 7-13)
-- [ ] Migration 014 deployed to local
-- [ ] Migration 014 deployed to production
-- [ ] JobDetailModal renders on card click
-- [ ] All 6 status components built
-- [ ] Mobile responsive tested
-- [ ] MVP deployed to staging
+### October 6, 2025 Milestones (Phase 1 MVP)
+- [x] Migration 014 deployed to production
+- [x] Migrations 023 & 024 deployed (job status sync fix)
+- [x] JobDetailModal renders on card click
+- [x] All 6 status components built and tested
+- [x] Mobile responsive tested with chrome-devtools MCP
+- [x] Two-column layout implemented
+- [x] Modal scrolling working
+- [x] Status dropdown reactivity verified
+- [x] MVP deployed to production
 
 ### Week 2 Milestones (Oct 14-20)
 - [ ] Interview prep AI worker deployed
@@ -135,13 +178,13 @@ Overall:              [                    ] 0% Complete
 
 | Date | Phase | Version | Notes |
 |------|-------|---------|-------|
-| - | - | - | No deployments yet |
+| Oct 6, 2025 | Phase 1 MVP | 1.0.0 | Initial release with bug fixes (migrations 014, 023, 024) |
 
 ### Staging Deployments
 
 | Date | Phase | Version | Notes |
 |------|-------|---------|-------|
-| - | - | - | No deployments yet |
+| Oct 6, 2025 | Phase 1 MVP | 1.0.0 | Tested with chrome-devtools MCP |
 
 ---
 
@@ -157,14 +200,26 @@ Overall:              [                    ] 0% Complete
 
 | ID | Issue | Resolution | Resolved By | Date |
 |----|-------|------------|-------------|------|
-| - | No issues yet | - | - | - |
+| #1 | Modal can't scroll, content overflow | Added `max-h-[90vh]` + `overflow-y-auto` to BaseModal body | Frontend | Oct 6, 2025 |
+| #2 | Status dropdown not reactive | Replaced `:value` with `v-model` using computed getter/setter | Frontend | Oct 6, 2025 |
+| #3 | Job status doesn't match card column | Created migrations 023 & 024 to sync job.status with column position | Backend | Oct 6, 2025 |
+| #4 | Modal layout cramped, hard to read | Implemented two-column grid layout (desktop) / stacked (mobile) | Frontend | Oct 6, 2025 |
 
 ---
 
 ## ✅ Completed Tasks Log
 
-### Week 1 (Oct 7-13)
-- ⬜ No tasks completed yet
+### October 6, 2025 (Phase 1 MVP - Completed Same Day)
+- ✅ Database Migration 014 applied to production
+- ✅ JobDetailModal.vue component built with BaseModal integration
+- ✅ All 6 status-specific field components created
+- ✅ ApplicationCard made clickable with modal integration
+- ✅ kanban-api.ts service layer implemented
+- ✅ Two-column responsive layout implemented
+- ✅ Modal scrolling fixed (BaseModal.vue)
+- ✅ Status dropdown reactivity fixed (v-model)
+- ✅ Critical bug fix: Job status sync with migrations 023 & 024
+- ✅ Manual testing with chrome-devtools MCP completed
 
 ### Week 2 (Oct 14-20)
 - ⬜ No tasks completed yet
@@ -176,27 +231,32 @@ Overall:              [                    ] 0% Complete
 
 ## 📝 Change Log
 
-### Migration 014 Changes
-- ✅ Planning complete (Oct 6, 2025)
-- ⬜ Migration file created
-- ⬜ Applied to local DB
-- ⬜ Applied to production DB
+### Migration Changes
+- ✅ Migration 014: Enhanced kanban fields (Oct 6, 2025)
+- ✅ Migration 023: Job status sync on card move (Oct 6, 2025)
+- ✅ Migration 024: Fix existing job status data (Oct 6, 2025)
+- ✅ All migrations applied to production DB (Oct 6, 2025)
 
 ### Component Changes
-- ✅ Planning complete (Oct 6, 2025)
-- ⬜ JobDetailModal.vue created
-- ⬜ ToSubmitFields.vue created
-- ⬜ WaitingForCallFields.vue created
-- ⬜ InterviewingFields.vue created
-- ⬜ OfferFields.vue created
-- ⬜ NotNowFields.vue created
-- ⬜ AcceptedFields.vue created
+- ✅ JobDetailModal.vue created (Oct 6, 2025)
+  - Uses BaseModal.vue for consistent modal UX
+  - Two-column responsive layout (desktop) / stacked (mobile)
+  - Status dropdown with v-model reactivity
+- ✅ BaseModal.vue enhanced with scrolling (Oct 6, 2025)
+  - Added `max-h-[90vh]` + `overflow-y-auto`
+  - Flex layout for proper header/body/footer distribution
+- ✅ ToSubmitFields.vue created (Oct 6, 2025)
+- ✅ WaitingForCallFields.vue created (Oct 6, 2025)
+- ✅ InterviewingFields.vue created (Oct 6, 2025)
+- ✅ OfferFields.vue created (Oct 6, 2025)
+- ✅ NotNowFields.vue created (Oct 6, 2025)
+- ✅ AcceptedFields.vue created (Oct 6, 2025)
 
 ### Worker Changes
 - ✅ Planning complete (Oct 6, 2025)
-- ⬜ generate-interview-prep.ts created
-- ⬜ analyze-salary-offer.ts created
-- ⬜ Cron handler updated
+- ⬜ generate-interview-prep.ts created (Phase 2)
+- ⬜ analyze-salary-offer.ts created (Phase 2)
+- ⬜ Cron handler updated (Phase 2)
 
 ---
 
@@ -260,11 +320,13 @@ Use this template for daily progress updates:
 ## 🎯 Success Criteria Status
 
 ### Phase 1 Success Criteria
-- [ ] Cards are clickable
-- [ ] Modal shows full job details
-- [ ] All 6 status fields render correctly
-- [ ] Edit/delete works
-- [ ] Mobile responsive
+- [x] Cards are clickable ✅
+- [x] Modal shows full job details ✅
+- [x] All 6 status fields render correctly ✅
+- [x] Edit/delete works ✅
+- [x] Mobile responsive ✅
+- [x] Modal scrolling works ✅
+- [x] Status dropdown syncs with actual job status ✅
 
 ### Phase 2 Success Criteria
 - [ ] Interview prep generates 5-7 topics
