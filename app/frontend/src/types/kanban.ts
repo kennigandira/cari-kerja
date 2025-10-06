@@ -29,6 +29,7 @@ export interface KanbanCard {
   status_updated_at: string
   created_at: string
   updated_at: string
+  job_id: string | null
 }
 
 export interface KanbanCardActivity {

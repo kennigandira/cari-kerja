@@ -39,7 +39,7 @@ const handleChange = async (event: ChangeEvent) => {
 
   // Card moved within same column
   if (event.moved) {
-    const { element, oldIndex, newIndex } = event.moved
+    const { newIndex } = event.moved
 
     const cardPositions = COLUMN_CARDS.value.map((card, index) => {
       const position = index === newIndex ? newIndex : (index < newIndex ? index : index + 1)
