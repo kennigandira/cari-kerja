@@ -52,7 +52,8 @@
       "Bash(awk:*)",
       "Bash(source:*)",
       "Bash(pip install:*)",
-      "Bash(supabase migration list:*)"
+      "Bash(supabase migration list:*)",
+      "Bash(git worktree:*)"
     ],
     "deny": [],
     "ask": []
