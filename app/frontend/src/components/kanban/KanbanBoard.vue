@@ -76,6 +76,18 @@ const handleCardClick = (cardId: string, jobId: string | null) => {
   isModalOpen.value = true
 }
 
+const handlePrefetch = async (jobId: string | null) => {
+  if (!jobId) return
+
+  // Prefetch in background (silent fail)
+  try {
+    await kanbanStore.getJobWithCache(jobId)
+  } catch (err) {
+    // Silent fail - prefetch is best-effort
+    console.log('Prefetch failed (silent):', err)
+  }
+}
+
 const closeModal = () => {
   isModalOpen.value = false
   selectedJobId.value = null
@@ -203,6 +215,7 @@ onMounted(async () => {
           :key="column.id"
           :column="column"
           @card-click="handleCardClick"
+          @card-prefetch="handlePrefetch"
         />
       </div>
     </div>

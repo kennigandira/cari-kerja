@@ -19,6 +19,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   'card-click': [cardId: string, jobId: string | null]
+  'card-prefetch': [jobId: string | null]
 }>()
 
 const kanbanStore = useKanbanStore()
@@ -79,6 +80,10 @@ const handleCardClick = (cardId: string, jobId: string | null) => {
   emit('card-click', cardId, jobId)
 }
 
+const handlePrefetch = (jobId: string | null) => {
+  emit('card-prefetch', jobId)
+}
+
 const handleDelete = async (cardId: string) => {
   try {
     await kanbanStore.deleteCard(cardId)
@@ -121,6 +126,7 @@ const handleDelete = async (cardId: string) => {
             :card="element"
             @delete="handleDelete"
             @click="handleCardClick"
+            @prefetch="handlePrefetch"
           />
         </template>
       </draggable>

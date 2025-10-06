@@ -13,6 +13,7 @@
 import { ref, computed, watch } from 'vue'
 import type { Job, JobStatus } from '@/shared/types'
 import { KanbanCardAPI } from '../services/kanban-api'
+import { useKanbanStore } from '@/stores/kanban'
 import BaseModal from './base/BaseModal.vue'
 import BaseButton from './base/BaseButton.vue'
 import BaseBadge from './base/BaseBadge.vue'
@@ -36,13 +37,16 @@ const emit = defineEmits<{
   statusChange: [jobId: string, newStatus: JobStatus]
 }>()
 
+// Store
+const kanbanStore = useKanbanStore()
+
 // State
 const job = ref<Job | null>(null)
 const isLoading = ref(false)
 const isEditing = ref(false)
 const error = ref<string | null>(null)
 
-// Fetch job details when modal opens
+// Fetch job details when modal opens (uses cache)
 const loadJobDetails = async () => {
   if (!props.jobId) return
 
@@ -50,8 +54,7 @@ const loadJobDetails = async () => {
   error.value = null
 
   try {
-    const response = await KanbanCardAPI.getJob(props.jobId)
-    job.value = response
+    job.value = await kanbanStore.getJobWithCache(props.jobId)
   } catch (err) {
     error.value = err instanceof Error ? err.message : 'Failed to load job details'
   } finally {
@@ -186,6 +189,9 @@ const handleJobUpdate = async (updates: Partial<Job>) => {
 
     // Merge updates into current job for immediate UI feedback
     Object.assign(job.value, updates)
+
+    // Invalidate cache to ensure fresh data on next open
+    kanbanStore.invalidateJobCache(job.value.id)
   } catch (err) {
     error.value = err instanceof Error ? err.message : 'Failed to update job'
   }

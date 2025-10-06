@@ -19,6 +19,7 @@ const props = defineProps<{
 const emit = defineEmits<{
   delete: [cardId: string]
   click: [cardId: string, jobId: string | null]
+  prefetch: [jobId: string | null]
 }>()
 
 const FORMATTED_DATE = computed(() => {
@@ -42,6 +43,12 @@ const handleCardClick = () => {
   emit('click', props.card.id, props.card.job_id)
 }
 
+const handleHover = () => {
+  if (props.card.job_id) {
+    emit('prefetch', props.card.job_id)
+  }
+}
+
 const handleDelete = (event: Event) => {
   // Prevent card click when deleting
   event.stopPropagation()
@@ -56,6 +63,8 @@ const handleDelete = (event: Event) => {
   <div
     class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-3 hover:shadow-lg hover:border-blue-300 transition-all duration-200 min-h-[44px] cursor-pointer group"
     @click="handleCardClick"
+    @mouseenter="handleHover"
+    @focus="handleHover"
     role="button"
     tabindex="0"
     @keydown.enter="handleCardClick"
