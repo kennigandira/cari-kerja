@@ -13,6 +13,7 @@
 import { onMounted, computed, ref } from 'vue'
 import KanbanColumn from './KanbanColumn.vue'
 import AuthModal from '../AuthModal.vue'
+import JobDetailModal from '../JobDetailModal.vue'
 import { useKanbanStore } from '@/stores/kanban'
 import { useRealtimeSync } from '@/composables/useRealtimeSync'
 import { supabase } from '@/lib/supabase'
@@ -25,6 +26,10 @@ const ERROR = computed(() => kanbanStore.error)
 const COLUMNS = computed(() => kanbanStore.sortedColumns)
 const showAuthModal = ref(false)
 const currentUser = ref<any>(null)
+
+// Job Detail Modal state
+const isModalOpen = ref(false)
+const selectedJobId = ref<string | null>(null)
 
 const loadData = async () => {
   console.log('Loading Kanban data...')
@@ -63,6 +68,31 @@ const handleSignOut = async () => {
   await supabase.auth.signOut()
   currentUser.value = null
   showAuthModal.value = true
+}
+
+// Job Detail Modal handlers
+const handleCardClick = (cardId: string, jobId: string | null) => {
+  selectedJobId.value = jobId
+  isModalOpen.value = true
+}
+
+const closeModal = () => {
+  isModalOpen.value = false
+  selectedJobId.value = null
+}
+
+const handleJobDelete = async (jobId: string) => {
+  // Refresh data after delete
+  await kanbanStore.fetchCards()
+  await kanbanStore.fetchJobs()
+  await kanbanStore.syncJobsToCards()
+}
+
+const handleStatusChange = async (jobId: string, newStatus: string) => {
+  // Refresh data after status change
+  await kanbanStore.fetchCards()
+  await kanbanStore.fetchJobs()
+  await kanbanStore.syncJobsToCards()
 }
 
 onMounted(async () => {
@@ -172,9 +202,19 @@ onMounted(async () => {
           v-for="column in COLUMNS"
           :key="column.id"
           :column="column"
+          @card-click="handleCardClick"
         />
       </div>
     </div>
+
+    <!-- Job Detail Modal -->
+    <JobDetailModal
+      :is-open="isModalOpen"
+      :job-id="selectedJobId"
+      @close="closeModal"
+      @delete="handleJobDelete"
+      @statusChange="handleStatusChange"
+    />
 
     <!-- Auth Modal -->
     <AuthModal

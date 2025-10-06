@@ -17,6 +17,10 @@ const props = defineProps<{
   column: KanbanColumn
 }>()
 
+const emit = defineEmits<{
+  'card-click': [cardId: string, jobId: string | null]
+}>()
+
 const kanbanStore = useKanbanStore()
 
 const COLUMN_CARDS = computed({
@@ -71,6 +75,10 @@ const handleChange = async (event: ChangeEvent) => {
   }
 }
 
+const handleCardClick = (cardId: string, jobId: string | null) => {
+  emit('card-click', cardId, jobId)
+}
+
 const handleDelete = async (cardId: string) => {
   try {
     await kanbanStore.deleteCard(cardId)
@@ -112,6 +120,7 @@ const handleDelete = async (cardId: string) => {
             :key="element.id"
             :card="element"
             @delete="handleDelete"
+            @click="handleCardClick"
           />
         </template>
       </draggable>
