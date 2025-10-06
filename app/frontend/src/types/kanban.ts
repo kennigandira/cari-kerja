@@ -23,6 +23,7 @@ export interface KanbanCard {
   position: number
   company_name: string
   job_title: string
+  job_id: string | null
   application_date: string | null
   application_folder_path: string | null
   status_updated_at: string

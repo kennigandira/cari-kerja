@@ -18,6 +18,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   delete: [cardId: string]
+  click: [cardId: string, jobId: string | null]
 }>()
 
 const FORMATTED_DATE = computed(() => {
@@ -37,7 +38,14 @@ const HAS_APPLICATION_FOLDER = computed(() => {
   return Boolean(props.card.application_folder_path)
 })
 
-const handleDelete = () => {
+const handleCardClick = () => {
+  emit('click', props.card.id, props.card.job_id)
+}
+
+const handleDelete = (event: Event) => {
+  // Prevent card click when deleting
+  event.stopPropagation()
+
   if (confirm(`Delete application for ${props.card.company_name}?`)) {
     emit('delete', props.card.id)
   }
@@ -46,7 +54,12 @@ const handleDelete = () => {
 
 <template>
   <div
-    class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-3 cursor-move hover:shadow-md transition-shadow min-h-[44px]"
+    class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-3 hover:shadow-lg hover:border-blue-300 transition-all duration-200 min-h-[44px] cursor-pointer group"
+    @click="handleCardClick"
+    role="button"
+    tabindex="0"
+    @keydown.enter="handleCardClick"
+    @keydown.space.prevent="handleCardClick"
   >
     <!-- Company & Job Title -->
     <div class="mb-2">
@@ -82,7 +95,10 @@ const handleDelete = () => {
     </div>
 
     <!-- Actions -->
-    <div class="mt-3 flex items-center justify-end gap-2">
+    <div class="mt-3 flex items-center justify-between gap-2">
+      <span class="text-xs text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity">
+        Click to view details
+      </span>
       <button
         type="button"
         class="text-xs text-red-600 hover:text-red-800 px-2 py-1 rounded hover:bg-red-50 transition-colors"
