@@ -250,17 +250,17 @@ export const useKanbanStore = defineStore('kanban', () => {
     }
 
     // Store previous state for rollback
-    const previousCard = { ...cards.value[cardIndex] }
     const previousCards = [...cards.value]
 
     try {
       // Optimistic UI update
+      const currentCard = cards.value[cardIndex]
       cards.value[cardIndex] = {
-        ...cards.value[cardIndex],
+        ...currentCard,
         column_id: toColumnId,
         position: newPosition,
         status_updated_at: new Date().toISOString()
-      }
+      } as KanbanCard
 
       // Call RPC function for atomic backend update
       const { error: rpcError } = await supabase.rpc('move_card_between_columns', {
@@ -291,13 +291,14 @@ export const useKanbanStore = defineStore('kanban', () => {
 
     try {
       // Optimistic UI update
-      cardPositions.forEach(({ id, position }) => {
+      cardPositions.forEach(({ id, position }: { id: string; position: number }) => {
         const cardIndex = cards.value.findIndex((c) => c.id === id)
         if (cardIndex !== -1) {
+          const currentCard = cards.value[cardIndex]
           cards.value[cardIndex] = {
-            ...cards.value[cardIndex],
+            ...currentCard,
             position
-          }
+          } as KanbanCard
         }
       })
 
