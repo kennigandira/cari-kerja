@@ -283,44 +283,37 @@ async function handleSubmit() {
       current_position: formData.current_position || undefined
     };
 
-    let profileId: string;
+    // Prepare work experiences
+    const validExperiences = (formData.work_experiences || [])
+      .filter(exp => exp.company_name && exp.position_title && exp.start_date)
+      .map(exp => ({
+        ...exp,
+        end_date: exp.end_date || undefined
+      }));
+
+    // Prepare skills
+    const validSkills = (formData.skills || []).filter(skill => skill.skill_name);
 
     if (props.isEditing && props.initialData?.id) {
-      await profilesStore.updateProfile(props.initialData.id, profileData);
-      profileId = props.initialData.id;
-    } else {
-      const newProfile = await profilesStore.createProfile(profileData);
-      profileId = newProfile.id;
-    }
-
-    if (formData.work_experiences && formData.work_experiences.length > 0) {
-      const validExperiences = formData.work_experiences.filter(exp =>
-        exp.company_name && exp.position_title && exp.start_date
+      // Use batch update for editing - updates everything in one transaction
+      await profilesStore.updateProfileWithDetails(
+        props.initialData.id,
+        profileData,
+        validExperiences,
+        validSkills
       );
+    } else {
+      // For new profiles, use the existing create flow
+      const newProfile = await profilesStore.createProfile(profileData);
+      const profileId = newProfile.id;
 
+      // Add experiences and skills individually for new profiles
       for (const exp of validExperiences) {
-        const sanitizedExp = {
-          ...exp,
-          end_date: exp.end_date || undefined
-        };
-
-        if (exp.id) {
-          await profilesStore.updateWorkExperience(exp.id, sanitizedExp);
-        } else {
-          await profilesStore.addWorkExperience(profileId, sanitizedExp);
-        }
+        await profilesStore.addWorkExperience(profileId, exp);
       }
-    }
-
-    if (formData.skills && formData.skills.length > 0) {
-      const validSkills = formData.skills.filter(skill => skill.skill_name);
 
       for (const skill of validSkills) {
-        if (skill.id) {
-          await profilesStore.updateSkill(skill.id, skill);
-        } else {
-          await profilesStore.addSkill(profileId, skill);
-        }
+        await profilesStore.addSkill(profileId, skill);
       }
     }
 
