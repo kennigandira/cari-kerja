@@ -22,7 +22,6 @@ import WaitingForCallFields from './status-fields/WaitingForCallFields.vue'
 import InterviewingFields from './status-fields/InterviewingFields.vue'
 import OfferFields from './status-fields/OfferFields.vue'
 import NotNowFields from './status-fields/NotNowFields.vue'
-import AcceptedFields from './status-fields/AcceptedFields.vue'
 
 interface Props {
   isOpen: boolean
@@ -71,11 +70,18 @@ watch(() => [props.isOpen, props.jobId], ([isOpen, jobId]) => {
 
 // Computed properties
 const matchPercentageColor = computed(() => {
-  if (!job.value?.match_percentage) return 'gray'
+  if (!job.value?.match_percentage) return 'default'
   const percentage = job.value.match_percentage
-  if (percentage >= 80) return 'green'
-  if (percentage >= 60) return 'yellow'
-  return 'red'
+  if (percentage >= 80) return 'success'
+  if (percentage >= 60) return 'waiting'
+  return 'not_now'
+})
+
+const currentStatus = computed({
+  get: () => job.value?.status || 'processing',
+  set: (newStatus: JobStatus) => {
+    handleStatusChange(newStatus)
+  }
 })
 
 const statusOptions: { value: JobStatus; label: string }[] = [
@@ -243,7 +249,7 @@ const handleArchive = async () => {
 
     <!-- Job Details -->
     <div v-else-if="job" class="space-y-6">
-      <!-- Header Section -->
+      <!-- Header Section (Full Width) -->
       <div class="space-y-4">
         <div class="flex items-start justify-between gap-4">
           <div class="flex-1">
@@ -263,6 +269,7 @@ const handleArchive = async () => {
             v-if="job.match_percentage"
             :variant="matchPercentageColor"
             size="lg"
+            label=""
           >
             {{ job.match_percentage }}% Match
           </BaseBadge>
@@ -275,8 +282,7 @@ const handleArchive = async () => {
           </label>
           <select
             id="status-select"
-            :value="job.status"
-            @change="handleStatusChange($event.target.value as JobStatus)"
+            v-model="currentStatus"
             class="rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
           >
             <option
@@ -310,82 +316,89 @@ const handleArchive = async () => {
         </div>
       </div>
 
-      <!-- Match Analysis Section -->
-      <div v-if="job.match_analysis" class="border-t pt-6">
-        <h4 class="text-lg font-semibold text-gray-900 mb-4">Match Analysis</h4>
+      <!-- Two Column Layout (Desktop) / Stacked (Mobile) -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Left Column: Match Analysis -->
+        <div class="space-y-6">
+          <div v-if="job.match_analysis" class="border-t pt-6">
+            <h4 class="text-lg font-semibold text-gray-900 mb-4">Match Analysis</h4>
 
-        <!-- Strengths -->
-        <div v-if="job.match_analysis.strengths?.length" class="mb-4">
-          <h5 class="text-sm font-medium text-green-700 mb-2 flex items-center gap-2">
-            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-            </svg>
-            Strengths
-          </h5>
-          <ul class="space-y-1">
-            <li v-for="(item, index) in job.match_analysis.strengths" :key="index" class="text-sm text-gray-700 pl-6">
-              • {{ item }}
-            </li>
-          </ul>
+            <!-- Strengths -->
+            <div v-if="job.match_analysis.strengths?.length" class="mb-4">
+              <h5 class="text-sm font-medium text-green-700 mb-2 flex items-center gap-2">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                </svg>
+                Strengths
+              </h5>
+              <ul class="space-y-1">
+                <li v-for="(item, index) in job.match_analysis.strengths" :key="index" class="text-sm text-gray-700 pl-6">
+                  • {{ item }}
+                </li>
+              </ul>
+            </div>
+
+            <!-- Partial Matches -->
+            <div v-if="job.match_analysis.partial_matches?.length" class="mb-4">
+              <h5 class="text-sm font-medium text-yellow-700 mb-2 flex items-center gap-2">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                </svg>
+                Partial Matches
+              </h5>
+              <ul class="space-y-1">
+                <li v-for="(item, index) in job.match_analysis.partial_matches" :key="index" class="text-sm text-gray-700 pl-6">
+                  • {{ item }}
+                </li>
+              </ul>
+            </div>
+
+            <!-- Gaps -->
+            <div v-if="job.match_analysis.gaps?.length" class="mb-4">
+              <h5 class="text-sm font-medium text-red-700 mb-2 flex items-center gap-2">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                </svg>
+                Gaps
+              </h5>
+              <ul class="space-y-1">
+                <li v-for="(item, index) in job.match_analysis.gaps" :key="index" class="text-sm text-gray-700 pl-6">
+                  • {{ item }}
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Status-Specific Fields Section -->
+          <div class="border-t pt-6">
+            <h4 class="text-lg font-semibold text-gray-900 mb-4">Application Details</h4>
+
+            <!-- Status-specific components -->
+            <component
+              :is="statusComponent"
+              v-if="statusComponent"
+              :job="job"
+              @update="handleJobUpdate"
+              @accept="handleAccept"
+              @decline="handleDecline"
+              @archive="handleArchive"
+            />
+
+            <!-- Fallback for unknown status -->
+            <div v-else class="bg-gray-50 rounded-lg p-4 text-center text-gray-500 text-sm">
+              No specific fields for "{{ job.status }}" status
+            </div>
+          </div>
         </div>
 
-        <!-- Partial Matches -->
-        <div v-if="job.match_analysis.partial_matches?.length" class="mb-4">
-          <h5 class="text-sm font-medium text-yellow-700 mb-2 flex items-center gap-2">
-            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
-            </svg>
-            Partial Matches
-          </h5>
-          <ul class="space-y-1">
-            <li v-for="(item, index) in job.match_analysis.partial_matches" :key="index" class="text-sm text-gray-700 pl-6">
-              • {{ item }}
-            </li>
-          </ul>
-        </div>
-
-        <!-- Gaps -->
-        <div v-if="job.match_analysis.gaps?.length" class="mb-4">
-          <h5 class="text-sm font-medium text-red-700 mb-2 flex items-center gap-2">
-            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
-            </svg>
-            Gaps
-          </h5>
-          <ul class="space-y-1">
-            <li v-for="(item, index) in job.match_analysis.gaps" :key="index" class="text-sm text-gray-700 pl-6">
-              • {{ item }}
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- Job Description Section -->
-      <div v-if="job.job_description_text" class="border-t pt-6">
-        <h4 class="text-lg font-semibold text-gray-900 mb-3">Job Description</h4>
-        <div class="prose prose-sm max-w-none text-gray-700 whitespace-pre-wrap">
-          {{ job.job_description_text }}
-        </div>
-      </div>
-
-      <!-- Status-Specific Fields Section -->
-      <div class="border-t pt-6">
-        <h4 class="text-lg font-semibold text-gray-900 mb-4">Application Details</h4>
-
-        <!-- Status-specific components -->
-        <component
-          :is="statusComponent"
-          v-if="statusComponent"
-          :job="job"
-          @update="handleJobUpdate"
-          @accept="handleAccept"
-          @decline="handleDecline"
-          @archive="handleArchive"
-        />
-
-        <!-- Fallback for unknown status -->
-        <div v-else class="bg-gray-50 rounded-lg p-4 text-center text-gray-500 text-sm">
-          No specific fields for "{{ job.status }}" status
+        <!-- Right Column: Job Description -->
+        <div class="space-y-6">
+          <div v-if="job.job_description_text" class="border-t pt-6">
+            <h4 class="text-lg font-semibold text-gray-900 mb-3">Job Description</h4>
+            <div class="prose prose-sm max-w-none text-gray-700 whitespace-pre-wrap">
+              {{ job.job_description_text }}
+            </div>
+          </div>
         </div>
       </div>
     </div>
