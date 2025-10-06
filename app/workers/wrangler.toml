@@ -19,6 +19,7 @@ vars = { ENVIRONMENT = "development" }
 #   wrangler secret put SUPABASE_URL
 #   wrangler secret put SUPABASE_SERVICE_KEY
 #   wrangler secret put ANTHROPIC_API_KEY
+#   wrangler secret put JINA_API_KEY  # Optional: For better rate limits (200 RPM, 10M free tokens)
 
 # Sensitive environment variables - NEVER commit actual values
 [vars]

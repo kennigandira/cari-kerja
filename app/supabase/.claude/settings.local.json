@@ -2,7 +2,12 @@
   "permissions": {
     "allow": [
       "WebSearch",
-      "Read(//Users/user/Documents/cari-kerja/.claude/commands/**)"
+      "Read(//Users/user/Documents/cari-kerja/.claude/commands/**)",
+      "Read(//Users/user/Documents/cari-kerja/**)",
+      "Write(//Users/user/Documents/cari-kerja/**)",
+      "Edit(//Users/user/Documents/cari-kerja/**)",
+      "MultiEdit(//Users/user/Documents/cari-kerja/**)",
+      "Bash(cat:*)"
     ],
     "deny": [],
     "ask": []
