@@ -45,11 +45,11 @@
           <label :for="`start-date-${index}`">Start Date *</label>
           <input
             :id="`start-date-${index}`"
-            v-model="experience.start_date"
+            :value="formatDateForMonthInput(experience.start_date)"
             type="month"
             required
             class="form-input"
-            @input="emit('update', experiences)"
+            @input="handleStartDateChange(experience, ($event.target as HTMLInputElement).value)"
           />
         </div>
       </div>
@@ -59,11 +59,11 @@
           <label :for="`end-date-${index}`">End Date</label>
           <input
             :id="`end-date-${index}`"
-            v-model="experience.end_date"
+            :value="formatDateForMonthInput(experience.end_date)"
             type="month"
             :disabled="experience.is_current"
             class="form-input"
-            @input="emit('update', experiences)"
+            @input="handleEndDateChange(experience, ($event.target as HTMLInputElement).value)"
           />
         </div>
         <div class="form-group checkbox-group">
@@ -109,6 +109,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import type { WorkExperience } from '../../../../shared/types';
+import { formatDateForMonthInput, formatMonthInputForDB } from '../../utils/dateUtils';
 
 const props = defineProps<{
   modelValue: Partial<WorkExperience>[];
@@ -142,6 +143,18 @@ function removeExperience(index: number) {
   experiences.value.forEach((exp, idx) => {
     exp.display_order = idx;
   });
+  emit('update:modelValue', experiences.value);
+  emit('update', experiences.value);
+}
+
+function handleStartDateChange(experience: Partial<WorkExperience>, monthValue: string) {
+  experience.start_date = formatMonthInputForDB(monthValue);
+  emit('update:modelValue', experiences.value);
+  emit('update', experiences.value);
+}
+
+function handleEndDateChange(experience: Partial<WorkExperience>, monthValue: string) {
+  experience.end_date = formatMonthInputForDB(monthValue);
   emit('update:modelValue', experiences.value);
   emit('update', experiences.value);
 }
