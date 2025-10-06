@@ -1,0 +1,226 @@
+%-------------------------
+% Resume in Latex
+% Author: Kenni Gandira Alamsyah
+%------------------------
+
+\documentclass[a4paper, 11pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+
+\usepackage{xcolor}
+\usepackage[sfdefault]{roboto}
+
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Adjust margins
+\addtolength{\oddsidemargin}{-0.7in}
+\addtolength{\evensidemargin}{-0.7in}
+\addtolength{\textwidth}{1.4in}
+\addtolength{\topmargin}{-.5in}
+\addtolength{\textheight}{1.0in}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Sections formatting
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+%-------------------------
+% Custom commands
+\newcommand{\resumeItem}[1]{
+  \item\small{
+    {#1 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabularx}{0.987\textwidth}[t]{
+  >{\raggedright\arraybackslash}X
+  >{\centering\arraybackslash}X
+  >{\raggedleft\arraybackslash}X }
+      \textbf{#1} & #2 & #3 \\
+    \end{tabularx}
+    \textit{\small#4}\\
+    \vspace{-7pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{0.987\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1\\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.1in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}\vspace{5pt}}
+\newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=0.22in]}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-20pt}}
+
+\newcommand{\link}[2]{{\color[HTML]{096dd9}\href[pdfnewwindow=true]{#1}{\small{#2}}}}
+
+%-------------------------------------------
+%%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%----------HEADING----------
+\begin{center}
+    \textbf{\Huge \scshape Kenni Gandira Alamsyah} \\ \vspace{8pt}
+    \link{https://api.whatsapp.com/send/?phone=+660842704245}{+66 0842704245} $|$
+    \link{mailto:devkenni.g@gmail.com}{devkenni.g@gmail.com} $|$
+    \link{https://www.linkedin.com/in/kenni-g-alamsyah/}{linkedin.com/in/kenni-g-alamsyah/} $|$
+    Bangkok, Thailand
+\end{center}
+
+%-----------PROFESSIONAL SUMMARY-----------
+\section{Professional Summary}
+    \small{Results-driven Frontend Engineer with 8+ years architecting scalable web applications across real estate, gaming, and travel industries. Delivered measurable impact including 27\% traffic growth, 40\% build performance improvement, and 73\% Core Web Vitals enhancement. Proven technical leader who drives developer experience improvements, establishes engineering standards, and thrives in remote-first startup environments building clean, reliable, and scalable solutions.}
+
+%-----------WORK EXPERIENCE-----------
+\section{Work Experience}
+    \resumeSubHeadingListStart
+
+      \resumeSubheading
+        {PropertyScout}{Software Engineer}{March 2023 -- Present}
+        {Bangkok, Thailand}
+        \resumeItemListStart
+          \resumeItem{Architected and executed Vue.js application revamp delivering \textbf{27\% increase in user traffic} (Q3)}
+          \resumeItem{Drove technology stack modernization initiatives for optimal performance and security}
+          \resumeItem{Built internal tools that enhanced operational productivity across teams}
+          \resumeItem{Partnered with UI/UX designers to transform Figma designs into production-ready web applications}
+          \resumeItem{Elevated team capabilities through code reviews, technical mentorship, and knowledge sharing}
+          \resumeItem{\textit{Technologies:} Vue.js, TypeScript, TailwindCSS, Vite, GitHub}
+        \resumeItemListEnd
+
+      \resumeSubheading
+        {AccelByte}{Software Engineer}{June 2022 -- March 2023}
+        {Remote}
+        \resumeItemListStart
+          \resumeItem{Developed enterprise developer tools serving AAA game development studios}
+          \resumeItem{\textbf{Reduced compilation time by 40\%} through strategic build optimization and toolchain improvements}
+          \resumeItem{Established component library standards and comprehensive Storybook documentation}
+          \resumeItem{Led knowledge-sharing initiatives and drove code convention standardization across engineering team}
+          \resumeItem{Excelled in distributed remote team environment collaborating across multiple time zones}
+          \resumeItem{\textit{Technologies:} React, TypeScript, Webpack, Storybook, Git}
+        \resumeItemListEnd
+
+      \resumeSubheading
+        {99.co}{Frontend Engineer}{July 2020 -- July 2022}
+        {Bandung, Indonesia}
+        \resumeItemListStart
+          \resumeItem{Engineered performance optimizations \textbf{reducing LCP from 4.5s to 1.2s} (73\% improvement)}
+          \resumeItem{Enhanced organic site traffic through strategic SEO improvements and schema validation}
+          \resumeItem{\textbf{Received "Own It" award} (Q2/21) for exceptional product ownership and impact}
+          \resumeItem{Maintained Core Web Vitals optimization ensuring sustained performance excellence}
+          \resumeItem{Collaborated closely with design team delivering pixel-perfect Figma-to-code implementation}
+          \resumeItem{\textit{Technologies:} React, Next.js, TypeScript, SCSS, Lighthouse}
+        \resumeItemListEnd
+
+      \resumeSubheading
+        {Tiket.com}{Frontend Engineer}{August 2019 -- July 2020}
+        {Jakarta, Indonesia}
+        \resumeItemListStart
+          \resumeItem{Architected and implemented features for high-traffic travel booking platform}
+          \resumeItem{Maintained comprehensive component documentation with Storybook ensuring team scalability}
+          \resumeItem{Drove regular refactoring initiatives improving code scalability and maintainability}
+          \resumeItem{Coordinated with product team delivering UX enhancements and customer-facing features}
+          \resumeItem{Participated actively in agile sprint planning and collaborative code reviews}
+          \resumeItem{\textit{Technologies:} React, TypeScript, Redux, Storybook, Jira}
+        \resumeItemListEnd
+
+      \resumeSubheading
+        {Mirum Agency}{Frontend Developer}{July 2018 -- August 2019}
+        {Bandung, Indonesia}
+        \resumeItemListStart
+          \resumeItem{Developed full-stack WordPress university platform (UPH) with custom themes and plugins}
+          \resumeItem{Delivered customizable solutions solving complex client requirements}
+          \resumeItem{Built end-to-end functional websites spanning backend (PHP) to frontend implementation}
+          \resumeItem{Collaborated with design team implementing responsive layouts across devices}
+          \resumeItem{\textit{Technologies:} WordPress, PHP, JavaScript, CSS, HTML5}
+        \resumeItemListEnd
+
+      \resumeSubheading
+        {Hazani Rangka Utama (Hartama)}{Web Developer}{April 2017 -- August 2018}
+        {Bandung, Indonesia}
+        \resumeItemListStart
+          \resumeItem{Developed and launched three commercial WordPress themes for ThemeForest marketplace}
+          \resumeItem{Ensured W3C validation and accessibility compliance across all projects}
+          \resumeItem{Managed customer support and iterative product improvements based on user feedback}
+          \resumeItem{Implemented responsive designs ensuring cross-browser compatibility}
+          \resumeItem{\textit{Technologies:} WordPress, PHP, JavaScript, CSS, HTML5}
+        \resumeItemListEnd
+
+    \resumeSubHeadingListEnd
+
+%-----------TECHNICAL SKILLS-----------
+\section{Technical Skills}
+ \begin{itemize}[leftmargin=0.1in, label={}]
+    \small{\item{
+     \textbf{Frontend:} Vue.js, React.js, Next.js, TypeScript, JavaScript, TailwindCSS, CSS3, SASS/SCSS, Styled Components \\
+     \textbf{Backend \& APIs:} Node.js, NestJS, PHP (CodeIgniter, WordPress), GraphQL, Express.js \\
+     \textbf{Build Tools:} Webpack, Vite, npm, Git, GitHub \\
+     \textbf{Testing \& Documentation:} Jest, Cypress, React Testing Library, Storybook \\
+     \textbf{Collaboration:} Figma, Slack, Jira, Confluence \\
+     \textbf{Performance:} Core Web Vitals, SEO, Lighthouse \\
+    }}
+ \end{itemize}
+
+%-----------KEY ACHIEVEMENTS-----------
+\section{Key Achievements}
+ \begin{itemize}[leftmargin=0.1in, label={}]
+    \small{\item{
+     \resumeItem{\textbf{27\% traffic increase} through strategic web application revamp at PropertyScout}
+     \resumeItem{\textbf{40\% compilation time reduction} through developer experience and build optimization}
+     \resumeItem{\textbf{73\% LCP performance improvement} (4.5s to 1.2s) through Core Web Vitals engineering}
+     \resumeItem{\textbf{"Own It" Award recipient} (Q2/21) for exceptional product ownership at 99.co}
+     \resumeItem{\textbf{99 Group Hackathon - Best UI/UX Design} award winner}
+     \resumeItem{Built production-grade component libraries with Storybook across multiple organizations}
+    }}
+ \end{itemize}
+
+%-----------EDUCATION-----------
+\section{Education}
+    \resumeSubHeadingListStart
+      \resumeSubheading
+        {SMK Negeri 7 Bandung}{Analytical Chemistry}{2009 -- 2011}
+        {High School}
+    \resumeSubHeadingListEnd
+
+%-----------CERTIFICATIONS-----------
+\section{Certifications}
+ \begin{itemize}[leftmargin=0.1in, label={}]
+    \small{\item{
+     GDPR $|$ Anti Bribery \& Corruption $|$ Anti-Harassment and Discrimination $|$ Web Development HTML CSS \& SEO $|$ Anti-Money Laundering
+    }}
+ \end{itemize}
+
+%-----------LANGUAGES-----------
+\section{Languages}
+ \begin{itemize}[leftmargin=0.1in, label={}]
+    \small{\item{
+     \textbf{Bahasa Indonesia:} Native $|$ \textbf{English:} Professional $|$ \textbf{Sundanese:} Native
+    }}
+ \end{itemize}
+
+%-------------------------------------------
+\end{document}
