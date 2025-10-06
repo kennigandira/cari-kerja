@@ -223,6 +223,62 @@ export const useJobsStore = defineStore('jobs', () => {
     }
   };
 
+  const updateSubmissionInfo = async (
+    jobId: string,
+    submissionInfo: {
+      application_url?: string;
+      application_method?: string;
+      recruiter_email?: string;
+      recruiter_name?: string;
+      application_notes?: string;
+      application_deadline?: string;
+    }
+  ) => {
+    try {
+      const { error: updateError } = await supabase
+        .from('jobs')
+        .update(submissionInfo)
+        .eq('id', jobId);
+
+      if (updateError) throw updateError;
+
+      const job = jobs.value.find((j) => j.id === jobId);
+      if (job) {
+        Object.assign(job, submissionInfo);
+      }
+    } catch (err) {
+      error.value = err instanceof Error ? err.message : 'Failed to update submission info';
+      console.error('Error updating submission info:', err);
+      throw err;
+    }
+  };
+
+  const markAsSubmitted = async (jobId: string) => {
+    try {
+      const submittedAt = new Date().toISOString();
+
+      const { error: updateError } = await supabase
+        .from('jobs')
+        .update({
+          application_submitted_at: submittedAt,
+          status: 'waiting_for_call',
+        })
+        .eq('id', jobId);
+
+      if (updateError) throw updateError;
+
+      const job = jobs.value.find((j) => j.id === jobId);
+      if (job) {
+        job.application_submitted_at = submittedAt;
+        job.status = 'waiting_for_call';
+      }
+    } catch (err) {
+      error.value = err instanceof Error ? err.message : 'Failed to mark as submitted';
+      console.error('Error marking as submitted:', err);
+      throw err;
+    }
+  };
+
   const subscribeToChanges = () => {
     const channel = supabase
       .channel('jobs-changes')
@@ -254,6 +310,8 @@ export const useJobsStore = defineStore('jobs', () => {
     getJobById,
     createJob,
     updateJobStatus,
+    updateSubmissionInfo,
+    markAsSubmitted,
     requestRegeneration,
     subscribeToChanges,
   };

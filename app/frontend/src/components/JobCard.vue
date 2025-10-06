@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import type { JobWithDocuments } from '../../../shared/types';
+import type { JobWithDocuments, ApplicationMethod } from '../../../shared/types';
+import { APPLICATION_METHOD_LABELS } from '../../../shared/types';
 
 const props = defineProps<{
   job: JobWithDocuments;
@@ -35,6 +36,23 @@ const matchColor = computed(() => {
   if (match >= 60) return 'bg-yellow-100 text-yellow-800';
   return 'bg-red-100 text-red-800';
 });
+
+const isDeadlineNear = computed(() => {
+  if (!props.job.application_deadline) return false;
+  const deadline = new Date(props.job.application_deadline);
+  const now = new Date();
+  const daysUntil = Math.ceil((deadline.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+  return daysUntil <= 3 && daysUntil >= 0;
+});
+
+const applicationMethodIcon = computed(() => {
+  const method = props.job.application_method;
+  if (method === 'email') return '✉️';
+  if (method === 'linkedin') return '💼';
+  if (method === 'online_form') return '🌐';
+  if (method === 'recruiter') return '👤';
+  return '📋';
+});
 </script>
 
 <template>
@@ -57,6 +75,27 @@ const matchColor = computed(() => {
     <div v-if="job.location || job.posted_date" class="flex items-center gap-2 text-xs text-gray-500 mb-3">
       <span v-if="job.location">📍 {{ job.location }}</span>
       <span v-if="job.posted_date">📅 {{ new Date(job.posted_date).toLocaleDateString() }}</span>
+    </div>
+
+    <!-- Application Submission Info -->
+    <div v-if="job.application_method || job.application_deadline" class="mb-3 space-y-1">
+      <div v-if="job.application_method" class="flex items-center gap-2 text-xs">
+        <span>{{ applicationMethodIcon }}</span>
+        <span class="text-gray-600">
+          {{ APPLICATION_METHOD_LABELS[job.application_method as ApplicationMethod] }}
+        </span>
+      </div>
+      <div v-if="job.application_deadline" class="flex items-center gap-2 text-xs">
+        <span>⏰</span>
+        <span :class="isDeadlineNear ? 'text-red-600 font-semibold' : 'text-gray-600'">
+          Deadline: {{ new Date(job.application_deadline).toLocaleDateString() }}
+          <span v-if="isDeadlineNear" class="ml-1">⚠️</span>
+        </span>
+      </div>
+      <div v-if="job.application_submitted_at" class="flex items-center gap-2 text-xs text-green-600">
+        <span>✓</span>
+        <span>Submitted {{ new Date(job.application_submitted_at).toLocaleDateString() }}</span>
+      </div>
     </div>
 
     <!-- Processing Status -->

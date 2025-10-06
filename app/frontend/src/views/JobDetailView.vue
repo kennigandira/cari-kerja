@@ -2,6 +2,8 @@
 import { computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useJobsStore } from '../stores/jobs';
+import SubmissionInfoCard from '../components/SubmissionInfoCard.vue';
+import type { ApplicationMethod } from '../../../shared/types';
 
 const props = defineProps<{
   id: string;
@@ -20,6 +22,25 @@ onMounted(async () => {
 
 const goBack = () => {
   router.push('/');
+};
+
+const handleUpdateSubmission = async (submissionInfo: {
+  application_url?: string;
+  application_method?: ApplicationMethod;
+  recruiter_email?: string;
+  recruiter_name?: string;
+  application_notes?: string;
+  application_deadline?: string;
+}) => {
+  if (job.value) {
+    await jobsStore.updateSubmissionInfo(job.value.id, submissionInfo);
+  }
+};
+
+const handleMarkSubmitted = async () => {
+  if (job.value) {
+    await jobsStore.markAsSubmitted(job.value.id);
+  }
 };
 </script>
 
@@ -42,52 +63,60 @@ const goBack = () => {
         <p class="text-gray-600">Job not found</p>
       </div>
 
-      <div v-else class="bg-white rounded-lg shadow p-6">
-        <div class="space-y-4">
-          <div>
-            <h2 class="text-xl font-semibold text-gray-900">{{ job.company_name }}</h2>
-            <p class="text-gray-600">{{ job.position_title }}</p>
-          </div>
-
-          <div v-if="job.match_percentage" class="flex items-center gap-2">
-            <span class="text-gray-700 font-medium">Match:</span>
-            <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
-              {{ job.match_percentage }}%
-            </span>
-          </div>
-
-          <div v-if="job.match_analysis" class="border-t pt-4">
-            <h3 class="font-semibold text-gray-900 mb-2">Match Analysis</h3>
-
-            <div v-if="job.match_analysis.strengths?.length" class="mb-4">
-              <h4 class="text-sm font-medium text-green-700 mb-1">Strengths</h4>
-              <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
-                <li v-for="(strength, index) in job.match_analysis.strengths" :key="index">{{ strength }}</li>
-              </ul>
+      <div v-else class="space-y-6">
+        <div class="bg-white rounded-lg shadow p-6">
+          <div class="space-y-4">
+            <div>
+              <h2 class="text-xl font-semibold text-gray-900">{{ job.company_name }}</h2>
+              <p class="text-gray-600">{{ job.position_title }}</p>
             </div>
 
-            <div v-if="job.match_analysis.partial_matches?.length" class="mb-4">
-              <h4 class="text-sm font-medium text-yellow-700 mb-1">Partial Matches</h4>
-              <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
-                <li v-for="(match, index) in job.match_analysis.partial_matches" :key="index">{{ match }}</li>
-              </ul>
+            <div v-if="job.match_percentage" class="flex items-center gap-2">
+              <span class="text-gray-700 font-medium">Match:</span>
+              <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                {{ job.match_percentage }}%
+              </span>
             </div>
 
-            <div v-if="job.match_analysis.gaps?.length">
-              <h4 class="text-sm font-medium text-red-700 mb-1">Gaps</h4>
-              <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
-                <li v-for="(gap, index) in job.match_analysis.gaps" :key="index">{{ gap }}</li>
-              </ul>
-            </div>
-          </div>
+            <div v-if="job.match_analysis" class="border-t pt-4">
+              <h3 class="font-semibold text-gray-900 mb-2">Match Analysis</h3>
 
-          <div v-if="job.job_description_text" class="border-t pt-4">
-            <h3 class="font-semibold text-gray-900 mb-2">Job Description</h3>
-            <div class="prose prose-sm max-w-none">
-              <p class="whitespace-pre-wrap text-gray-700">{{ job.job_description_text }}</p>
+              <div v-if="job.match_analysis.strengths?.length" class="mb-4">
+                <h4 class="text-sm font-medium text-green-700 mb-1">Strengths</h4>
+                <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
+                  <li v-for="(strength, index) in job.match_analysis.strengths" :key="index">{{ strength }}</li>
+                </ul>
+              </div>
+
+              <div v-if="job.match_analysis.partial_matches?.length" class="mb-4">
+                <h4 class="text-sm font-medium text-yellow-700 mb-1">Partial Matches</h4>
+                <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
+                  <li v-for="(match, index) in job.match_analysis.partial_matches" :key="index">{{ match }}</li>
+                </ul>
+              </div>
+
+              <div v-if="job.match_analysis.gaps?.length">
+                <h4 class="text-sm font-medium text-red-700 mb-1">Gaps</h4>
+                <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
+                  <li v-for="(gap, index) in job.match_analysis.gaps" :key="index">{{ gap }}</li>
+                </ul>
+              </div>
+            </div>
+
+            <div v-if="job.job_description_text" class="border-t pt-4">
+              <h3 class="font-semibold text-gray-900 mb-2">Job Description</h3>
+              <div class="prose prose-sm max-w-none">
+                <p class="whitespace-pre-wrap text-gray-700">{{ job.job_description_text }}</p>
+              </div>
             </div>
           </div>
         </div>
+
+        <SubmissionInfoCard
+          :job="job"
+          @update="handleUpdateSubmission"
+          @mark-submitted="handleMarkSubmitted"
+        />
       </div>
     </main>
   </div>

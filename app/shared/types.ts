@@ -17,6 +17,14 @@ export type DocumentVersion = 'initial' | 'reviewed' | 'regenerated';
 
 export type ProcessingStatus = 'pending' | 'processing' | 'completed' | 'failed';
 
+export type ApplicationMethod =
+  | 'online_form'
+  | 'email'
+  | 'linkedin'
+  | 'recruiter'
+  | 'referral'
+  | 'other';
+
 export type TaskType =
   | 'extract_job_info'
   | 'calculate_match'
@@ -65,6 +73,15 @@ export interface Job {
 
   // Application folder path
   folder_path?: string;
+
+  // Application submission tracking
+  application_url?: string;
+  application_method?: ApplicationMethod;
+  recruiter_email?: string;
+  recruiter_name?: string;
+  application_notes?: string;
+  application_deadline?: string;
+  application_submitted_at?: string;
 }
 
 export interface JobDocument {
@@ -194,6 +211,15 @@ export const TASK_TYPE_LABELS: Record<TaskType, string> = {
   sync_to_filesystem: 'Syncing to Filesystem'
 };
 
+export const APPLICATION_METHOD_LABELS: Record<ApplicationMethod, string> = {
+  online_form: 'Online Application Form',
+  email: 'Email to Recruiter',
+  linkedin: 'LinkedIn Easy Apply',
+  recruiter: 'Through Recruiter/Agency',
+  referral: 'Internal Referral',
+  other: 'Other'
+};
+
 // Master Profile Types
 export interface MasterProfile {
   id: string;
@@ -253,7 +279,51 @@ export interface Skill {
   display_order: number;
 }
 
+export interface Education {
+  id: string;
+  profile_id: string;
+  created_at: string;
+  updated_at: string;
+  deleted_at?: string;
+
+  institution_name: string;
+  degree_or_field?: string;
+  location?: string;
+  description?: string;
+
+  start_date?: string;  // ISO date string (YYYY-MM-DD)
+  end_date?: string;
+  date_precision: 'year' | 'month' | 'day';
+  is_current: boolean;
+
+  display_order: number;
+  version: number;
+}
+
+export interface Certification {
+  id: string;
+  profile_id: string;
+  created_at: string;
+  updated_at: string;
+  deleted_at?: string;
+
+  certification_name: string;
+  issuing_organization?: string;
+  credential_id?: string;
+  credential_url?: string;
+  description?: string;
+
+  issue_date?: string;  // ISO date string (YYYY-MM-DD)
+  expiry_date?: string;
+  date_precision: 'year' | 'month' | 'day';
+
+  display_order: number;
+  version: number;
+}
+
 export interface MasterProfileWithDetails extends MasterProfile {
   work_experiences?: WorkExperience[];
   skills?: Skill[];
+  education?: Education[];
+  certifications?: Certification[];
 }

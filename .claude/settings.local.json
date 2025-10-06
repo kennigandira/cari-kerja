@@ -45,7 +45,14 @@
       "Bash(supabase status:*)",
       "Bash(supabase projects:*)",
       "mcp__chrome-devtools__get_network_request",
-      "Bash(\"https://ewqqpflajxvqkoawgmek.supabase.co/rest/v1/rpc/move_card_between_columns\")"
+      "Bash(\"https://ewqqpflajxvqkoawgmek.supabase.co/rest/v1/rpc/move_card_between_columns\")",
+      "WebFetch(domain:www.tvinna.is)",
+      "Bash(ls:*)",
+      "WebFetch(domain:knitwellgroup.wd1.myworkdayjobs.com)",
+      "Bash(awk:*)",
+      "Bash(source:*)",
+      "Bash(pip install:*)",
+      "Bash(supabase migration list:*)"
     ],
     "deny": [],
     "ask": []
