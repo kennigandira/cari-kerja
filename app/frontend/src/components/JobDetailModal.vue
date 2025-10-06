@@ -11,7 +11,7 @@
  */
 
 import { ref, computed, watch } from 'vue'
-import type { Job, JobStatus } from '@/shared/types'
+import type { Job, JobStatus } from '@shared/types'
 import { KanbanCardAPI } from '../services/kanban-api'
 import { useKanbanStore } from '@/stores/kanban'
 import BaseModal from './base/BaseModal.vue'

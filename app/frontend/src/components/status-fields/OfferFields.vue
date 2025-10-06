@@ -8,7 +8,7 @@
  */
 
 import { ref } from 'vue'
-import type { Job } from '@/shared/types'
+import type { Job } from '@shared/types'
 import BaseButton from '../base/BaseButton.vue'
 
 interface Props {

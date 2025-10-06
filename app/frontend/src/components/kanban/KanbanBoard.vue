@@ -71,7 +71,7 @@ const handleSignOut = async () => {
 }
 
 // Job Detail Modal handlers
-const handleCardClick = (cardId: string, jobId: string | null) => {
+const handleCardClick = (_cardId: string, jobId: string | null) => {
   selectedJobId.value = jobId
   isModalOpen.value = true
 }
@@ -93,14 +93,14 @@ const closeModal = () => {
   selectedJobId.value = null
 }
 
-const handleJobDelete = async (jobId: string) => {
+const handleJobDelete = async (_jobId: string) => {
   // Refresh data after delete
   await kanbanStore.fetchCards()
   await kanbanStore.fetchJobs()
   await kanbanStore.syncJobsToCards()
 }
 
-const handleStatusChange = async (jobId: string, newStatus: string) => {
+const handleStatusChange = async (_jobId: string, _newStatus: string) => {
   // Refresh data after status change
   await kanbanStore.fetchCards()
   await kanbanStore.fetchJobs()

@@ -6,7 +6,7 @@
  */
 
 import { ref, computed } from 'vue'
-import type { Job } from '@/shared/types'
+import type { Job } from '@shared/types'
 
 interface Props {
   job: Job

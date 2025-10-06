@@ -6,7 +6,7 @@
  */
 
 import { computed } from 'vue'
-import type { Job } from '@/shared/types'
+import type { Job } from '@shared/types'
 import BaseButton from '../base/BaseButton.vue'
 import BaseBadge from '../base/BaseBadge.vue'
 
@@ -49,17 +49,21 @@ const handleApply = () => {
       <!-- CV Status -->
       <div class="flex items-center justify-between">
         <span class="text-sm text-gray-700">CV</span>
-        <BaseBadge :variant="hasCv ? 'green' : 'red'" size="sm">
-          {{ hasCv ? '✓ Ready' : '✗ Not Ready' }}
-        </BaseBadge>
+        <BaseBadge
+          :variant="hasCv ? 'success' : 'not_now'"
+          :label="hasCv ? '✓ Ready' : '✗ Not Ready'"
+          size="sm"
+        />
       </div>
 
       <!-- Cover Letter Status -->
       <div class="flex items-center justify-between">
         <span class="text-sm text-gray-700">Cover Letter</span>
-        <BaseBadge :variant="hasCoverLetter ? 'green' : 'red'" size="sm">
-          {{ hasCoverLetter ? '✓ Ready' : '✗ Not Ready' }}
-        </BaseBadge>
+        <BaseBadge
+          :variant="hasCoverLetter ? 'success' : 'not_now'"
+          :label="hasCoverLetter ? '✓ Ready' : '✗ Not Ready'"
+          size="sm"
+        />
       </div>
     </div>
 

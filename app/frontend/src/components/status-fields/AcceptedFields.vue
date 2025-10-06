@@ -5,14 +5,14 @@
  * Displays congratulations message and archive option for accepted offers
  */
 
-import type { Job } from '@/shared/types'
+import type { Job } from '@shared/types'
 import BaseButton from '../base/BaseButton.vue'
 
 interface Props {
   job: Job
 }
 
-const props = defineProps<Props>()
+defineProps<Props>()
 
 const emit = defineEmits<{
   archive: []

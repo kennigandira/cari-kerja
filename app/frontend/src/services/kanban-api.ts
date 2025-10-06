@@ -9,7 +9,7 @@
  */
 
 import { supabase } from '../lib/supabase'
-import type { Job, JobStatus } from '@/shared/types'
+import type { Job, JobStatus } from '@shared/types'
 
 export class KanbanCardAPI {
   /**
