@@ -27,7 +27,7 @@ export interface ParseJobResponse {
   parsing_source: 'url_jina' | 'manual_paste'
   parsing_model: string // e.g., "claude-sonnet-4.5-20250514"
   raw_content: string // Original markdown/text
-  original_url: string | null
+  job_source: string | null
 }
 
 export interface ParseJobError {
@@ -40,3 +40,12 @@ export interface ParseJobError {
 
 // Helper type for modal state
 export type InputType = 'url' | 'paste'
+
+// Progress tracking types
+export type ProgressStep = 'idle' | 'fetching' | 'analyzing' | 'finalizing' | 'done'
+
+export interface ProgressState {
+  step: ProgressStep
+  message: string
+  progress: number // 0-100
+}

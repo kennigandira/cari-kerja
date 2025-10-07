@@ -30,8 +30,8 @@ const hasCoverLetter = computed(() => {
 const canApply = computed(() => hasCv.value && hasCoverLetter.value)
 
 const handleApply = () => {
-  if (props.job.original_url) {
-    window.open(props.job.original_url, '_blank')
+  if (props.job.job_source) {
+    window.open(props.job.job_source, '_blank')
   } else if (props.job.application_url) {
     window.open(props.job.application_url, '_blank')
   } else {

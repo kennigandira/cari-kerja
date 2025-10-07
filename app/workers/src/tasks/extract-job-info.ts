@@ -25,7 +25,7 @@ export async function extractJobInfo(
   // If input type is URL, fetch the content
   if (job.input_type === 'url') {
     try {
-      const response = await fetch(job.original_url);
+      const response = await fetch(job.job_source);
       const html = await response.text();
       jobContent = html;
     } catch (error) {
@@ -105,7 +105,7 @@ Return the information in JSON format:
       job_description_html: job.input_type === 'url' ? jobContent : null,
       job_description_text: extractedData.job_description_text,
       folder_path: `/Users/user/Documents/cari-kerja/04_Applications/${extractedData.company_name}_${extractedData.position_title}_${new Date().toISOString().split('T')[0]}`,
-      application_url: extractedData.application_url || job.original_url,
+      application_url: extractedData.application_url || job.job_source,
       application_method: extractedData.application_method,
       recruiter_email: extractedData.recruiter_email,
       recruiter_name: extractedData.recruiter_name,

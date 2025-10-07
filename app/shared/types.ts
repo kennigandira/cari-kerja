@@ -51,7 +51,7 @@ export interface Job {
   // Input data
   input_type: InputType;
   input_content: string;
-  original_url?: string;
+  job_source: string;
 
   // Extracted metadata
   company_name?: string;

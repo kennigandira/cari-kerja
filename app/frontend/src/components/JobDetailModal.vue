@@ -122,8 +122,8 @@ const handleStatusChange = (newStatus: JobStatus) => {
 }
 
 const openJobUrl = () => {
-  if (job.value?.original_url) {
-    window.open(job.value.original_url, '_blank')
+  if (job.value?.job_source) {
+    window.open(job.value.job_source, '_blank')
   }
 }
 
@@ -298,7 +298,7 @@ const handleArchive = async () => {
         <!-- Action Buttons -->
         <div class="flex items-center gap-2">
           <BaseButton
-            v-if="job.original_url"
+            v-if="job.job_source"
             variant="secondary"
             size="sm"
             @click="openJobUrl"

@@ -6,7 +6,9 @@ import type {
   ParseJobRequest,
   ParseJobResponse,
   ParseJobError,
-  InputType
+  InputType,
+  ProgressState,
+  ProgressStep
 } from '@/types/job-parser'
 
 // Props & Emits
@@ -23,10 +25,17 @@ const emit = defineEmits<{
 const inputType = ref<InputType>('url')
 const jobUrl = ref('')
 const jobText = ref('')
+const jobSource = ref('')
 const loading = ref(false)
 const error = ref('')
 const previewData = ref<ParseJobResponse | null>(null)
 const showFallbackPrompt = ref(false)
+const progress = ref<ProgressState>({
+  step: 'idle',
+  message: '',
+  progress: 0
+})
+const abortController = ref<AbortController | null>(null)
 
 // Computed
 const inputPlaceholder = computed(() =>
@@ -45,55 +54,173 @@ const isLowConfidence = computed(() =>
   previewData.value && previewData.value.confidence < 80
 )
 
+const canConfirm = computed(() =>
+  previewData.value !== null && jobSource.value.trim().length > 0 && jobSource.value.trim().length <= 500
+)
+
+// Helper: Get session with timeout to prevent hanging
+const getSessionWithTimeout = async (timeoutMs = 5000) => {
+  const timeoutPromise = new Promise((_, reject) =>
+    setTimeout(() => reject(new Error('Session check timed out. Please try again.')), timeoutMs)
+  )
+
+  const sessionPromise = supabase.auth.getSession()
+
+  return Promise.race([sessionPromise, timeoutPromise])
+}
+
+// Helper: Update progress state
+const updateProgress = (step: ProgressStep, message: string, progressPercent: number) => {
+  progress.value = { step, message, progress: progressPercent }
+}
+
 // Parse job post
 const handleSubmit = async () => {
   loading.value = true
   error.value = ''
   previewData.value = null
   showFallbackPrompt.value = false
+  updateProgress('idle', 'Preparing...', 0)
+
+  // Auto-fill job_source from URL input (ALWAYS, regardless of parse result)
+  if (inputType.value === 'url') {
+    jobSource.value = jobUrl.value.trim()
+  }
 
   try {
     const body: ParseJobRequest = inputType.value === 'url'
       ? { url: jobUrl.value.trim() }
       : { text: jobText.value.trim() }
+    console.debug( '====CEK SINI BODY', body);
 
-    // Get auth token for Cloudflare Worker
-    const { data: { session } } = await supabase.auth.getSession()
+    // Get auth token for Cloudflare Worker (with timeout)
+    updateProgress('fetching', 'Authenticating...', 10)
+    const { data: { session } } = await getSessionWithTimeout()
+    console.debug( '====CEK SINI SESSION', session);
 
     if (!session) {
       throw new Error('Please sign in to use the job parser')
     }
 
-    // Call Cloudflare Worker API
-    const response = await fetch(`${worker.url}/api/parse-job`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${session.access_token}`
-      },
-      body: JSON.stringify(body)
-    })
-
-    const data = await response.json()
-
-    if (!response.ok) {
-      handleError(data, response.status)
+    // Call Cloudflare Worker API with 40-second timeout
+    // Progress: fetching (URL) → analyzing (AI) → finalizing
+    if (inputType.value === 'url') {
+      updateProgress('fetching', 'Fetching job posting...', 20)
     } else {
+      updateProgress('analyzing', 'Analyzing job description...', 30)
+    }
+
+    const controller = new AbortController()
+    abortController.value = controller
+    const timeoutId = setTimeout(() => controller.abort(), 40000) // 40s timeout
+
+    try {
+      const response = await fetch(`${worker.url}/api/parse-job`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.access_token}`
+        },
+        body: JSON.stringify(body),
+        signal: controller.signal
+      })
+
+      // Update progress based on input type
+      if (inputType.value === 'url') {
+        updateProgress('analyzing', 'Analyzing with AI...', 60)
+      } else {
+        updateProgress('finalizing', 'Preparing preview...', 80)
+      }
+
+      console.debug('Parse response:', { status: response.status, ok: response.ok })
+
+      // Read response as text first to handle empty bodies
+      const text = await response.text()
+
+      if (!text || text.trim().length === 0) {
+        throw new Error('Server returned empty response')
+      }
+
+      // Parse JSON
+      let data
+      try {
+        data = JSON.parse(text)
+      } catch (jsonError) {
+        console.error('JSON parse error:', jsonError, 'Response:', text.substring(0, 200))
+        throw new Error('Server returned invalid response')
+      }
+
+      if (!response.ok) {
+        // Handle error response and stop execution
+        handleError(data, response.status)
+        updateProgress('idle', '', 0)
+        return
+      }
+
       // Success: Show preview
+      updateProgress('done', 'Complete!', 100)
       previewData.value = data as ParseJobResponse
+
+    } catch (fetchError: any) {
+      // Handle fetch-level errors (timeout, network, etc.)
+      if (fetchError.name === 'AbortError') {
+        error.value = abortController.value ? 'Request cancelled by user.' : 'Request timed out after 40 seconds. The job site may be very slow. Please try manual paste instead.'
+        if (!abortController.value) {
+          inputType.value = 'paste'
+          showFallbackPrompt.value = true
+        }
+      } else {
+        error.value = fetchError.message || 'Network error occurred.'
+      }
+      console.error('Fetch error:', fetchError)
+      updateProgress('idle', '', 0)
+    } finally {
+      clearTimeout(timeoutId)
+      abortController.value = null
     }
   } catch (err: any) {
-    error.value = err.message || 'Network error. Please check your connection.'
+    // Catch errors from session check or other outer code
+    console.error('Parse error:', err)
+    error.value = err.message || 'An unexpected error occurred. Please try again.'
+    updateProgress('idle', '', 0)
   } finally {
     loading.value = false
   }
 }
 
+// Cancel request
+const handleCancel = () => {
+  if (abortController.value) {
+    abortController.value.abort()
+    abortController.value = null
+    loading.value = false
+    updateProgress('idle', '', 0)
+  }
+}
+
 // Handle errors with fallback
-const handleError = (err: ParseJobError, status: number) => {
+const handleError = (err: ParseJobError | any, status: number) => {
+  // Handle empty error object (worker returns {})
+  if (!err || typeof err !== 'object' || Object.keys(err).length === 0) {
+    error.value = 'Server error occurred. Please try manual paste instead.'
+    inputType.value = 'paste'
+    showFallbackPrompt.value = true
+    return
+  }
+
   const errorCode = err.code
 
-  if (status === 400 && (errorCode === 'FETCH_FAILED' || err.fallback === 'manual_paste')) {
+  // Server errors (500, 502, 503) - suggest retry or manual entry
+  if (status >= 500 && status < 600) {
+    error.value = err.error || 'Server temporarily unavailable. Please try again or use manual paste.'
+    if (status === 500) {
+      inputType.value = 'paste'
+      showFallbackPrompt.value = true
+    }
+  } else if (status === 429) {
+    // Rate limited
+    error.value = 'Rate limited. Please wait a moment before trying again.'
+  } else if (status === 400 && (errorCode === 'FETCH_FAILED' || err.fallback === 'manual_paste')) {
     // Fallback to manual paste
     error.value = err.error || 'Unable to access URL. Please paste the job description instead.'
     inputType.value = 'paste'
@@ -104,7 +231,7 @@ const handleError = (err: ParseJobError, status: number) => {
     previewData.value = err.extracted as ParseJobResponse
   } else {
     // Generic error
-    error.value = err.error || 'Failed to parse job post. Please try again.'
+    error.value = err.error || `Server error (${status}). Please try again.`
   }
 }
 
@@ -121,7 +248,7 @@ const handleConfirm = async () => {
       .insert({
         input_type: inputType.value === 'url' ? 'url' : 'text',
         input_content: inputType.value === 'url' ? jobUrl.value : jobText.value,
-        original_url: previewData.value.original_url,
+        job_source: jobSource.value.trim(),
         company_name: previewData.value.company_name,
         position_title: previewData.value.position_title,
         location: previewData.value.location,
@@ -133,7 +260,7 @@ const handleConfirm = async () => {
         parsing_confidence: previewData.value.confidence,
         parsing_model: previewData.value.parsing_model,
         raw_content: previewData.value.raw_content,
-        status: 'processing'
+        status: 'to_submit'
       })
       .select()
       .single()
@@ -156,10 +283,13 @@ const resetModal = () => {
   inputType.value = 'url'
   jobUrl.value = ''
   jobText.value = ''
+  jobSource.value = ''
   loading.value = false
   error.value = ''
   previewData.value = null
   showFallbackPrompt.value = false
+  updateProgress('idle', '', 0)
+  abortController.value = null
 }
 
 // Handle close
@@ -211,7 +341,7 @@ onUnmounted(() => {
       aria-labelledby="modal-title"
       aria-describedby="modal-description"
     >
-      <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+      <div class="bg-white rounded-lg shadow-xl w-full max-h-[90vh] overflow-y-auto" style="max-width: 42rem;">
         <!-- Header -->
         <div class="flex items-center justify-between p-6 border-b border-gray-200">
           <div>
@@ -275,7 +405,11 @@ onUnmounted(() => {
                 @keyup.enter="canSubmit && handleSubmit()"
               />
               <p class="mt-2 text-sm text-gray-500">
-                Example: https://jobs.company.com/senior-frontend-engineer
+                <strong>⚠️ Important:</strong> Use the direct job posting URL, not search results page.
+                <br>
+                <span class="text-green-600">✓ Example:</span> https://linkedin.com/jobs/view/123456789
+                <br>
+                <span class="text-red-600">✗ Avoid:</span> https://linkedin.com/jobs/search/...
               </p>
             </div>
 
@@ -296,6 +430,23 @@ onUnmounted(() => {
               </p>
             </div>
 
+            <!-- Progress Bar (when loading) -->
+            <div v-if="loading" class="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <div class="mb-2 flex items-center justify-between">
+                <span class="text-sm font-medium text-blue-900">{{ progress.message }}</span>
+                <span class="text-xs text-blue-700">{{ progress.progress }}%</span>
+              </div>
+              <div class="w-full bg-blue-200 rounded-full h-2">
+                <div
+                  class="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                  :style="{ width: `${progress.progress}%` }"
+                ></div>
+              </div>
+              <p class="mt-2 text-xs text-blue-700">
+                {{ inputType === 'url' ? 'Usually takes 10-15 seconds' : 'Usually takes 5-10 seconds' }}
+              </p>
+            </div>
+
             <!-- Error Message -->
             <div
               v-if="error"
@@ -307,6 +458,14 @@ onUnmounted(() => {
             <!-- Actions -->
             <div class="flex justify-end gap-3">
               <button
+                v-if="loading"
+                @click="handleCancel"
+                class="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                v-else
                 @click="handleClose"
                 class="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 :disabled="loading"
@@ -322,7 +481,7 @@ onUnmounted(() => {
                   <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
                   <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                 </svg>
-                <span v-if="loading">Analyzing...</span>
+                <span v-if="loading">{{ progress.message || 'Analyzing...' }}</span>
                 <span v-else>Parse Job Post</span>
               </button>
             </div>
@@ -397,6 +556,27 @@ onUnmounted(() => {
               </div>
             </div>
 
+            <!-- Job Source Field (REQUIRED) -->
+            <div class="mb-4 pt-4 border-t border-gray-200">
+              <label class="block text-sm font-medium text-gray-700 mb-2">
+                Where to Submit Application <span class="text-red-500">*</span>
+              </label>
+              <input
+                v-model="jobSource"
+                type="text"
+                placeholder="e.g., jobs@company.com, https://careers.company.com, or LinkedIn"
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                :disabled="loading"
+                maxlength="500"
+              />
+              <p class="mt-1 text-sm text-gray-500">
+                {{ inputType === 'url' ? 'Auto-filled from URL (you can edit)' : 'URL, email, or application portal name (required)' }}
+              </p>
+              <p v-if="jobSource.trim().length === 0" class="mt-1 text-sm text-red-600">
+                ⚠️ Required: Please specify where to submit your application
+              </p>
+            </div>
+
             <!-- Error Message -->
             <div
               v-if="error"
@@ -417,7 +597,7 @@ onUnmounted(() => {
               <button
                 @click="handleConfirm"
                 class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-                :disabled="loading"
+                :disabled="loading || !canConfirm"
               >
                 <svg v-if="loading" class="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
                   <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />

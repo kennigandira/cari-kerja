@@ -2,13 +2,16 @@ name = "job-kanban-worker"
 main = "src/index.ts"
 compatibility_date = "2025-01-01"
 
-# Enable security headers by default
-security_headers = true
+# Cloudflare AI Gateway configuration
+[vars]
+CLOUDFLARE_ACCOUNT_ID = "fdfd99f39ae433ab6b17c88f62af0316"
+CLOUDFLARE_GATEWAY_ID = "job-parser-getaway"
 
 # Production environment
 [env.production]
 vars = { ENVIRONMENT = "production" }
-route = "api.cari-kerja.pages.dev/*"
+# Route will be set up via Custom Domain in Cloudflare dashboard
+# or use default workers.dev subdomain
 
 # Development environment
 [env.development]
@@ -21,31 +24,17 @@ vars = { ENVIRONMENT = "development" }
 #   wrangler secret put ANTHROPIC_API_KEY
 #   wrangler secret put JINA_API_KEY  # Optional: For better rate limits (200 RPM, 10M free tokens)
 
-# Sensitive environment variables - NEVER commit actual values
-[vars]
-SUPABASE_URL = ""          # Set via wrangler secret
-SUPABASE_SERVICE_KEY = ""  # Set via wrangler secret
-ANTHROPIC_API_KEY = ""     # Set via wrangler secret
-
-# Security settings
-[security]
-allow_credentials = true
-allowed_origins = ["https://cari-kerja.pages.dev"]
-headers = [
-  { key = "X-Content-Type-Options", value = "nosniff" },
-  { key = "X-Frame-Options", value = "DENY" },
-  { key = "X-XSS-Protection", value = "1; mode=block" },
-  { key = "Referrer-Policy", value = "strict-origin-when-cross-origin" },
-  { key = "Permissions-Policy", value = "camera=(), microphone=(), geolocation=()" }
-]
-
 # Cron triggers for background job processing
 [triggers]
 crons = ["*/5 * * * *"]  # Run every 5 minutes
 
-# Additional security best practices:
+# Security best practices:
 # 1. Use wrangler secret put for all sensitive values
-# 2. Enable security headers in production
-# 3. Restrict allowed origins
+# 2. CORS is configured in code (src/index.ts)
+# 3. Restrict allowed origins in code
 # 4. Regular secret rotation using wrangler
 # 5. Monitor usage and set up alerts
+
+# wrangler.toml (wrangler v3.88.0^)
+[observability.logs]
+enabled = true

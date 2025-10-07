@@ -25,6 +25,7 @@ CREATE POLICY "Users can create work experiences"
 
 -- Drop and recreate UPDATE policy with session_id support
 DROP POLICY IF EXISTS "Users can update work experiences" ON work_experiences;
+DROP POLICY IF EXISTS "Users can update own non-deleted work experiences" ON work_experiences;
 CREATE POLICY "Users can update own non-deleted work experiences"
   ON work_experiences FOR UPDATE
   USING (
@@ -42,6 +43,7 @@ CREATE POLICY "Users can update own non-deleted work experiences"
 
 -- Drop and recreate DELETE policy with session_id support
 DROP POLICY IF EXISTS "Users can delete work experiences" ON work_experiences;
+DROP POLICY IF EXISTS "Users can delete own non-deleted work experiences" ON work_experiences;
 CREATE POLICY "Users can delete own non-deleted work experiences"
   ON work_experiences FOR DELETE
   USING (
@@ -77,6 +79,7 @@ CREATE POLICY "Users can create skills"
 
 -- Drop and recreate UPDATE policy with session_id support
 DROP POLICY IF EXISTS "Users can update skills" ON skills;
+DROP POLICY IF EXISTS "Users can update own non-deleted skills" ON skills;
 CREATE POLICY "Users can update own non-deleted skills"
   ON skills FOR UPDATE
   USING (
@@ -94,6 +97,7 @@ CREATE POLICY "Users can update own non-deleted skills"
 
 -- Drop and recreate DELETE policy with session_id support
 DROP POLICY IF EXISTS "Users can delete skills" ON skills;
+DROP POLICY IF EXISTS "Users can delete own non-deleted skills" ON skills;
 CREATE POLICY "Users can delete own non-deleted skills"
   ON skills FOR DELETE
   USING (

@@ -10,7 +10,7 @@
  * - Handles authentication
  */
 
-import { onMounted, computed, ref } from 'vue'
+import { onMounted, onUnmounted, computed, ref } from 'vue'
 import KanbanColumn from './KanbanColumn.vue'
 import AuthModal from '../AuthModal.vue'
 import JobDetailModal from '../JobDetailModal.vue'
@@ -115,12 +115,41 @@ const handleStatusChange = async (_jobId: string, _newStatus: string) => {
 const handleJobAdded = async (jobId: string) => {
   console.log('Job added via parser:', jobId)
 
-  // Refresh kanban data
-  await kanbanStore.fetchJobs()
-  await kanbanStore.syncJobsToCards()
+  try {
+    // Fetch only the new job (not all jobs)
+    const { data: newJob, error: fetchError } = await supabase
+      .from('jobs')
+      .select('*')
+      .eq('id', jobId)
+      .single()
 
-  console.log('✅ Job added successfully!')
+    if (fetchError) {
+      console.error('Failed to fetch new job:', fetchError)
+      // Fallback: full refresh
+      await kanbanStore.fetchJobs()
+      await kanbanStore.syncJobsToCards()
+      return
+    }
+
+    // Optimistically add job to local state
+    if (newJob) {
+      kanbanStore.jobs.push(newJob)
+
+      // Create card for this single job
+      await kanbanStore.createCardForJob(newJob)
+
+      console.log('✅ Job added successfully!')
+    }
+  } catch (err) {
+    console.error('Error adding job to board:', err)
+    // Fallback: full refresh
+    await kanbanStore.fetchJobs()
+    await kanbanStore.syncJobsToCards()
+  }
 }
+
+// Store auth subscription for cleanup
+let authSubscription: { unsubscribe: () => void } | null = null
 
 onMounted(async () => {
   console.log('KanbanBoard mounted, checking auth...')
@@ -135,18 +164,31 @@ onMounted(async () => {
     showAuthModal.value = true
   }
 
-  // Listen for auth changes
-  supabase.auth.onAuthStateChange(async (event, session) => {
+  // Listen for auth changes (store subscription for cleanup)
+  const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
     console.log('Auth state changed:', event)
-    if (session?.user) {
+
+    // Only reload data on actual sign in/out, not on token refresh
+    if (event === 'SIGNED_IN' && session?.user) {
       currentUser.value = session.user
       showAuthModal.value = false
       await loadData()
-    } else {
+    } else if (event === 'SIGNED_OUT') {
       currentUser.value = null
       showAuthModal.value = true
     }
+    // Ignore TOKEN_REFRESHED and other events that don't require full reload
   })
+
+  authSubscription = subscription
+})
+
+onUnmounted(() => {
+  // Clean up auth listener to prevent memory leaks and race conditions
+  if (authSubscription) {
+    authSubscription.unsubscribe()
+    authSubscription = null
+  }
 })
 </script>
 
