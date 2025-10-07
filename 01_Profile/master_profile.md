@@ -15,8 +15,8 @@ Team-first Frontend Engineer with 8+ years of experience building scalable web a
 - **27% increase in user traffic** (Q3) through web application revamp at PropertyScout
 - **40% reduction in compilation time** through developer experience improvements at AccelByte
 - **LCP improvement from 4.5s to 1.2s** through Core Web Vitals optimization at 99.co
-- **Quarterly Award Q2/21** recipient
-- **99 Group Hackathon - Best UI/UX Design** winner
+- **Quarterly Award Q2/21** recipient at 99.co
+- **99 Group Hackathon - Best UI/UX Design** winner at 99.co
 
 ## Technical Skills
 

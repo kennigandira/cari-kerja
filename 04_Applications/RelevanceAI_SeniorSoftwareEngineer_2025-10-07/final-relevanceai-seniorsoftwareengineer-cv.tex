@@ -1,0 +1,223 @@
+%-------------------------
+% Resume in Latex
+% Author: Kenni Gandira Alamsyah
+% Tailored for: Relevance AI - Senior Software Engineer
+%------------------------
+
+\documentclass[a4paper, 11pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+
+\usepackage{xcolor}
+\usepackage[sfdefault]{roboto}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Adjust margins
+\addtolength{\oddsidemargin}{-0.7in}
+\addtolength{\evensidemargin}{-0.7in}
+\addtolength{\textwidth}{1.4in}
+\addtolength{\topmargin}{-.5in}
+\addtolength{\textheight}{1.0in}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Sections formatting
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+%-------------------------
+% Custom commands
+\newcommand{\resumeItem}[1]{
+  \item\small{
+    {#1 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabularx}{0.987\textwidth}[t]{
+  >{\raggedright\arraybackslash}X
+  >{\centering\arraybackslash}X
+  >{\raggedleft\arraybackslash}X }
+      \textbf{#1} & #2 & #3 \\
+    \end{tabularx}
+    \textit{\small#4}\\
+    \vspace{-7pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{0.987\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1\\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.1in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}\vspace{5pt}}
+\newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=0.22in]}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-20pt}}
+
+\newcommand{\link}[2]{{\color[HTML]{096dd9}\href[pdfnewwindow=true]{#1}{\small{#2}}}}
+
+%-------------------------------------------
+%%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%----------HEADING----------
+\begin{center}
+    \textbf{\Huge \scshape Kenni Gandira Alamsyah} \\ \vspace{4pt}
+    \textbf{\large Senior Software Engineer} \\ \vspace{8pt}
+    \small Bangkok, Thailand $|$
+    \link{mailto:devkenni.g@gmail.com}{devkenni.g@gmail.com} $|$
+    \link{https://api.whatsapp.com/send/?phone=+660842704245}{+66 0842704245} $|$
+    \link{https://www.linkedin.com/in/kenni-g-alamsyah/}{linkedin.com/in/kenni-g-alamsyah}
+\end{center}
+
+%-----------PROFESSIONAL SUMMARY-----------
+\section{Professional Summary}
+\small{Senior Software Engineer with 8+ years building scalable, high-performance web applications across real estate, gaming, and travel industries. Expert in TypeScript and Node.js with a track record of delivering measurable improvements in fast-paced startup environments. Passionate about AI technology and building developer tools that enhance team productivity.}
+
+%-----------KEY ACHIEVEMENTS-----------
+\section{Key Achievements}
+    \resumeSubHeadingListStart
+        \resumeItem{\textbf{Delivered 27\% user traffic increase} (Q3) through web application revamp and performance optimization at PropertyScout}
+        \resumeItem{\textbf{Achieved 40\% reduction in compilation time} by standardizing developer experience and optimizing build processes at AccelByte}
+        \resumeItem{\textbf{Improved Largest Contentful Paint from 4.5s to 1.2s} through Core Web Vitals optimization at 99.co}
+        \resumeItem{\textbf{Recognized for technical excellence:} Q2/21 Quarterly Award recipient and Best UI/UX Design winner at 99 Group Hackathon}
+        \resumeItem{\textbf{Built internal tools} improving operational productivity for team members across multiple production systems}
+    \resumeSubHeadingListEnd
+
+%-----------TECHNICAL EXPERTISE-----------
+\section{Technical Expertise}
+    \resumeSubHeadingListStart
+        \small{
+            \item \textbf{Core Stack:} TypeScript (Expert), Node.js (Expert), JavaScript (ES6+), Vue.js, Express.js
+            \item \textbf{Frontend Technologies:} React.js, Next.js, Nuxt, HTML5, CSS3, Redux.js, React Native, Electron.js
+            \item \textbf{Backend \& APIs:} NestJS, GraphQL, REST APIs
+            \item \textbf{Styling \& Design:} Tailwind CSS, SASS/SCSS, Styled Components, CSS-in-JS, Bootstrap
+            \item \textbf{Build Tools \& Testing:} Webpack, Vite, Jest, Cypress, React Testing Library, Storybook
+            \item \textbf{Database \& Cloud:} Elasticsearch, NoSQL databases, AWS deployment experience
+            \item \textbf{Performance \& Quality:} Core Web Vitals optimization, full-stack performance tuning, SEO implementation
+            \item \textbf{Tools \& Collaboration:} Git, GitHub, Bitbucket, Jira, Confluence, Figma, Agile/Scrum methodologies
+            \item \textbf{AI \& Innovation:} Passionate about AI/LLM applications, automation workflows, and agent-based systems
+        }
+    \resumeSubHeadingListEnd
+
+%-----------WORK EXPERIENCE-----------
+\section{Professional Experience}
+    \resumeSubHeadingListStart
+        \resumeSubheading
+            {Software Engineer}{PropertyScout, Thailand}{March 2023 -- Present}{}
+            \resumeItemListStart
+                \resumeItem{Developed full-stack features using TypeScript, Vue.js, and Node.js in fast-paced startup environment, consistently shipping features while maintaining code quality standards}
+                \resumeItem{Revamped web applications resulting in 27\% increase in user traffic (Q3) through technology stack updates and performance optimization}
+                \resumeItem{Built internal tools improving operational productivity for team members across multiple environments}
+                \resumeItem{Optimized API performance through backend improvements and efficient database design}
+                \resumeItem{Collaborated with UI/UX designers to transform design systems into responsive, functional web components}
+                \resumeItem{Maintained rigorous code quality through code reviews, testing practices, and best practice implementation}
+            \resumeItemListEnd
+
+        \resumeSubheading
+            {Software Engineer}{AccelByte, Remote}{June 2022 -- March 2023}{}
+            \resumeItemListStart
+                \resumeItem{Developed developer tools and admin portal for AAA game studios using TypeScript and modern frameworks}
+                \resumeItem{Standardized developer experience achieving 40\% reduction in compilation time through build optimization and tooling improvements}
+                \resumeItem{Established component styling standards and comprehensive documentation using Storybook, significantly improving team efficiency and developer onboarding}
+                \resumeItem{Initiated knowledge-sharing sessions and code convention standardization across engineering team}
+                \resumeItem{Mentored junior and mid-level engineers on modern development workflows and TypeScript best practices}
+                \resumeItem{Collaborated cross-functionally in Agile/Scrum environment with product, design, and backend teams}
+            \resumeItemListEnd
+
+        \resumeSubheading
+            {Frontend Engineer}{99.co, Bandung, Indonesia}{July 2020 -- July 2022}{}
+            \resumeItemListStart
+                \resumeItem{Improved site performance reducing Largest Contentful Paint from 4.5s to 1.2s through Core Web Vitals optimization and full-stack performance tuning}
+                \resumeItem{Enhanced organic traffic through SEO improvements and schema validation implementation}
+                \resumeItem{Maintained high performance standards ensuring excellent user experience across the platform}
+                \resumeItem{Received ``Own It'' Quarterly Award (Q2/21) for exceptional product ownership}
+                \resumeItem{Won Best UI/UX Design at 99 Group Hackathon demonstrating creative problem-solving}
+                \resumeItem{Collaborated with cross-functional teams using Agile methodologies to deliver high-impact features}
+            \resumeItemListEnd
+
+        \resumeSubheading
+            {Frontend Engineer}{Tiket.com, Jakarta, Indonesia}{August 2019 -- July 2020}{}
+            \resumeItemListStart
+                \resumeItem{Delivered features using React, TypeScript, and Redux for one of Indonesia's leading travel platforms}
+                \resumeItem{Established component documentation with Storybook, improving developer onboarding and team collaboration}
+                \resumeItem{Conducted code refactoring initiatives enhancing scalability and maintainability}
+                \resumeItem{Collaborated with product teams to optimize user experience through data-driven UX enhancements}
+                \resumeItem{Participated in engineering excellence through code reviews and architectural discussions}
+            \resumeItemListEnd
+
+        \resumeSubheading
+            {Frontend Developer}{Mirum Agency, Bandung, Indonesia}{July 2018 -- August 2019}{}
+            \resumeItemListStart
+                \resumeItem{Developed WordPress-based platform for Universitas Pelita Harapan (UPH) with custom functionality}
+                \resumeItem{Created solutions addressing complex client requirements while maintaining code quality}
+                \resumeItem{Built multiple websites with responsive design and cross-browser compatibility}
+            \resumeItemListEnd
+
+        \resumeSubheading
+            {Web Developer}{Hazani Rangka Utama, Bandung, Indonesia}{April 2017 -- August 2018}{}
+            \resumeItemListStart
+                \resumeItem{Developed three WordPress themes for ThemeForest marketplace}
+                \resumeItem{Ensured accessibility and standards compliance through W3C validation}
+            \resumeItemListEnd
+
+        \resumeSubheading
+            {Front End Developer}{PT NTCI, Yogyakarta, Indonesia}{March 2016 -- March 2017}{}
+            \resumeItemListStart
+                \resumeItem{Built projects including e-learning platforms and booking systems}
+                \resumeItem{Participated in recruitment and hiring processes}
+            \resumeItemListEnd
+    \resumeSubHeadingListEnd
+
+%-----------EDUCATION-----------
+\section{Education}
+    \resumeSubHeadingListStart
+        \resumeProjectHeading
+            {\textbf{SMK Negeri 7 Bandung} $|$ \emph{Analytical Chemistry}}{2009 -- 2011}
+    \resumeSubHeadingListEnd
+
+%-----------CERTIFICATIONS-----------
+\section{Certifications}
+    \resumeSubHeadingListStart
+        \small{
+            \item GDPR Compliance Certification
+            \item Anti Bribery \& Corruption Certification
+            \item Anti-Harassment and Discrimination Certification
+            \item Web Development HTML CSS \& SEO Certification
+            \item Anti-Money Laundering Certification
+        }
+    \resumeSubHeadingListEnd
+
+%-----------LANGUAGES-----------
+\section{Languages}
+    \resumeSubHeadingListStart
+        \small{
+            \item \textbf{Bahasa Indonesia} (Native) $|$ \textbf{English} (Professional Working Proficiency) $|$ \textbf{Sundanese} (Native)
+        }
+    \resumeSubHeadingListEnd
+
+\end{document}
