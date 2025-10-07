@@ -246,7 +246,7 @@ const handleArchive = async () => {
 <template>
   <BaseModal
     :is-open="isOpen"
-    title="Job Application Details"
+    titleComponent="Job Application Details"
     size="xl"
     @close="handleClose"
   >
@@ -294,19 +294,7 @@ const handleArchive = async () => {
           <label for="status-select" class="text-sm font-medium text-gray-700">
             Status:
           </label>
-          <select
-            id="status-select"
-            v-model="currentStatus"
-            class="rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
-          >
-            <option
-              v-for="option in statusOptions"
-              :key="option.value"
-              :value="option.value"
-            >
-              {{ option.label }}
-            </option>
-          </select>
+          
         </div>
 
         <!-- Action Buttons -->

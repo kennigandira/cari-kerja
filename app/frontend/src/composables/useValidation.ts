@@ -70,20 +70,28 @@ export function useSanitization() {
   /**
    * Sanitizes a string by encoding HTML entities
    * Use this before rendering user-provided content
+   * Replaces potentially dangerous characters with HTML entities
    */
   const sanitizeHtml = (str: string): string => {
-    const div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
+    return str.replace(/[&<>"']/g, (char) => {
+      const escapeMap: Record<string, string> = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#x27;'
+      };
+      return escapeMap[char] || char;
+    });
   };
 
   /**
    * Strips all HTML tags from a string
+   * Uses DOMParser for safe HTML parsing without XSS risks
    */
   const stripHtml = (str: string): string => {
-    const div = document.createElement('div');
-    div.innerHTML = str;
-    return div.textContent || div.innerText || '';
+    const doc = new DOMParser().parseFromString(str, 'text/html');
+    return doc.body.textContent || '';
   };
 
   /**

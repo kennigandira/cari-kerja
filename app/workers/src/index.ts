@@ -2,6 +2,8 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import type { AuthBindings } from './middleware/auth';
 import { authMiddleware } from './middleware/auth';
+import { rateLimiters } from './middleware/rate-limit';
+import { securityHeadersMiddleware } from './middleware/security-headers';
 import { handleCron } from './cron';
 import { parseJobPost } from './tasks/parse-job-post';
 import type { ParseJobRequest, ParseJobResponse, ParseJobError } from './tasks/parse-job-post';
@@ -9,7 +11,9 @@ import type { ParseJobRequest, ParseJobResponse, ParseJobError } from './tasks/p
 type Bindings = {
   SUPABASE_URL: string;
   SUPABASE_SERVICE_KEY: string;
+  SUPABASE_JWT_SECRET: string;
   ANTHROPIC_API_KEY: string;
+  JINA_API_KEY: string;
   ENVIRONMENT: string;
   CLOUDFLARE_ACCOUNT_ID: string;
   CLOUDFLARE_GATEWAY_ID: string;
@@ -34,24 +38,19 @@ app.use('/*', cors({
   credentials: true,
 }));
 
+// Security headers middleware
+app.use('/*', securityHeadersMiddleware);
+
 // Health check endpoint (no auth required)
 app.get('/health', (c) => {
   return c.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-// Debug endpoint to check environment variables (no auth required - remove after debugging)
-app.get('/debug/env', (c) => {
-  return c.json({
-    hasSupabaseUrl: !!c.env.SUPABASE_URL,
-    hasSupabaseKey: !!c.env.SUPABASE_SERVICE_KEY,
-    hasAnthropicKey: !!c.env.ANTHROPIC_API_KEY,
-    hasJinaKey: !!c.env.JINA_API_KEY,
-    environment: c.env.ENVIRONMENT || 'not set'
-  });
-});
-
-// Protected API routes
+// Protected API routes with rate limiting
+// Note: CSRF protection not needed for JWT-based auth (Authorization header)
+// JWT tokens can't be read/set cross-origin, providing implicit CSRF protection
 app.use('/api/*', authMiddleware);
+app.use('/api/*', rateLimiters.standard); // 30 requests per minute for authenticated users
 
 // API routes requiring authentication
 app.get('/api/jobs', async (c) => {
@@ -63,11 +62,11 @@ app.get('/api/jobs', async (c) => {
 });
 
 // Job Parser endpoint - Parse job from URL or manual text
-app.post('/api/parse-job', async (c) => {
+// Uses strict rate limit due to expensive AI operations
+app.post('/api/parse-job', rateLimiters.strict, async (c) => {
   console.log('[DEBUG] /api/parse-job request received:', {
     hasAuth: !!c.req.header('Authorization'),
-    authPrefix: c.req.header('Authorization')?.substring(0, 20),
-    user: c.get('user')?.id
+    userId: c.get('user')?.id
   })
 
   try {

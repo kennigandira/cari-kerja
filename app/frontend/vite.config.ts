@@ -82,7 +82,6 @@ export default defineConfig({
       // Security headers
       'X-Content-Type-Options': 'nosniff',
       'X-Frame-Options': 'DENY',
-      'X-XSS-Protection': '1; mode=block',
       'Referrer-Policy': 'strict-origin-when-cross-origin',
       'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
       'Cross-Origin-Embedder-Policy': 'require-corp',
@@ -94,7 +93,8 @@ export default defineConfig({
     },
   },
   build: {
-    sourcemap: process.env.NODE_ENV === 'development' && !process.env.VITE_PRODUCTION_BUILD,
+    // Never generate source maps for production builds (security best practice)
+    sourcemap: process.env.NODE_ENV === 'development' ? true : false,
     rollupOptions: {
       output: {
         // Enable SRI for chunks
