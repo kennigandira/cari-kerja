@@ -60,7 +60,7 @@ const canConfirm = computed(() =>
 
 // Helper: Get session with timeout to prevent hanging
 const getSessionWithTimeout = async (timeoutMs = 5000) => {
-  const timeoutPromise = new Promise((_, reject) =>
+  const timeoutPromise = new Promise<never>((_, reject) =>
     setTimeout(() => reject(new Error('Session check timed out. Please try again.')), timeoutMs)
   )
 

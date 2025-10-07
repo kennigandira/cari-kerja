@@ -452,17 +452,6 @@ export const useKanbanStore = defineStore('kanban', () => {
     cards.value = cards.value.filter((c) => c.id !== deletedCard.id)
   }
 
-  // Helper function to add timeout to promises
-  async function fetchWithTimeout<T>(
-    promise: Promise<T>,
-    timeoutMs: number = 10000
-  ): Promise<T> {
-    const timeoutPromise = new Promise<never>((_, reject) =>
-      setTimeout(() => reject(new Error('Request timeout - please try again')), timeoutMs)
-    )
-    return Promise.race([promise, timeoutPromise])
-  }
-
   // Job caching for detail modal
   async function getJobWithCache(jobId: string, forceRefresh = false): Promise<Job> {
     const cached = jobCache.value.get(jobId)
@@ -478,13 +467,23 @@ export const useKanbanStore = defineStore('kanban', () => {
     console.log('→ Fetching job from API:', jobId)
 
     try {
+      // Create timeout promise
+      const timeoutPromise = new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error('Request timeout - please try again')), 10000)
+      )
+
+      // Create fetch promise
       const fetchPromise = supabase
         .from('jobs')
         .select('*')
         .eq('id', jobId)
         .single()
 
-      const { data, error: fetchError } = await fetchWithTimeout(fetchPromise, 10000)
+      // Race between fetch and timeout
+      const { data, error: fetchError } = await Promise.race([
+        fetchPromise,
+        timeoutPromise
+      ])
 
       if (fetchError) {
         // Provide better error messages based on error type
