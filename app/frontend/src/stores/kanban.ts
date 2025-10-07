@@ -452,6 +452,17 @@ export const useKanbanStore = defineStore('kanban', () => {
     cards.value = cards.value.filter((c) => c.id !== deletedCard.id)
   }
 
+  // Helper function to add timeout to promises
+  async function fetchWithTimeout<T>(
+    promise: Promise<T>,
+    timeoutMs: number = 10000
+  ): Promise<T> {
+    const timeoutPromise = new Promise<never>((_, reject) =>
+      setTimeout(() => reject(new Error('Request timeout - please try again')), timeoutMs)
+    )
+    return Promise.race([promise, timeoutPromise])
+  }
+
   // Job caching for detail modal
   async function getJobWithCache(jobId: string, forceRefresh = false): Promise<Job> {
     const cached = jobCache.value.get(jobId)
@@ -463,22 +474,42 @@ export const useKanbanStore = defineStore('kanban', () => {
       return cached.job
     }
 
-    // Fetch from API
+    // Fetch from API with timeout protection
     console.log('→ Fetching job from API:', jobId)
-    const { data, error: fetchError } = await supabase
-      .from('jobs')
-      .select('*')
-      .eq('id', jobId)
-      .single()
 
-    if (fetchError) throw fetchError
-    if (!data) throw new Error('Job not found')
+    try {
+      const fetchPromise = supabase
+        .from('jobs')
+        .select('*')
+        .eq('id', jobId)
+        .single()
 
-    // Update cache
-    jobCache.value.set(jobId, { job: data, timestamp: now })
-    console.log('✓ Job cached:', jobId)
+      const { data, error: fetchError } = await fetchWithTimeout(fetchPromise, 10000)
 
-    return data
+      if (fetchError) {
+        // Provide better error messages based on error type
+        if (fetchError.code === 'PGRST116') {
+          throw new Error('Job not found - it may have been deleted')
+        }
+        if (fetchError.message.includes('row-level security')) {
+          throw new Error('You do not have permission to view this job')
+        }
+        throw new Error(`Failed to fetch job: ${fetchError.message}`)
+      }
+
+      if (!data) {
+        throw new Error('Job not found')
+      }
+
+      // Update cache
+      jobCache.value.set(jobId, { job: data, timestamp: now })
+      console.log('✓ Job cached:', jobId)
+
+      return data
+    } catch (err) {
+      console.error('Error fetching job:', err)
+      throw err
+    }
   }
 
   function invalidateJobCache(jobId: string) {

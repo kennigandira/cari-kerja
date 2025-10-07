@@ -44,10 +44,16 @@ const job = ref<Job | null>(null)
 const isLoading = ref(false)
 const isEditing = ref(false)
 const error = ref<string | null>(null)
+const isLoadingDetails = ref(false) // Guard flag to prevent re-entrant calls
 
 // Fetch job details when modal opens (uses cache)
 const loadJobDetails = async () => {
-  if (!props.jobId) return
+  if (!props.jobId) {
+    // Handle null job ID case - reset loading and show error
+    isLoading.value = false
+    error.value = 'No job information available for this card'
+    return
+  }
 
   isLoading.value = true
   error.value = null
@@ -62,11 +68,19 @@ const loadJobDetails = async () => {
 }
 
 // Watch for modal open and load data
-watch(() => [props.isOpen, props.jobId], ([isOpen, jobId]) => {
-  if (isOpen && jobId) {
-    loadJobDetails()
+watch(() => [props.isOpen, props.jobId], async ([isOpen, jobId]) => {
+  // Guard against re-entrant calls
+  if (!isOpen || !jobId || isLoadingDetails.value) {
+    return
   }
-})
+
+  isLoadingDetails.value = true
+  try {
+    await loadJobDetails()
+  } finally {
+    isLoadingDetails.value = false
+  }
+}, { immediate: false })
 
 // Computed properties
 const matchPercentageColor = computed(() => {
