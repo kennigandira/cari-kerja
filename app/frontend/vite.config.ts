@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import { VitePWA } from 'vite-plugin-pwa';
 import { fileURLToPath, URL } from 'node:url';
+import vueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -14,6 +15,7 @@ export default defineConfig({
   },
   plugins: [
     vue(),
+    vueDevTools(),
     VitePWA({
       manifest: {
         name: 'Cari Kerja',
@@ -68,7 +70,7 @@ export default defineConfig({
         "style-src 'self' 'unsafe-inline'",
         "img-src 'self' data: https:",
         "font-src 'self'",
-        "connect-src 'self' ws://localhost:* wss://localhost:* https://*.supabase.co wss://*.supabase.co",
+        "connect-src 'self' ws://localhost:* wss://localhost:* https://*.supabase.co wss://*.supabase.co https://*.workers.dev",
         "frame-src 'none'",
         "object-src 'none'",
         "base-uri 'self'",

@@ -90,7 +90,7 @@ export const useJobsStore = defineStore('jobs', () => {
       const newJob: Partial<Job> = {
         input_content: inputContent,
         input_type: detectedType,
-        original_url: detectedType === 'url' ? inputContent : undefined,
+        job_source: detectedType === 'url' ? inputContent : '',
         status: 'processing',
         kanban_order: 0,
       };

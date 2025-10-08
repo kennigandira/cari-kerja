@@ -10,6 +10,9 @@ interface EnvConfig {
     url: string;
     anonKey: string;
   };
+  worker: {
+    url: string;
+  };
   app: {
     env: 'development' | 'production' | 'test';
     isDevelopment: boolean;
@@ -48,6 +51,7 @@ function isValidKey(key: string, minLength = 20): boolean {
 function validateEnv(): EnvConfig {
   const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
   const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+  const workerUrl = import.meta.env.VITE_WORKER_URL || 'https://api.cari-kerja.pages.dev';
   const nodeEnv = import.meta.env.MODE || 'development';
 
   // Validate Supabase URL
@@ -101,6 +105,9 @@ function validateEnv(): EnvConfig {
       url: supabaseUrl,
       anonKey: supabaseAnonKey,
     },
+    worker: {
+      url: workerUrl,
+    },
     app: {
       env: nodeEnv as 'development' | 'production' | 'test',
       isDevelopment: nodeEnv === 'development',
@@ -124,7 +131,7 @@ try {
 export const env = config;
 
 // Export individual values for convenience
-export const { supabase, app } = config;
+export const { supabase, worker, app } = config;
 
 // Type guards for runtime validation
 export function isProduction(): boolean {

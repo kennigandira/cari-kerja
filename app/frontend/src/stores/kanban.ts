@@ -143,6 +143,72 @@ export const useKanbanStore = defineStore('kanban', () => {
     'not_now': 'Not now'
   }
 
+  async function createCardForJob(job: Job) {
+    try {
+      // Get current user
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) {
+        console.warn('No authenticated user, cannot create card')
+        return null
+      }
+
+      // Check if card already exists
+      const existingCard = cards.value.find(c => c.job_id === job.id)
+      if (existingCard) {
+        console.log('Card already exists for job:', job.id)
+        return existingCard
+      }
+
+      // Find the column for this job's status
+      const columnName = statusToColumnMap[job.status]
+      if (!columnName) {
+        console.warn(`No column mapping for status: ${job.status}`)
+        return null
+      }
+
+      const column = columns.value.find(c => c.name === columnName)
+      if (!column) {
+        console.warn(`Column not found: ${columnName}`)
+        return null
+      }
+
+      // Get next position in this column
+      const columnCards = cards.value.filter(c => c.column_id === column.id)
+      const nextPosition = columnCards.length
+
+      // Create card with user_id
+      const { data: newCard, error: createError } = await supabase
+        .from('kanban_cards')
+        .insert({
+          user_id: user.id,
+          column_id: column.id,
+          job_id: job.id,
+          position: nextPosition,
+          company_name: job.company_name || 'Unknown Company',
+          job_title: job.position_title || 'Unknown Position',
+          application_date: job.created_at,
+          application_folder_path: job.folder_path
+        })
+        .select()
+        .single()
+
+      if (createError) {
+        console.error(`Failed to create card for job ${job.id}:`, createError)
+        throw createError
+      }
+
+      if (newCard) {
+        cards.value.push(newCard)
+        console.log('Card created for job:', job.id)
+      }
+
+      return newCard
+    } catch (err) {
+      console.error('Failed to create card for job:', err)
+      throw err
+    }
+  }
+
   async function syncJobsToCards() {
     try {
       // Get current user
@@ -159,30 +225,33 @@ export const useKanbanStore = defineStore('kanban', () => {
 
       const jobsWithoutCards = jobs.value.filter(job => !existingCardJobIds.has(job.id))
 
+      if (jobsWithoutCards.length === 0) {
+        console.log('No jobs without cards')
+        return
+      }
+
       console.log(`Creating ${jobsWithoutCards.length} cards from jobs`)
 
-      for (const job of jobsWithoutCards) {
-        // Find the column for this job's status
-        const columnName = statusToColumnMap[job.status]
-        if (!columnName) {
-          console.warn(`No column mapping for status: ${job.status}`)
-          continue
-        }
+      // Batch insert: prepare all cards data
+      const cardsToInsert = jobsWithoutCards
+        .map(job => {
+          const columnName = statusToColumnMap[job.status]
+          if (!columnName) {
+            console.warn(`No column mapping for status: ${job.status}`)
+            return null
+          }
 
-        const column = columns.value.find(c => c.name === columnName)
-        if (!column) {
-          console.warn(`Column not found: ${columnName}`)
-          continue
-        }
+          const column = columns.value.find(c => c.name === columnName)
+          if (!column) {
+            console.warn(`Column not found: ${columnName}`)
+            return null
+          }
 
-        // Get next position in this column
-        const columnCards = cards.value.filter(c => c.column_id === column.id)
-        const nextPosition = columnCards.length
+          // Get next position in this column
+          const columnCards = cards.value.filter(c => c.column_id === column.id)
+          const nextPosition = columnCards.length
 
-        // Create card with user_id
-        const { data: newCard, error: createError } = await supabase
-          .from('kanban_cards')
-          .insert({
+          return {
             user_id: user.id,
             column_id: column.id,
             job_id: job.id,
@@ -191,18 +260,29 @@ export const useKanbanStore = defineStore('kanban', () => {
             job_title: job.position_title || 'Unknown Position',
             application_date: job.created_at,
             application_folder_path: job.folder_path
-          })
-          .select()
-          .single()
+          }
+        })
+        .filter(card => card !== null)
 
-        if (createError) {
-          console.error(`Failed to create card for job ${job.id}:`, createError)
-          continue
-        }
+      if (cardsToInsert.length === 0) {
+        console.log('No valid cards to insert')
+        return
+      }
 
-        if (newCard) {
-          cards.value.push(newCard)
-        }
+      // Single batch insert
+      const { data: newCards, error: batchError } = await supabase
+        .from('kanban_cards')
+        .insert(cardsToInsert)
+        .select()
+
+      if (batchError) {
+        console.error('Batch insert failed:', batchError)
+        throw batchError
+      }
+
+      if (newCards) {
+        cards.value.push(...newCards)
+        console.log(`Successfully created ${newCards.length} cards`)
       }
 
       console.log('Jobs synced to cards successfully')
@@ -383,22 +463,52 @@ export const useKanbanStore = defineStore('kanban', () => {
       return cached.job
     }
 
-    // Fetch from API
+    // Fetch from API with timeout protection
     console.log('→ Fetching job from API:', jobId)
-    const { data, error: fetchError } = await supabase
-      .from('jobs')
-      .select('*')
-      .eq('id', jobId)
-      .single()
 
-    if (fetchError) throw fetchError
-    if (!data) throw new Error('Job not found')
+    try {
+      // Create timeout promise
+      const timeoutPromise = new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error('Request timeout - please try again')), 10000)
+      )
 
-    // Update cache
-    jobCache.value.set(jobId, { job: data, timestamp: now })
-    console.log('✓ Job cached:', jobId)
+      // Create fetch promise
+      const fetchPromise = supabase
+        .from('jobs')
+        .select('*')
+        .eq('id', jobId)
+        .single()
 
-    return data
+      // Race between fetch and timeout
+      const { data, error: fetchError } = await Promise.race([
+        fetchPromise,
+        timeoutPromise
+      ])
+
+      if (fetchError) {
+        // Provide better error messages based on error type
+        if (fetchError.code === 'PGRST116') {
+          throw new Error('Job not found - it may have been deleted')
+        }
+        if (fetchError.message.includes('row-level security')) {
+          throw new Error('You do not have permission to view this job')
+        }
+        throw new Error(`Failed to fetch job: ${fetchError.message}`)
+      }
+
+      if (!data) {
+        throw new Error('Job not found')
+      }
+
+      // Update cache
+      jobCache.value.set(jobId, { job: data, timestamp: now })
+      console.log('✓ Job cached:', jobId)
+
+      return data
+    } catch (err) {
+      console.error('Error fetching job:', err)
+      throw err
+    }
   }
 
   function invalidateJobCache(jobId: string) {
@@ -429,6 +539,7 @@ export const useKanbanStore = defineStore('kanban', () => {
     fetchCards,
     fetchActivities,
     fetchJobs,
+    createCardForJob,
     syncJobsToCards,
     createCard,
     moveCardBetweenColumns,

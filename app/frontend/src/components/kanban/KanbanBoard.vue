@@ -10,10 +10,11 @@
  * - Handles authentication
  */
 
-import { onMounted, computed, ref } from 'vue'
+import { onMounted, onUnmounted, computed, ref } from 'vue'
 import KanbanColumn from './KanbanColumn.vue'
 import AuthModal from '../AuthModal.vue'
 import JobDetailModal from '../JobDetailModal.vue'
+import JobParserModal from '../JobParserModal.vue'
 import { useKanbanStore } from '@/stores/kanban'
 import { useRealtimeSync } from '@/composables/useRealtimeSync'
 import { supabase } from '@/lib/supabase'
@@ -30,6 +31,9 @@ const currentUser = ref<any>(null)
 // Job Detail Modal state
 const isModalOpen = ref(false)
 const selectedJobId = ref<string | null>(null)
+
+// Job Parser Modal state
+const isParserModalOpen = ref(false)
 
 const loadData = async () => {
   console.log('Loading Kanban data...')
@@ -107,6 +111,46 @@ const handleStatusChange = async (_jobId: string, _newStatus: string) => {
   await kanbanStore.syncJobsToCards()
 }
 
+// Job Parser Modal handlers
+const handleJobAdded = async (jobId: string) => {
+  console.log('Job added via parser:', jobId)
+
+  try {
+    // Fetch only the new job (not all jobs)
+    const { data: newJob, error: fetchError } = await supabase
+      .from('jobs')
+      .select('*')
+      .eq('id', jobId)
+      .single()
+
+    if (fetchError) {
+      console.error('Failed to fetch new job:', fetchError)
+      // Fallback: full refresh
+      await kanbanStore.fetchJobs()
+      await kanbanStore.syncJobsToCards()
+      return
+    }
+
+    // Optimistically add job to local state
+    if (newJob) {
+      kanbanStore.jobs.push(newJob)
+
+      // Create card for this single job
+      await kanbanStore.createCardForJob(newJob)
+
+      console.log('✅ Job added successfully!')
+    }
+  } catch (err) {
+    console.error('Error adding job to board:', err)
+    // Fallback: full refresh
+    await kanbanStore.fetchJobs()
+    await kanbanStore.syncJobsToCards()
+  }
+}
+
+// Store auth subscription for cleanup
+let authSubscription: { unsubscribe: () => void } | null = null
+
 onMounted(async () => {
   console.log('KanbanBoard mounted, checking auth...')
 
@@ -120,18 +164,31 @@ onMounted(async () => {
     showAuthModal.value = true
   }
 
-  // Listen for auth changes
-  supabase.auth.onAuthStateChange(async (event, session) => {
+  // Listen for auth changes (store subscription for cleanup)
+  const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
     console.log('Auth state changed:', event)
-    if (session?.user) {
+
+    // Only reload data on actual sign in/out, not on token refresh
+    if (event === 'SIGNED_IN' && session?.user) {
       currentUser.value = session.user
       showAuthModal.value = false
       await loadData()
-    } else {
+    } else if (event === 'SIGNED_OUT') {
       currentUser.value = null
       showAuthModal.value = true
     }
+    // Ignore TOKEN_REFRESHED and other events that don't require full reload
   })
+
+  authSubscription = subscription
+})
+
+onUnmounted(() => {
+  // Clean up auth listener to prevent memory leaks and race conditions
+  if (authSubscription) {
+    authSubscription.unsubscribe()
+    authSubscription = null
+  }
 })
 </script>
 
@@ -149,8 +206,20 @@ onMounted(async () => {
           </p>
         </div>
 
-        <!-- User Info & Real-time Sync Indicator -->
+        <!-- User Info & Actions -->
         <div class="flex items-center gap-4">
+          <!-- Add Job Target Button -->
+          <button
+            v-if="currentUser"
+            @click="isParserModalOpen = true"
+            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium shadow-sm flex items-center gap-2"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+            Add Job Target
+          </button>
+
           <div v-if="currentUser" class="flex items-center gap-2">
             <span class="text-sm text-gray-600">{{ currentUser.email }}</span>
             <button
@@ -227,6 +296,13 @@ onMounted(async () => {
       @close="closeModal"
       @delete="handleJobDelete"
       @statusChange="handleStatusChange"
+    />
+
+    <!-- Job Parser Modal -->
+    <JobParserModal
+      :is-open="isParserModalOpen"
+      @close="isParserModalOpen = false"
+      @success="handleJobAdded"
     />
 
     <!-- Auth Modal -->

@@ -89,3 +89,6 @@ CompanyName_Position_Date/
 - If there's  there are multiple instances running with chrome devtools mcp, do pkill -f "chrome-devtools-mcp"
 - before and after change, always check the page using chrome-devtools mcp
 - after kill chrome-devtools mcp, please run this: npm exec chrome-devtools-mcp@latest
+- We're using bun instead of npm to run dev
+- This project use supabase production
+- we only use supabase production

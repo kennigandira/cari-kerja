@@ -1,6 +1,5 @@
-import { Context, Next } from 'hono';
+import type { Context, Next } from 'hono';
 import { HTTPException } from 'hono/http-exception';
-import { decode, verify } from 'hono/jwt';
 
 interface User {
   id: string;
@@ -26,28 +25,31 @@ export async function authMiddleware(c: Context, next: Next) {
       throw new HTTPException(401, { message: 'Missing token' });
     }
 
-    // Verify JWT with Supabase public key
+    // Verify token by calling Supabase API
     const supabaseUrl = c.env.SUPABASE_URL;
-    const jwksResponse = await fetch(`${supabaseUrl}/rest/v1/auth/jwks`);
-    const jwks = await jwksResponse.json();
+    const response = await fetch(`${supabaseUrl}/auth/v1/user`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'apikey': c.env.SUPABASE_SERVICE_KEY
+      }
+    });
 
-    try {
-      // Verify and decode token
-      const decoded = await verify(token, jwks);
-      const user = {
-        id: decoded.sub,
-        email: decoded.email,
-        role: decoded.role
-      };
-
-      // Add user to context
-      c.set('user', user);
-
-      // Continue to next middleware/route handler
-      await next();
-    } catch (err) {
+    if (!response.ok) {
       throw new HTTPException(401, { message: 'Invalid or expired token' });
     }
+
+    const userData = await response.json() as { id: string; email: string; role?: string };
+    const user = {
+      id: userData.id,
+      email: userData.email,
+      role: userData.role || 'authenticated'
+    };
+
+    // Add user to context
+    c.set('user', user);
+
+    // Continue to next middleware/route handler
+    await next();
   } catch (err) {
     if (err instanceof HTTPException) {
       throw err;

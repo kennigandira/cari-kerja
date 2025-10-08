@@ -39,7 +39,15 @@ const HAS_APPLICATION_FOLDER = computed(() => {
   return Boolean(props.card.application_folder_path)
 })
 
+const HAS_JOB_DETAILS = computed(() => {
+  return Boolean(props.card.job_id)
+})
+
 const handleCardClick = () => {
+  // Only emit click if card has job details
+  if (!HAS_JOB_DETAILS.value) {
+    return
+  }
   emit('click', props.card.id, props.card.job_id)
 }
 
@@ -61,12 +69,17 @@ const handleDelete = (event: Event) => {
 
 <template>
   <div
-    class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-3 hover:shadow-lg hover:border-blue-300 transition-all duration-200 min-h-[44px] cursor-pointer group"
+    :class="[
+      'bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-3 transition-all duration-200 min-h-[44px] group',
+      HAS_JOB_DETAILS
+        ? 'hover:shadow-lg hover:border-blue-300 cursor-pointer'
+        : 'opacity-60 cursor-not-allowed'
+    ]"
     @click="handleCardClick"
     @mouseenter="handleHover"
     @focus="handleHover"
-    role="button"
-    tabindex="0"
+    :role="HAS_JOB_DETAILS ? 'button' : 'article'"
+    :tabindex="HAS_JOB_DETAILS ? 0 : -1"
     @keydown.enter="handleCardClick"
     @keydown.space.prevent="handleCardClick"
   >
@@ -105,8 +118,17 @@ const handleDelete = (event: Event) => {
 
     <!-- Actions -->
     <div class="mt-3 flex items-center justify-between gap-2">
-      <span class="text-xs text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity">
+      <span
+        v-if="HAS_JOB_DETAILS"
+        class="text-xs text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity"
+      >
         Click to view details
+      </span>
+      <span
+        v-else
+        class="text-xs text-gray-500 italic"
+      >
+        No job details available
       </span>
       <button
         type="button"
