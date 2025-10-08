@@ -86,7 +86,12 @@
       "Bash(do echo \"Compiling $file...\")",
       "Bash(npx wrangler tail:*)",
       "Bash(crontab:*)",
-      "Bash(git branch:*)"
+      "Bash(git branch:*)",
+      "Bash(bun audit:*)",
+      "Bash(npm audit:*)",
+      "Bash(chmod:*)",
+      "Read(//tmp/**)",
+      "Bash(wrangler secret:*)"
     ],
     "deny": [],
     "ask": []

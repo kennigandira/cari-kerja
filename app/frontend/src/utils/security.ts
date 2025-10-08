@@ -42,11 +42,11 @@ export function escapeHtml(unsafe: string): string {
 
 /**
  * Strips all HTML tags from a string
+ * Uses DOMParser for safe HTML parsing without XSS risks
  */
 export function stripHtmlTags(html: string): string {
-  const tmp = document.createElement('div');
-  tmp.innerHTML = html;
-  return tmp.textContent || tmp.innerText || '';
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+  return doc.body.textContent || '';
 }
 
 /**

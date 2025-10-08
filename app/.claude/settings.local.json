@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(.specify/scripts/bash/check-prerequisites.sh:*)",
+      "Bash(.specify/scripts/bash/create-new-feature.sh:*)",
+      "Read(//Users/user/Documents/cari-kerja/**)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

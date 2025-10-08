@@ -4,8 +4,9 @@ import BaseButton from './BaseButton.vue'
 
 interface Props {
   isOpen: boolean
-  title: string
+  titleComponent: string
   size?: 'sm' | 'md' | 'lg' | 'xl'
+
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -77,7 +78,7 @@ onUnmounted(() => {
           <div class="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-white flex-shrink-0">
             <div class="flex justify-between items-center">
               <h2 :id="`modal-title-${$.uid}`" class="text-2xl font-bold text-gray-900">
-                {{ title }}
+                {{ titleComponent }}
               </h2>
               <BaseButton
                 variant="ghost"
