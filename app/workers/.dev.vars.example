@@ -1,0 +1,18 @@
+# Local Development Environment Variables
+# Copy this file to .dev.vars and fill in your actual values
+# .dev.vars is gitignored and safe for local secrets
+
+SUPABASE_URL=
+SUPABASE_SERVICE_KEY=your_service_key_here
+SUPABASE_JWT_SECRET=your_jwt_secret_here
+ANTHROPIC_API_KEY=your_anthropic_key_here
+JINA_API_KEY=your_jina_key_here
+CLOUDFLARE_ACCOUNT_ID=
+CLOUDFLARE_GATEWAY_ID=
+ENVIRONMENT=development
+
+# How to get these values:
+# - SUPABASE_SERVICE_KEY: Supabase Dashboard > Settings > API > service_role key
+# - SUPABASE_JWT_SECRET: Supabase Dashboard > Settings > API > JWT Secret
+# - ANTHROPIC_API_KEY: console.anthropic.com > API Keys
+# - JINA_API_KEY: jina.ai > API Keys (optional, for better rate limits)
