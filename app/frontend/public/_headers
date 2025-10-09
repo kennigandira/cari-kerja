@@ -1,56 +1,26 @@
-# Security headers for all routes
+# Cloudflare Pages Security Headers
+# These headers are applied to all pages in production
+
 /*
-  # Content Security Policy - Strict Configuration
-  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https://cari-kerja.pages.dev https://*.supabase.co wss://*.supabase.co https://*.workers.dev; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests
+  # Content Security Policy - Production (no localhost)
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://*.workers.dev; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests;
 
-  # Modern Security Headers
+  # Prevent MIME type sniffing
   X-Content-Type-Options: nosniff
-  X-Frame-Options: DENY
-  Referrer-Policy: strict-origin-when-cross-origin
-  Permissions-Policy: accelerometer=(), ambient-light-sensor=(), autoplay=(), battery=(), camera=(), cross-origin-isolated=(), display-capture=(), document-domain=(), encrypted-media=(), execution-while-not-rendered=(), execution-while-out-of-viewport=(), fullscreen=(), geolocation=(), gyroscope=(), keyboard-map=(), magnetometer=(), microphone=(), midi=(), navigation-override=(), payment=(), picture-in-picture=(), publickey-credentials-get=(), screen-wake-lock=(), sync-xhr=(), usb=(), web-share=(), xr-spatial-tracking=()
 
-  # Cross-Origin Security
+  # Prevent clickjacking
+  X-Frame-Options: DENY
+
+  # Control referrer information
+  Referrer-Policy: strict-origin-when-cross-origin
+
+  # Disable unnecessary browser features
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+
+  # Cross-Origin policies
   Cross-Origin-Embedder-Policy: require-corp
   Cross-Origin-Opener-Policy: same-origin
   Cross-Origin-Resource-Policy: same-origin
 
-  # Additional Security Headers
-  X-Permitted-Cross-Domain-Policies: none
-  X-Download-Options: noopen
-  X-DNS-Prefetch-Control: off
-
-  # HSTS (HTTP Strict Transport Security)
+  # HSTS - Force HTTPS (production only)
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
-
-# Cache control for static assets
-/*.js
-  Cache-Control: public, max-age=31536000, immutable
-
-/*.css
-  Cache-Control: public, max-age=31536000, immutable
-
-/*.woff2
-  Cache-Control: public, max-age=31536000, immutable
-
-/*.woff
-  Cache-Control: public, max-age=31536000, immutable
-
-/*.ttf
-  Cache-Control: public, max-age=31536000, immutable
-
-# Cache control for images
-/*.png
-  Cache-Control: public, max-age=31536000, immutable
-
-/*.jpg
-  Cache-Control: public, max-age=31536000, immutable
-
-/*.svg
-  Cache-Control: public, max-age=31536000, immutable
-
-/*.webp
-  Cache-Control: public, max-age=31536000, immutable
-
-# HTML files should not be cached
-/*.html
-  Cache-Control: public, max-age=0, must-revalidate

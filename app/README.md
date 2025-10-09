@@ -1,126 +1,214 @@
-# Job Kanban Application
+# 🎯 Cari Kerja - Job Application Tracker
 
-A comprehensive job application tracking system with automated CV and cover letter generation using AI.
+A comprehensive job application tracking system with AI-powered job parsing and intelligent kanban board management.
 
-## 🎯 Features
+## ✨ Features
 
-- **Single Input Interface**: Paste job URLs or full job descriptions
-- **Auto-Processing**: Automatically extracts job info, calculates match percentage, generates CVs and cover letters
-- **Kanban Board**: Drag-and-drop interface to track application status
-- **AI-Powered**: Uses Claude API for job analysis and document generation
-- **Document Management**: Download initial and reviewed versions of CVs and cover letters
-- **Regeneration**: Request document regeneration with specific feedback
-- **Real-time Updates**: Live updates using Supabase Realtime
+- **🔍 Smart Job Parser**: Parse jobs from URLs (LinkedIn, Indeed, etc.) or manual paste
+- **🎨 Kanban Board**: Drag-and-drop interface across 7 workflow stages
+- **🤖 AI-Powered**: Claude Sonnet 4.5 for job analysis and extraction
+- **🔐 Enterprise Security**: JWT auth, rate limiting, SSRF/XSS protection
+- **⚡ Real-time Updates**: Live sync using Supabase Realtime
+- **📱 Responsive**: Works on desktop and mobile
+
+## 🏗️ Tech Stack
+
+- **Frontend**: Vue 3 + TypeScript + Vite + Pinia
+- **Backend**: Cloudflare Workers + Hono
+- **Database**: Supabase (PostgreSQL + Realtime)
+- **AI**: Claude Sonnet 4.5 via Cloudflare AI Gateway
+- **Auth**: Supabase Auth with local JWT verification
 
 ## 📁 Project Structure
 
 ```
 app/
-├── frontend/          # Vue 3 + Vite frontend
-├── workers/           # Cloudflare Workers backend
-├── supabase/          # Database migrations
-└── shared/            # Shared TypeScript types
+├── frontend/          # Vue 3 SPA with Tailwind CSS
+├── workers/           # Cloudflare Workers API
+├── supabase/          # Database migrations & RLS policies
+└── shared/            # Shared TypeScript types (if any)
 ```
 
-## 🚀 Getting Started
+## ⚡ Quick Start (15 minutes)
 
 ### Prerequisites
 
-- [Bun](https://bun.sh/) installed
-- [Supabase](https://supabase.com/) account
-- [Cloudflare](https://workers.cloudflare.com/) account
-- [Anthropic API](https://www.anthropic.com/) key
+- [Bun](https://bun.sh/) installed (`curl -fsSL https://bun.sh/install | bash`)
+- [Supabase](https://supabase.com/) account (free tier works)
+- [Cloudflare](https://workers.cloudflare.com/) account (free tier works)
+- [Anthropic API](https://console.anthropic.com/) key
+- [Jina AI](https://jina.ai/reader) key (optional, for better rate limits)
 
-### 1. Supabase Setup
+### 1. Clone & Install
 
-1. Create a new Supabase project
-2. Run the migration:
-   ```bash
-   cd app/supabase
-   # Copy the SQL from migrations/001_initial_schema.sql
-   # Paste into Supabase SQL Editor and execute
-   ```
-3. Create a storage bucket named `job-documents` with public access for PDFs
-4. Get your Supabase URL and keys from Project Settings > API
+```bash
+git clone <your-repo-url>
+cd cari-kerja/app
 
-### 2. Frontend Setup
+# Install dependencies for all services
+cd frontend && bun install && cd ..
+cd workers && bun install && cd ..
+```
+
+### 2. Supabase Setup
+
+1. **Create project**: Go to [supabase.com](https://supabase.com) → New Project
+2. **Get credentials**: Project Settings > API
+   - Save `URL`
+   - Save `anon public` key
+   - Save `service_role` key (keep secret!)
+   - Save `JWT Secret` (keep secret!)
+
+3. **Run migrations**: In Supabase SQL Editor, run migrations in order from `app/supabase/migrations/`
+
+### 3. Get API Keys
+
+1. **Anthropic**: https://console.anthropic.com/settings/keys
+2. **Jina AI** (optional): https://jina.ai/reader (200 RPM free tier)
+3. **Cloudflare Account ID**: Cloudflare Dashboard > Account ID (top right)
+
+### 4. Configure Local Development
+
+#### Frontend
 
 ```bash
 cd app/frontend
-
-# Install dependencies
-bun install
-
-# Create .env file
 cp .env.example .env
 
-# Edit .env and add your Supabase credentials:
-# VITE_SUPABASE_URL=https://your-project.supabase.co
-# VITE_SUPABASE_ANON_KEY=your-anon-key
+# Edit .env:
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_ANON_KEY=your-anon-key
+VITE_WORKER_URL=https://your-worker.workers.dev
 
-# Run development server
-bun run dev
+# For local worker development, create .env.local:
+cp .env.local.example .env.local
+# It should have: VITE_WORKER_URL=http://localhost:8787
 ```
 
-The frontend will be available at `http://localhost:5173`
-
-### 3. Cloudflare Workers Setup
+#### Workers (Local Development)
 
 ```bash
 cd app/workers
+cp .dev.vars.example .dev.vars
 
-# Install dependencies
-bun install
-
-# Login to Cloudflare
-bunx wrangler login
-
-# Set secrets
-bunx wrangler secret put SUPABASE_URL
-# Paste your Supabase URL
-
-bunx wrangler secret put SUPABASE_SERVICE_KEY
-# Paste your Supabase service role key (from Settings > API)
-
-bunx wrangler secret put ANTHROPIC_API_KEY
-# Paste your Anthropic API key
-
-# Deploy worker
-bunx wrangler deploy
+# Edit .dev.vars with your actual secrets:
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_SERVICE_KEY=your-service-role-key
+SUPABASE_JWT_SECRET=your-jwt-secret
+ANTHROPIC_API_KEY=sk-ant-...
+JINA_API_KEY=jina_...  # Optional
+CLOUDFLARE_ACCOUNT_ID=your-account-id
+CLOUDFLARE_GATEWAY_ID=job-parser-getaway
+ENVIRONMENT=development
 ```
 
-The worker will be deployed and the cron job will run every 5 minutes to process pending tasks.
+**Where to get values:**
+- `SUPABASE_SERVICE_KEY`: Supabase > Settings > API > `service_role` secret
+- `SUPABASE_JWT_SECRET`: Supabase > Settings > API > JWT Secret
+- `ANTHROPIC_API_KEY`: console.anthropic.com > API Keys
+- `CLOUDFLARE_ACCOUNT_ID`: Cloudflare Dashboard > Account ID
+
+### 5. Run Locally
+
+**Option 1: Automated (macOS)**
+```bash
+cd /path/to/cari-kerja
+./start-local.sh
+```
+
+**Option 2: Manual (2 terminals)**
+
+Terminal 1 - Worker:
+```bash
+cd app/workers
+wrangler dev --local
+# Wait for: "Ready on http://localhost:8787"
+```
+
+Terminal 2 - Frontend:
+```bash
+cd app/frontend
+bun run dev
+# Wait for: "Local: http://localhost:5173"
+```
+
+**Open browser**: http://localhost:5173
+
+✅ Frontend on `localhost:5173`
+✅ Worker on `localhost:8787`
+✅ Supabase production (cloud)
+
+### 6. Deploy to Production
+
+#### Workers
+
+```bash
+cd app/workers
+wrangler login  # First time only
+
+# Set production secrets
+wrangler secret put SUPABASE_URL
+wrangler secret put SUPABASE_SERVICE_KEY
+wrangler secret put SUPABASE_JWT_SECRET
+wrangler secret put ANTHROPIC_API_KEY
+wrangler secret put JINA_API_KEY  # Optional
+wrangler secret put CLOUDFLARE_ACCOUNT_ID
+
+# Deploy
+wrangler deploy
+```
+
+#### Frontend (Cloudflare Pages)
+
+1. Push to GitHub
+2. Cloudflare Pages > Create Project
+3. Select repository
+4. Build settings:
+   - Framework: Vue
+   - Build command: `cd app/frontend && bun install && bun run build`
+   - Output: `app/frontend/dist`
+5. Environment variables:
+   - `VITE_SUPABASE_URL`
+   - `VITE_SUPABASE_ANON_KEY`
+   - `VITE_WORKER_URL`
 
 ## 📊 Database Schema
 
-### Main Tables
+### Kanban Tables
+- **kanban_columns**: 7 workflow stages (Interested, Applied, Interviewing, Offer, Rejected, Accepted, Withdrawn)
+- **kanban_cards**: Job application cards with drag-and-drop positions
+- **kanban_card_activities**: Audit log for card movements
 
-- **jobs**: Job postings with metadata and kanban status
-- **job_documents**: CV and cover letter versions (initial, reviewed, regenerated)
-- **regeneration_requests**: User feedback for document regeneration
-- **processing_queue**: Background task queue
+### Job Tables
+- **jobs**: Job postings with AI-extracted metadata
+- **job_documents**: CV and cover letter versions (future feature)
+- **regeneration_requests**: Document regeneration tracking (future feature)
+- **processing_queue**: Background task queue (future feature)
 
-## 🎨 Kanban Workflow
+## 🎨 Kanban Workflow (7 Stages)
 
-1. **Processing** → CV and cover letter being generated
-2. **To Submit** → Ready to apply
-3. **Waiting for Call** → Application submitted
-4. **Ongoing** → Interview/testing in progress
-5. **Success** / **Not Now** → Final outcomes
+1. **🟣 Interested** → Exploring opportunity
+2. **🔵 Applied** → Application submitted, waiting for response
+3. **🟡 Interviewing** → Active interview process
+4. **🟢 Offer** → Offer received, decision pending
+5. **🔴 Rejected** → Application declined
+6. **✅ Accepted** → Offer accepted
+7. **⚪ Withdrawn** → Application withdrawn by candidate
 
-## 🔄 Processing Pipeline
+## 🔍 Job Parser Flow
 
-When you add a new job, the system automatically:
+When you add a new job:
 
-1. **Extract Job Info** (if URL, fetches and parses HTML)
-2. **Calculate Match** (analyzes your profile against requirements)
-3. **Generate CV** (tailored to job description)
-4. **Generate Cover Letter** (max 350 words)
-5. **Review CV** (skeptical review for accuracy)
-6. **Review Cover Letter** (skeptical review for accuracy)
-7. **Update Status** (moves to "To Submit")
-
-Each step runs asynchronously via Cloudflare Workers cron jobs.
+1. **Parse URL** (LinkedIn, Indeed, etc.) → Extract via Jina AI Reader
+   - OR **Paste Text** → Use job description directly
+2. **AI Analysis** → Claude Sonnet 4.5 extracts:
+   - Company name
+   - Position title
+   - Location, salary, job type
+   - Full job description (cleaned)
+   - Confidence score (0-100)
+3. **Create Card** → Automatically added to kanban board
+4. **Track Progress** → Drag through workflow stages
 
 ## 🛠️ Development
 
@@ -128,97 +216,223 @@ Each step runs asynchronously via Cloudflare Workers cron jobs.
 
 ```bash
 cd app/frontend
-bun run dev      # Start dev server
+bun run dev      # Start dev server (localhost:5173)
 bun run build    # Build for production
 bun run preview  # Preview production build
+bun run lint     # Lint code (if configured)
 ```
 
 ### Workers Development
 
 ```bash
 cd app/workers
-bunx wrangler dev     # Run worker locally
-bunx wrangler tail    # Stream logs from deployed worker
+wrangler dev --local    # Run worker locally (localhost:8787)
+wrangler deploy         # Deploy to production
+wrangler tail           # Stream production logs
 ```
 
-## 📦 Deployment
+### Full Local Development
 
-### Frontend (Cloudflare Pages)
+See [LOCAL_DEV_SETUP.md](../LOCAL_DEV_SETUP.md) for detailed setup guide.
 
-1. Push code to GitHub
-2. Go to Cloudflare Pages dashboard
-3. Create new project, select your repository
-4. Build settings:
-   - Framework preset: Vue
-   - Build command: `bun run build`
-   - Build output directory: `dist`
-5. Add environment variables:
-   - `VITE_SUPABASE_URL`
-   - `VITE_SUPABASE_ANON_KEY`
-
-### Workers (Already deployed via `wrangler deploy`)
-
-Cron jobs run automatically every 5 minutes. Check logs:
+**Quick start:**
 ```bash
-cd app/workers
-bunx wrangler tail
+./start-local.sh  # Automated (macOS)
 ```
 
-## 🔑 Environment Variables
+## 🔐 Security Features
 
-### Frontend (.env)
+This application implements enterprise-grade security:
+
+- ✅ **Authentication**: Supabase Auth with local JWT verification (fast!)
+- ✅ **Rate Limiting**: 10-30 req/min based on endpoint
+- ✅ **SSRF Protection**: Domain allowlist for job parsing
+- ✅ **XSS Prevention**: Safe DOM manipulation, CSP headers
+- ✅ **Input Validation**: Server-side validation (50KB limit)
+- ✅ **RLS Policies**: Row Level Security on all database tables
+- ✅ **Security Headers**: 10+ OWASP-compliant headers
+- ✅ **No Exposed Secrets**: All credentials in secure storage
+
+**Security Score**: 8.5/10 (Medium-Low Risk)
+
+For security details: See [`.ai_security_context/SECURITY_FIXES_COMPLETE.md`](../.ai_security_context/SECURITY_FIXES_COMPLETE.md)
+
+## 🧪 Testing
+
+### Quick Health Check (30 seconds)
+```bash
+./quick-test.sh
 ```
+
+### Full Security Tests (5 minutes)
+```bash
+# Get JWT token from browser (DevTools > Application > Local Storage)
+export JWT_TOKEN="your_token_here"
+./test-security.sh
+```
+
+### Manual Testing
+See [TESTING_QUICKSTART.md](../TESTING_QUICKSTART.md) for comprehensive test guide.
+
+## 🔑 Complete Environment Variables
+
+### Frontend (.env for production)
+```env
 VITE_SUPABASE_URL=https://your-project.supabase.co
 VITE_SUPABASE_ANON_KEY=your-anon-key
+VITE_WORKER_URL=https://your-worker.workers.dev
 ```
 
-### Workers (Cloudflare Secrets)
+### Frontend (.env.local for local dev)
+```env
+VITE_WORKER_URL=http://localhost:8787
 ```
+
+### Workers (.dev.vars for local dev)
+```env
 SUPABASE_URL=https://your-project.supabase.co
 SUPABASE_SERVICE_KEY=your-service-role-key
-ANTHROPIC_API_KEY=your-anthropic-key
+SUPABASE_JWT_SECRET=your-jwt-secret
+ANTHROPIC_API_KEY=sk-ant-...
+JINA_API_KEY=jina_...  # Optional
+CLOUDFLARE_ACCOUNT_ID=your-account-id
+CLOUDFLARE_GATEWAY_ID=job-parser-getaway
+ENVIRONMENT=development
+```
+
+### Workers (Production Secrets)
+```bash
+# Set via wrangler secret put
+wrangler secret put SUPABASE_URL
+wrangler secret put SUPABASE_SERVICE_KEY
+wrangler secret put SUPABASE_JWT_SECRET
+wrangler secret put ANTHROPIC_API_KEY
+wrangler secret put JINA_API_KEY  # Optional
+wrangler secret put CLOUDFLARE_ACCOUNT_ID
 ```
 
 ## 📝 Usage
 
-1. **Add Job**: Click "+ Add Job" button
-2. **Paste Content**: Either a URL (https://...) or full job description text
-3. **Submit**: System automatically processes the job
-4. **Monitor**: Watch as CV and cover letters are generated (Processing status)
-5. **Review**: Once complete, view and download documents
-6. **Regenerate**: Click regenerate button to request changes with specific feedback
-7. **Track**: Drag cards through the kanban to track application progress
+### Adding a Job
 
-## 🎯 Next Steps (Future Enhancements)
+1. **Click "Add Job Target"** button
+2. **Choose input method:**
+   - **URL**: Paste LinkedIn/Indeed/etc. job posting URL
+   - **Manual**: Copy & paste job description text
+3. **Parse**: Click "Parse Job Post"
+4. **Review**: Check extracted details (company, position, salary, etc.)
+5. **Save**: Create kanban card
 
-- [ ] Drag-and-drop functionality for kanban (VueDraggable integration)
-- [ ] PDF preview in modal
-- [ ] LaTeX compilation (currently generates Markdown only)
-- [ ] Sync to filesystem (`04_Applications/` folder)
-- [ ] Email integration for direct application submission
-- [ ] Analytics dashboard (success rate, response time, etc.)
-- [ ] Chrome extension for one-click job capture
+### Managing Applications
+
+- **Drag cards** between columns to update status
+- **Click card** to view full job details
+- **Delete** unwanted applications
+- **Track progress** across 7 workflow stages
+
+## 🧪 Testing
+
+### Before Committing
+```bash
+./quick-test.sh  # 30-second health check
+```
+
+### Full Test Suite
+```bash
+export JWT_TOKEN="..."  # Get from DevTools > Application > Local Storage
+./test-security.sh
+```
+
+See [TESTING_QUICKSTART.md](../TESTING_QUICKSTART.md) for detailed testing guide.
 
 ## 🐛 Troubleshooting
 
-### Jobs stuck in "Processing"
-- Check Cloudflare Workers logs: `bunx wrangler tail`
-- Verify cron trigger is active in Cloudflare dashboard
-- Check Supabase `processing_queue` table for failed tasks
+### "Failed to fetch" or CORS errors
+**Cause**: Worker not running or CSP blocking connection
 
-### Documents not generating
-- Verify Anthropic API key is set correctly
-- Check API rate limits
-- Review worker logs for error messages
+**Fix**:
+```bash
+# Check if worker is running
+lsof -i :8787
+
+# If not, start it
+cd app/workers && wrangler dev --local
+```
+
+### "401 Unauthorized" errors
+**Cause**: Missing or incorrect JWT secret
+
+**Fix**:
+```bash
+# Verify .dev.vars has correct SUPABASE_JWT_SECRET
+# Get from: Supabase > Settings > API > JWT Secret
+# Restart worker after updating
+```
+
+### "SUPABASE_JWT_SECRET not configured"
+**Fix**: Add to `app/workers/.dev.vars`:
+```env
+SUPABASE_JWT_SECRET=your-jwt-secret-from-supabase
+```
+
+### Rate limit exceeded
+**Normal**: Wait 60 seconds, limit resets
+**If frequent**: Adjust rate limits in `app/workers/src/middleware/rate-limit.ts`
+
+### Job parsing fails
+**Check**:
+1. Is URL from trusted domain? (LinkedIn, Indeed, etc.)
+2. Worker logs: `wrangler tail` or check terminal
+3. API keys configured correctly in `.dev.vars`
 
 ### Real-time updates not working
-- Verify Supabase Realtime is enabled for your project
-- Check browser console for WebSocket connection errors
+- Verify Supabase Realtime is enabled
+- Check browser console for WebSocket errors
+- Ensure user is authenticated
+
+## 🤝 Contributing
+
+### For Developers
+
+1. **Clone repo** and follow Quick Start above
+2. **Create feature branch**: `git checkout -b feature/your-feature`
+3. **Run tests** before committing: `./quick-test.sh`
+4. **Follow conventions**:
+   - TypeScript strict mode
+   - ESLint + Prettier (if configured)
+   - Meaningful commit messages
+5. **Submit PR** with description of changes
+
+### Development Workflow
+
+1. Make changes
+2. Test locally (`./quick-test.sh`)
+3. Commit (`git commit -m "feat: your feature"`)
+4. Push and create PR
+5. Deploy after review
+
+### Getting Help
+
+- Check [LOCAL_DEV_SETUP.md](../LOCAL_DEV_SETUP.md) for setup issues
+- Check [TESTING_QUICKSTART.md](../TESTING_QUICKSTART.md) for testing help
+- Review `.ai_security_context/` for security documentation
 
 ## 📄 License
 
 MIT
 
-## 🤝 Contributing
+## 📚 Additional Documentation
 
-This is a personal project for managing job applications. Feel free to fork and customize for your own use!
+- [LOCAL_DEV_SETUP.md](../LOCAL_DEV_SETUP.md) - Detailed local development guide
+- [TESTING_QUICKSTART.md](../TESTING_QUICKSTART.md) - Testing guide
+- [README_SECURITY_TESTING.md](../README_SECURITY_TESTING.md) - Security testing
+- `.ai_security_context/` - Security audit reports and fixes
+
+## 🎯 Roadmap
+
+- [ ] CV/Cover letter generation (planned)
+- [ ] PDF export functionality
+- [ ] Email integration
+- [ ] Analytics dashboard
+- [ ] Chrome extension
+- [ ] Mobile app

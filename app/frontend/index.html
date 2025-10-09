@@ -15,6 +15,9 @@
 
     <!-- Security -->
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <!-- Content Security Policy configured via server headers:
+         - Development: Vite dev server (vite.config.ts) - allows localhost
+         - Production: Cloudflare Pages (_headers file) - secure, no localhost -->
   </head>
   <body>
     <div id="app"></div>
