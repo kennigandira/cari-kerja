@@ -5,6 +5,9 @@
 
 set -e
 
+# Derive repo root from script location
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 RED='\033[0;31m'
@@ -16,11 +19,11 @@ echo "========================================="
 echo ""
 
 # Check if .dev.vars exists
-if [ ! -f "app/workers/.dev.vars" ]; then
+if [ ! -f "$REPO_ROOT/app/workers/.dev.vars" ]; then
     echo -e "${RED}✗ app/workers/.dev.vars not found${NC}"
     echo ""
     echo "Create it by running:"
-    echo "  cd app/workers"
+    echo "  cd $REPO_ROOT/app/workers"
     echo "  cp .dev.vars.example .dev.vars"
     echo ""
     echo "Then edit .dev.vars and add your actual secrets."
@@ -31,7 +34,7 @@ fi
 echo -e "${GREEN}✓${NC} .dev.vars found"
 
 # Check if .env.local exists
-if [ ! -f "app/frontend/.env.local" ]; then
+if [ ! -f "$REPO_ROOT/app/frontend/.env.local" ]; then
     echo -e "${YELLOW}⚠${NC} app/frontend/.env.local not found (will use .env)"
 else
     echo -e "${GREEN}✓${NC} .env.local found (using local worker)"
@@ -53,8 +56,8 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     osascript <<EOF
 tell application "Terminal"
     activate
-    set workerTab to do script "cd /Users/user/Documents/cari-kerja/app/workers && echo 'Starting Worker...' && wrangler dev --local"
-    set frontendTab to do script "cd /Users/user/Documents/cari-kerja/app/frontend && echo 'Starting Frontend...' && bun run dev"
+    set workerTab to do script "cd $REPO_ROOT/app/workers && echo 'Starting Worker...' && wrangler dev --local"
+    set frontendTab to do script "cd $REPO_ROOT/app/frontend && echo 'Starting Frontend...' && bun run dev"
 end tell
 EOF
     echo -e "${GREEN}✓${NC} Services started in new terminal tabs"
@@ -63,11 +66,11 @@ else
     echo "Manual startup required:"
     echo ""
     echo "Terminal 1 - Worker:"
-    echo "  cd /Users/user/Documents/cari-kerja/app/workers"
+    echo "  cd $REPO_ROOT/app/workers"
     echo "  wrangler dev --local"
     echo ""
     echo "Terminal 2 - Frontend:"
-    echo "  cd /Users/user/Documents/cari-kerja/app/frontend"
+    echo "  cd $REPO_ROOT/app/frontend"
     echo "  bun run dev"
 fi
 

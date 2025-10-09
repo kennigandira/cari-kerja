@@ -2,6 +2,8 @@
 
 **Goal:** Run frontend + workers + supabase all locally for smooth development
 
+**Note:** Throughout this guide, `${REPO_ROOT}` represents the absolute path to your local clone of this repository (e.g., `/home/yourname/cari-kerja` or `C:\projects\cari-kerja`). Replace it with your actual path when running commands.
+
 ---
 
 ## One-Time Setup (5 minutes)
@@ -9,7 +11,7 @@
 ### Step 1: Create Worker Secrets File
 
 ```bash
-cd /Users/user/Documents/cari-kerja/app/workers
+cd ${REPO_ROOT}/app/workers
 cp .dev.vars.example .dev.vars
 ```
 
@@ -42,7 +44,7 @@ ENVIRONMENT=development
 
 ### Terminal 1: Supabase (Optional - if using local DB)
 ```bash
-cd /Users/user/Documents/cari-kerja/app/supabase
+cd ${REPO_ROOT}/app/supabase
 supabase start
 
 # Wait for: "Started supabase local development setup"
@@ -50,7 +52,7 @@ supabase start
 
 ### Terminal 2: Worker
 ```bash
-cd /Users/user/Documents/cari-kerja/app/workers
+cd ${REPO_ROOT}/app/workers
 wrangler dev --local
 
 # Wait for: "Ready on http://localhost:8787"
@@ -59,7 +61,7 @@ wrangler dev --local
 
 ### Terminal 3: Frontend
 ```bash
-cd /Users/user/Documents/cari-kerja/app/frontend
+cd ${REPO_ROOT}/app/frontend
 bun run dev
 
 # Wait for: "Local: http://localhost:5173"
